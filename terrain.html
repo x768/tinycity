@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style type="text/css"> @import "main.css"; </style>
+<script type="text/javascript" src="js/const.js" defer></script>
+<script type="text/javascript" src="js/maptip.js" defer></script>
+<script type="text/javascript" src="js/resource.js" defer></script>
+<script type="text/javascript" src="js/city.js" defer></script>
+<script type="text/javascript" src="js/generate.js" defer></script>
+<script type="text/javascript" src="js/view.js" defer></script>
+<script type="text/javascript" src="js/popup.js" defer></script>
+<script type="text/javascript" src="js/terrain.js" defer></script>
+<title>TinyCity Terrain Editor</title>
+</head>
+<body>
+
+<div id="indicator-text" style="padding: 6px;text-align:right;color:white">
+<div><input type="text" id="indicator-date" size="8" value="1900"></div>
+<div>$<input type="text" id="indicator-funds" size="8" value="20000"></div>
+<div><select id="indicator-ruleset"></select></div>
+<div><select id="indicator-difficulty"></select></div>
+</div>
+
+<div id="indicator-menu">
+<span class="indicator-menu-item" id="menu-file"></span>
+<span class="indicator-menu-item" id="menu-generate_terrain"></span>
+<span class="indicator-menu-item" id="menu-scenario"></span>
+<span class="indicator-menu-item" id="menu-election"></span>
+<span class="indicator-menu-item" id="menu-language">Language</span>
+</div>
+
+<div id="indicator-build-icons">
+<div id="build-icon-hilight"></div>
+<div id="build-icon-hilight2"></div>
+<canvas id="build-icons"></canvas>
+</div>
+
+<div id="indicator-demands-wrapper">
+<svg id="indicator-demands" width="140" height="136">
+<g id="button-next-page" transform="translate(10,60)">
+<rect x="0" y="0" width="32" height="32" style="fill:#ffffff"></rect>
+<path d="M6,6 l20,10 -20,10 z" style="fill:#000000"></path>
+</g>
+</svg>
+</div>
+
+<div id="main-view-wrapper">
+<canvas id="main-view"></canvas>
+</div>
+
+<div id="minimap-view-wrapper">
+<svg id="minimap-view" width="230" height="140">
+<path d="M100,10 l60,60 -60,60 -60,-60" style="fill:#a0a0a0"></path>
+<rect id="minimap-view-area" style="fill:rgba(128,128,255,0.75)"></rect>
+<g transform="translate(180,20)">
+<circle cx="0" cy="0" r="18" style="fill:#404040"></circle>
+<g id="minimap-compass">
+<path d="M-4,0 L0,-16 4,0 z" style="fill:#ff0000"></path>
+<path d="M-4,0 L0,16 4,0 z" style="fill:#ffffff"></path>
+</g>
+</g>
+<g id="minimap-cw" transform="translate(16,102)">
+<rect x="0" y="0" width="32" height="32" style="fill:#c0c0c0"></rect>
+<path style="stroke:#000000;stroke-width:4;fill:none" d="M24,24 C16,24 8,16 8,8 M4,16 8,8 16,12"></path>
+</g>
+<g id="minimap-ccw" transform="translate(152,102)">
+<rect x="0" y="0" width="32" height="32" style="fill:#c0c0c0"></rect>
+<path style="stroke:#000000;stroke-width:4;fill:none" d="M8,24 C16,24 24,16 24,8 M28,16 24,8 16,12"></path>
+</g>
+<g id="minimap-sw" transform="translate(16,10)">
+<rect x="0" y="0" width="32" height="32" style="fill:#ffffff" id="minimap-sw-back"></rect>
+<path style="stroke:none;fill:#000000;fill-rule:evenodd" d="M16,4 L30,18 24,18 24,28 8,28 8,18 2,18 Z M12,18 l3,0 0,3 -3,0 Z M17,18 l3,0 0,3 -3,0 Z M12,22 l3,0 0,3 -3,0 Z M17,22 l3,0 0,3 -3,0 Z"></path>
+</g>
+</svg>
+<div><input type="text" id="indicator-cityname" style="width:180px" value="tinycity"></div>
+</div>
+
+<div id="message-ticker"></div>
+
+<div id="popup-window-back">
+<div id="popup-window">
+<div id="popup-top-button">
+<svg width="640" height="32">
+<g id="popup-close" transform="translate(608,0)">
+<circle cx="16" cy="16" r="16" style="fill:#ffffff;stroke:#a0a0a0;stroke-width:1px"></circle>
+<line class="path-stroke" x1="8" y1="8" x2="24" y2="24" style="stroke:#000000;stroke-width:3px"></line>
+<line class="path-stroke" x1="24" y1="8" x2="8" y2="24" style="stroke:#000000;stroke-width:3px"></line>
+</g>
+<g id="popup-cancel">
+<rect style="fill:#ffffff;stroke:#a0a0a0;stroke-width:1px" x="0" y="0" width="128" height="32" rx="16" ry="16"></rect>
+<text style="fill:#000000" x="64" y="24" text-anchor="middle" id="popup-cancel-text"></text>
+</g>
+<g id="popup-ok" transform="translate(512)">
+<rect style="fill:#ffffff;stroke:#a0a0a0;stroke-width:1px" x="0" y="0" width="128" height="32" rx="16" ry="16"></rect>
+<text style="fill:#000000" x="64" y="24" text-anchor="middle" id="popup-ok-text"></text>
+</g>
+</svg>
+</div>
+<div id="popup-title"></div>
+<div id="popup-title-logo"></div>
+<div id="popup-list"></div>
+<div id="popup-svg-wrapper"><svg id="popup-svg"></svg></div>
+<div id="popup-canvas-wrapper"><canvas id="popup-canvas"></canvas></div>
+<div id="popup-text"></div>
+<div id="popup-file-drop">
+<label for="popup-file-select">
+<div id="popup-file-drop-msg1"></div>
+<div id="popup-file-drop-msg2"></div>
+<input type="file" id="popup-file-select" style="display:none">
+</label>
+</div>
+<div id="popup-file-download">
+<a id="file-download" href="#" download="city.json"></a>
+</div>
+<div id="popup-enter-name">
+<div><input type="text" size="32" id="enter-text" value="" autocomplete="no"></div>
+<div><textarea id="enter-text-m"></textarea></div>
+<div id="popup-enter-name-button" class="popup-item"></div>
+</div>
+</div>
+</div>
+
+</body>
+</html>

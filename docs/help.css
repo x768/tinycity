@@ -1,0 +1,40 @@
+html {
+    background: #e0e0f0;
+}
+body {
+    margin: 1em 10%;
+}
+#title-logo {
+    text-align: center;
+}
+h1 {
+    font-size: 150%;
+    font-weight: bold;
+    border-width: 0 0 1px 4px;
+    border-style: none none solid solid;
+    border-color: black;
+    padding: .1em .5em;
+    background: white;
+}
+h2 {
+    font-size: 120%;
+    font-weight: bold;
+    padding: .1em .5em;
+}
+p {
+    margin: 1em 1em;
+}
+.content {
+    display: none;
+}
+table {
+    border-collapse: collapse;
+    margin: 1em;
+}
+th, td {
+    border: 1px solid gray;
+    padding: .2em;
+}
+.not-implemented {
+    color: gray;
+}

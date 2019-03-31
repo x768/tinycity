@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style type="text/css">
+
+body {
+    background: #c0c080;
+}
+
+</style>
+<script type="text/javascript" src="js/const.js" defer></script>
+<script type="text/javascript" src="js/maptip.js" defer></script>
+<script type="text/javascript">
+
+'use strict';
+
+const WIDTH = 600;
+const HEIGHT = 600;
+
+function draw_maptip_q(ctx, src, cx, cy, scale) {
+    let transform = 'none';
+    if (src.length >= 2 && typeof(src[0]) === 'string') {
+        if (src.length >= 3) {
+            transform = src[2];
+            src = maptip[src[0]][src[1]];
+        } else {
+            transform = src[1];
+            src = maptip[src[0]];
+        }
+    }
+    let stroke = false;
+    let fill = false;
+    let dash = false;
+    for (let i = 0; i < src.length; i++) {
+        let c = src[i];
+        if (c instanceof Array) {
+            ctx.beginPath();
+            for (let j = 0; j < c.length; j++) {
+                const d = c[j];
+                if (d instanceof Array) {
+                    let x, y;
+                    if (d.length >= 3) {
+                        switch (transform) {
+                        case 'none':
+                            x = (d[0] - d[1]) * 2;
+                            y = d[0] + d[1] - d[2] * 2;
+                            break;
+                        case 'flip_x':
+                            x = (d[1] - d[0]) * 2;
+                            y = d[0] + d[1] - d[2] * 2;
+                            break;
+                        case 'rot_cw':
+                            x = (-d[1] - d[0]) * 2;
+                            y = d[0] - d[1] - d[2] * 2;
+                            break;
+                        case 'rot_180':
+                            x = (-d[0] + d[1]) * 2;
+                            y = -d[0] - d[1] - d[2] * 2;
+                            break;
+                        case 'rot_ccw':
+                            x = (d[1] + d[0]) * 2;
+                            y = d[1] - d[0] - d[2] * 2;
+                            break;
+                        case 'rot_cw45':
+                            x = -d[1] * 2.828;
+                            y = d[0] * 1.414 - d[2] * 2;
+                            break;
+                        case 'rot_ccw45':
+                            x = d[0] * 2.828;
+                            y = d[1] * 1.414 - d[2] * 2;
+                            break;
+                        }
+                    } else {
+                        x = d[0];
+                        y = d[1];
+                    }
+                    if (j === 0) {
+                        ctx.moveTo(x * scale + cx, y * scale + cy);
+                    } else {
+                        ctx.lineTo(x * scale + cx, y * scale + cy);
+                    }
+                } else if (d === 'z') {
+                    ctx.closePath();
+                }
+            }
+            if (stroke) {
+                ctx.stroke();
+            }
+            if (fill) {
+                ctx.fill();
+            }
+        } else {
+            if (c.fill != null) {
+                ctx.fillStyle = c.fill;
+                fill = true;
+            } else {
+                fill = false;
+            }
+            if (c.stroke != null) {
+                ctx.strokeStyle = c.stroke;
+                stroke = true;
+                ctx.lineWidth = (c.lineWidth != null ? c.lineWidth : 1) * scale;
+            } else {
+                stroke = false;
+            }
+            if (c.lineDash != null) {
+                let d = [];
+                for (let k = 0; k < c.lineDash.length; k++) {
+                    d.push(c.lineDash[k] * scale);
+                }
+                ctx.setLineDash(d);
+                dash = true;
+            } else if (dash) {
+                ctx.setLineDash([]);
+                dash = false;
+            }
+        }
+    }
+    if (dash) {
+        ctx.setLineDash([]);
+    }
+}
+
+function new_elem(name) {
+    return document.createElement(name);
+}
+function get_elem(id) {
+    return document.getElementById(id);
+}
+function draw(ctx, src) {
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    draw_maptip_q(ctx, src, WIDTH >> 1, HEIGHT >> 1, 1);
+}
+
+document.addEventListener('DOMContentLoaded', e => {
+    for (let key in maptip) {
+        let option = new_elem('option');
+        option.textContent = key;
+        get_elem('buildings').appendChild(option);
+    }
+    function redraw() {
+        let key = get_elem('buildings').value;
+        let ctx = get_elem('view').getContext('2d');
+        if (maptip[key]) {
+            draw(ctx, maptip[key]);
+        }
+    }
+    function init() {
+        let canvas = get_elem('view');
+        canvas.setAttribute('width', WIDTH);
+        canvas.setAttribute('height', HEIGHT);
+    }
+    init();
+    if (document.location.hash.length > 0) {
+        get_elem('buildings').value = document.location.hash.substr(1);
+        redraw();
+    }
+    get_elem('buildings').addEventListener('change', e => {
+        document.location.hash = '#' + get_elem('buildings').value;
+        redraw();
+    });
+});
+
+</script>
+<title>test</title>
+</head>
+<body>
+<div><select id="buildings" size="48"></select><canvas id="view"></canvas></div>
+</body>
+</html>
