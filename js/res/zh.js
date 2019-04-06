@@ -168,7 +168,7 @@ resource.append('zh', {
 
     // General
     cheap:            "廉价",
-    creative:         "創造",
+    creative:         "创造",
     expensive:        "高价",
     expert:           "中级",
     frequent:         "频繁",

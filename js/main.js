@@ -183,6 +183,7 @@
         }
     }
     function show_title_screen_main() {
+        view.show_message_ticker_raw(null, true);
         popup.reset();
         popup.set_back_transparent();
         popup.show_logo();
@@ -836,14 +837,14 @@
         for (;;) {
             let x = Math.floor(Math.random() * (city.map_size - 12) + 6);
             let y = Math.floor(Math.random() * (city.map_size - 12) + 6);
-            t.x = x * 16;
-            t.y = y * 16;
+            t.x = x * 16 + 8;
+            t.y = y * 16 + 8;
             t.dx = DIR8_X[t.dir] * 2;
             t.dy = DIR8_Y[t.dir] * 2;
             let dx = t.x + t.dx * t.d;
             let dy = t.y + t.dy * t.d;
             if (dx >= 0 && dx < city.map_size * 16 && dy >= 0 && dy < city.map_size * 16) {
-                t.dust = simulate.disaster_tornado(x, y);
+                t.dust = simulate.disaster_destroy(x, y);
                 return {x:x, y:y};
             }
             t.dir++;
@@ -854,7 +855,101 @@
     }
     function tornado_move() {
         view.update_vehicle(view.tornado);
-        view.tornado.dust = simulate.disaster_tornado(view.tornado.x >> 4, view.tornado.y >> 4);
+        view.tornado.dust = simulate.disaster_destroy(view.tornado.x >> 4, view.tornado.y >> 4);
+    }
+    function monster_occur() {
+        let m = view.monster;
+        if (m.dir >= 0) {
+            return null;
+        }
+        city.disaster_occurs = true;
+        city.disaster_ticks = 0;
+
+        let x = Math.floor(city.map_size * (Math.random() * 0.8 + 0.1));
+        let y = Math.floor(city.map_size * (Math.random() * 0.8 + 0.1));
+        let cx = simulate.barycenter_x << 1;
+        let cy = simulate.barycenter_y << 1;
+
+        if (Math.abs(x - cx) < Math.abs(y - cy)) {
+            m.dir = (y > cy) ? 4 : 0;
+            m.d = Math.floor(Math.random() * Math.abs(y - cy)) * 8 + 40;
+        } else {
+            m.dir = (x > cx) ? 2 : 6;
+            m.d = Math.floor(Math.random() * Math.abs(x - cx)) * 8 + 40;
+        }
+        m.x = x * 16 + 8;
+        m.y = y * 16 + 8;
+        m.dx = DIR8_X[m.dir] * 2;
+        m.dy = DIR8_Y[m.dir] * 2;
+        m.dz = 0;
+        m.water = !simulate.disaster_destroy(m.x >> 4, m.y >> 4);
+        m.z = (m.water ? -8 : 0);
+        return {x:x, y:y};
+    }
+    function monster_move() {
+        let m = view.monster;
+        view.update_vehicle(m);
+        if (m.dx !== 0 || m.dy !== 0) {
+            m.walk++;
+            if (m.walk >= 4) {
+                m.walk = 0;
+            }
+        } else {
+            m.walk = 0;
+        }
+        m.water = !simulate.disaster_destroy(m.x >> 4, m.y >> 4);
+        m.z = (m.water ? -8 : 0);
+    }
+    function monster_next() {
+        let m = view.monster;
+        switch (monster_time_left % 3) {
+        case 1:
+            m.d = Math.floor(Math.random() * 10) * 8 + 40;
+            m.fire = false;
+            {
+                let r = Math.random();
+                if (r < 0.5) {
+                    if (r < 0.25) {
+                        m.dir += 2;
+                        if (m.dir >= 8) {
+                            m.dir -= 8;
+                        }
+                    } else {
+                        m.dir -= 2;
+                        if (m.dir < 0) {
+                            m.dir += 8;
+                        }
+                    }
+                }
+            }
+            for (let i = 0; i < 4; i++) {
+                m.dx = DIR8_X[m.dir] * 2;
+                m.dy = DIR8_Y[m.dir] * 2;
+                let x1 = (m.x + m.dx * m.d * 2) >> 4;
+                let y1 = (m.y + m.dy * m.d * 2) >> 4;
+                if (x1 >= 0 && x1 < city.map_size && y1 >= 0 && y1 < city.map_size) {
+                    break;
+                }
+                m.dir += 2;
+                if (m.dir >= 8) {
+                    m.dir -= 8;
+                }
+            }
+            break;
+        case 0:
+            m.dx = 0;
+            m.dy = 0;
+            m.d = 5;
+            m.fire = false;
+            break;
+        case 2:
+            m.dx = 0;
+            m.dy = 0;
+            m.d = 5;
+            m.fire = true;
+            simulate.disaster_monster_fire(m.x >> 4, m.y >> 4, m.dir >> 1);
+            break;
+        }
     }
     function disaster_occur(disaster) {
         reset_mouse_drag();
@@ -898,8 +993,13 @@
             earthquake_time_left = Math.floor(city.map_size * (1 + Math.random()) * 0.25);
             break;
         case 'monster':
-            view.show_message_ticker_raw('Not implemented');
-            return;
+            show_msg = true;
+            pos = monster_occur();
+            if (pos == null) {
+                return;
+            }
+            monster_time_left = (Math.floor(Math.random() * 3) + 4) * 3 + 1;
+            break;
         case 'ufo':
             view.show_message_ticker_raw('Not implemented');
             return;
@@ -1505,10 +1605,9 @@
     });
 
     function show_election_result() {
-        let votes = city.population >> 1;
-        let rate1 = 0.5;
-        let rate2 = 0.5;
-        let won = true;
+        let votes = city.population >> 2;
+        let rate = 1000000;
+        let win = true;
         let msg;
 
         if (city.base_score >= 0) {
@@ -1517,50 +1616,55 @@
                 let n = city.election.cond[i + 1];
                 switch (c) {
                 case 'population':
-                    if (city.population >= n) {
+                    if (city.population < n) {
+                        win = false;
+                    }
+                    {
                         let r = (city.population + 10000) / (n + 10000);
-                        if (r > 1.25) {
-                            r = 1.25;
+                        if (rate > r) {
+                            rate = r;
                         }
-                        rate1 *= r;
-                    } else {
-                        won = false;
-                        rate2 *= (city.population + 10000) / (n + 10000);
                     }
                     break;
                 case 'base_score':
-                    if (city.base_score >= n) {
-                        rate1 *= (city.base_score + 500) / (n + 500);
-                    } else {
-                        won = false;
-                        rate2 *= (city.base_score + 500) / (n + 500);
+                    if (city.base_score < n) {
+                        win = false;
+                    }
+                    {
+                        let r = (city.base_score + 500) / (n + 500);
+                        if (rate > r) {
+                            rate = r;
+                        }
                     }
                     break;
                 case 'traffic_jam':
                 case 'crime':
                 case 'pollution':
-                    if (city.problems[c] <= n) {
-                        rate1 *= (n + 20) / (city.problems[c] + 20);
-                    } else {
-                        won = false;
-                        rate2 *= (n + 20) / (city.problems[c] + 20);
+                    if (city.problems[c] > n) {
+                        win = false;
+                    }
+                    {
+                        let r = (n + 20) / (city.problems[c] + 20);
+                        if (rate > r) {
+                            rate = r;
+                        }
                     }
                     break;
                 }
             }
-            if (won) {
-                if (rate1 > 1) {
-                    rate1 = 1;
-                }
-                let votes1 = Math.round(votes * rate1);
-                let votes2 = Math.round(votes * (1 - rate1));
+            if (rate < 0.2) {
+                rate = 0.2;
+            } else if (rate > 1.8) {
+                rate = 1.8;
+            }
+            let votes1 = Math.round(votes * rate);
+            let votes2 = Math.round(votes * (1 - rate));
+            if (win) {
                 if (votes1 <= votes2) {
                     votes1 = votes2 + 1;
                 }
                 msg = resource.gettext('msg_elect_win') + "\n" + resource.format('msg_elect_result', {votes1: votes1, votes2: votes2});
             } else {
-                let votes1 = Math.round(votes * rate2);
-                let votes2 = Math.round(votes * (1 - rate2));
                 if (votes1 >= votes2) {
                     votes2 = votes1 + 1;
                 }
@@ -1577,11 +1681,13 @@
         popup.set_title('election_result');
         popup.set_text_content_raw(msg);
         view.draw_wallpaper(popup.get_canvas(), null, 'day', city.population);
-        view.draw_popup_window_picture(popup.get_canvas(), won ? 'election_win' : 'election_lose');
+        view.draw_popup_window_picture(popup.get_canvas(), win ? 'election_win' : 'election_lose');
 
         popup.open_delay(null, mode => {
             popup.close();
-            if (!won) {
+            if (win) {
+                document.getElementById('menu-election').style.display = 'none';
+            } else {
                 show_title_screen();
                 view.clear_view();
             }
@@ -1705,10 +1811,6 @@
             if (x >= 0 && x < city.map_size && y >= 0 && y < city.map_size) {
                 if ((city.tile_data[1 + x + (1 + y) * city.map_size_edge] & ~F_CENTER) !== M_AIRPORT) {
                     simulate.disaster_airplane_crash(x, y);
-                    if (x > 0 && y > 0) simulate.disaster_airplane_crash(x - 1, y - 1);
-                    if (x < city.map_size - 1 && y > 0) simulate.disaster_airplane_crash(x + 1, y - 1);
-                    if (x > 0 && y < city.map_size - 1) simulate.disaster_airplane_crash(x - 1, y + 1);
-                    if (x < city.map_size - 1 && y < city.map_size - 1) simulate.disaster_airplane_crash(x + 1, y + 1);
                     disaster_occur_message('airplane_crash');
                 }
             }
@@ -1912,12 +2014,15 @@
             if (earthquake_time_left === 0 && ufo_time_left === 0) {
                 switch (current_speed) {
                 case 'normal':
-                    update = city.timer_tick(simulate);
+                    update = city.timer_tick(simulate, tornado_time_left > 0 || monster_time_left > 0);
                     view.update_vehicle(view.airplane);
                     view.update_vehicle(view.helicopter);
                     view.update_vehicle(view.container_ship);
                     if (view.tornado.dir >= 0) {
                         tornado_move();
+                    }
+                    if (view.monster.dir >= 0) {
+                        monster_move();
                     }
                     if (view.train_ticks >= 0 && city.ticks % 20 === 0) {
                         train_next();
@@ -1949,6 +2054,14 @@
                 }
                 if (view.container_ship.d === 0 && simulate.ship_route.length > 0) {
                     ship_next();
+                }
+                if (monster_time_left > 0 && view.monster.d === 0) {
+                    monster_time_left--;
+                    if (monster_time_left > 0) {
+                        monster_next();
+                    } else {
+                        view.monster.dir = -1;
+                    }
                 }
                 if (current_speed !== 'pause') {
                     if (tornado_time_left > 0) {
@@ -2088,7 +2201,7 @@
             }
             view.disaster_alert(city.disaster_ticks);
         } else if (city.disaster_ticks >= 0) {
-            if (earthquake_time_left === 0 && tornado_time_left === 0) {
+            if (earthquake_time_left === 0 && tornado_time_left === 0 && monster_time_left === 0) {
                 view.disaster_alert(-1);
                 city.disaster_ticks = -1;
             } else {

@@ -3,8 +3,6 @@
 function View(quality)
 {
     const POPUP_PICTURE = {
-        x: -240,
-        y: -300,
 //        gift: '0.png',
 //        growth: '1.png',
 //        disaster: '2.png',
@@ -101,6 +99,9 @@ function View(quality)
     const INDEX_SHIP = 16;
     const INDEX_TORNADO_CORE = 24;
     const INDEX_TORNADO = 25;
+    const INDEX_MONSTER = 29;
+    const INDEX_MONSTER_FIRE = 41;
+    const INDEX_MONSTER_WATER = 45;
 
     const minimap_view_area = document.getElementById('minimap-view-area');
 
@@ -162,6 +163,12 @@ function View(quality)
         d: -1, dx: -1, dy: -1,
         scatter: [0, 0, 0, 0, 0, 0],
         spin: 0, dust: false,
+    };
+    this.monster = {
+        dir: -1,
+        x: -1, y: -1,
+        d: -1, dx: -1, dy: -1,
+        walk: 0, fire: false,
     };
     this.ufo_disaster = {
         dir: -1,
@@ -554,6 +561,13 @@ function View(quality)
         mip1.set_qtile(INDEX_JAM_1001 + 6, maptip.road_jam22_1001, null);
         mip1.set_qtile(INDEX_JAM_1001 + 7, maptip.road_jam23_1001, null);
 
+        mip1.set_qtile(INDEX_TRAIN + 0, maptip.train_0, null);
+        mip1.set_qtile(INDEX_TRAIN + 1, maptip.train_1, null);
+        mip1.set_qtile(INDEX_TRAIN + 2, maptip.train_2, null);
+        mip1.set_qtile(INDEX_TRAIN + 3, maptip.train_3, null);
+        mip1.set_qtile(INDEX_TRAIN + 4, maptip.train_4, null);
+        mip1.set_qtile(INDEX_TRAIN + 5, maptip.train_5, null);
+
 
         mip3.set_offset_y(4, 0, 4);
         mip3.clear();
@@ -689,18 +703,29 @@ function View(quality)
         mipt.set_qtile(INDEX_SHIP + 6, maptip.ship_6, null);
         mipt.set_qtile(INDEX_SHIP + 7, maptip.ship_7, null);
 
-        mip1.set_qtile(INDEX_TRAIN + 0, maptip.train_0, null);
-        mip1.set_qtile(INDEX_TRAIN + 1, maptip.train_1, null);
-        mip1.set_qtile(INDEX_TRAIN + 2, maptip.train_2, null);
-        mip1.set_qtile(INDEX_TRAIN + 3, maptip.train_3, null);
-        mip1.set_qtile(INDEX_TRAIN + 4, maptip.train_4, null);
-        mip1.set_qtile(INDEX_TRAIN + 5, maptip.train_5, null);
-
         mipt.set_qtile(INDEX_TORNADO_CORE, maptip.tornado_core, null);
         mipt.set_qtile(INDEX_TORNADO + 0, maptip.tornado_0, null);
         mipt.set_qtile(INDEX_TORNADO + 1, maptip.tornado_1, null);
         mipt.set_qtile(INDEX_TORNADO + 2, maptip.tornado_2, null);
         mipt.set_qtile(INDEX_TORNADO + 3, maptip.tornado_3, null);
+
+        mipt.set_qtile(INDEX_MONSTER +  0, maptip.monster_00, null);
+        mipt.set_qtile(INDEX_MONSTER +  1, maptip.monster_01, null);
+        mipt.set_qtile(INDEX_MONSTER +  2, maptip.monster_02, null);
+        mipt.set_qtile(INDEX_MONSTER +  3, maptip.monster_03, null);
+        mipt.set_qtile(INDEX_MONSTER +  4, maptip.monster_10, null);
+        mipt.set_qtile(INDEX_MONSTER +  5, maptip.monster_11, null);
+        mipt.set_qtile(INDEX_MONSTER +  6, maptip.monster_12, null);
+        mipt.set_qtile(INDEX_MONSTER +  7, maptip.monster_13, null);
+        mipt.set_qtile(INDEX_MONSTER +  8, maptip.monster_20, null);
+        mipt.set_qtile(INDEX_MONSTER +  9, maptip.monster_21, null);
+        mipt.set_qtile(INDEX_MONSTER + 10, maptip.monster_22, null);
+        mipt.set_qtile(INDEX_MONSTER + 11, maptip.monster_23, null);
+        mipt.set_qtile(INDEX_MONSTER_FIRE +  0, maptip.monster_b0, null);
+        mipt.set_qtile(INDEX_MONSTER_FIRE +  1, maptip.monster_b1, null);
+        mipt.set_qtile(INDEX_MONSTER_FIRE +  2, maptip.monster_b2, null);
+        mipt.set_qtile(INDEX_MONSTER_FIRE +  3, maptip.monster_b3, null);
+        mipt.set_qtile(INDEX_MONSTER_WATER, maptip.monster_water, null);
     };
     this.draw_maptip = function(ctx, idx, x, y) {
         switch (idx & MASK_TILESIZE) {
@@ -1425,7 +1450,10 @@ function View(quality)
         let blink = (ticks % 10) < 5;
         let car_anim = Math.floor(ticks / 5);
 
-        draw_ship(this, sq);
+        if (this.monster.dir >= 0 && this.monster.water) {
+            draw_monster(this.monster, sq);
+        }
+        draw_object(this.container_ship, INDEX_SHIP, sq);
 
         for (let i = 0; i < (map_size - 1); i++) {
             for (let j = 0; j <= i; j++) {
@@ -1479,7 +1507,7 @@ function View(quality)
             let y = (this.tornado.x + this.tornado.y);
             let spin = this.tornado.spin;
             main_view_ctx.globalAlpha = 0.75;
-            for (let z = 0; z < 2; z++) {
+            for (let z = 1; z < 3; z++) {
                 mipt.draw(main_view_ctx, INDEX_TORNADO_CORE, x * sq + current_scroll_x + this.tornado.scatter[z], (y - z * 16) * sq + current_scroll_y);
                 if (this.tornado.dust) {
                     mipt.draw(main_view_ctx, INDEX_TORNADO + spin, x * sq + current_scroll_x + this.tornado.scatter[z], (y - z * 16) * sq + current_scroll_y);
@@ -1522,13 +1550,16 @@ function View(quality)
                 }
             }
         }
+        if (this.monster.dir >= 0 && !this.monster.water) {
+            draw_monster(this.monster, sq);
+        }
 
         if (this.tornado.dir >= 0) {
             let x = (this.tornado.x - this.tornado.y) * 2;
             let y = (this.tornado.x + this.tornado.y);
             let spin = this.tornado.spin;
             main_view_ctx.globalAlpha = 0.75;
-            for (let z = 2; z < 4; z++) {
+            for (let z = 3; z < 5; z++) {
                 mipt.draw(main_view_ctx, INDEX_TORNADO_CORE, x * sq + current_scroll_x + this.tornado.scatter[z], (y - z * 16) * sq + current_scroll_y);
                 if (this.tornado.dust) {
                     mipt.draw(main_view_ctx, INDEX_TORNADO + spin, x * sq + current_scroll_x + this.tornado.scatter[z], (y - z * 16) * sq + current_scroll_y);
@@ -1571,16 +1602,8 @@ function View(quality)
                 }
             }
         }
-        if (this.helicopter.dir >= 0) {
-            let x = (this.helicopter.x - this.helicopter.y) * 2;
-            let y = (this.helicopter.x + this.helicopter.y) - this.helicopter.z * 2;
-            mipt.draw(main_view_ctx, INDEX_HELI + this.helicopter.dir, x * sq + current_scroll_x, y * sq + current_scroll_y);
-        }
-        if (this.airplane.dir >= 0) {
-            let x = (this.airplane.x - this.airplane.y) * 2;
-            let y = (this.airplane.x + this.airplane.y) - this.airplane.z * 2;
-            mipt.draw(main_view_ctx, INDEX_PLANE + this.airplane.dir, x * sq + current_scroll_x, y * sq + current_scroll_y);
-        }
+        draw_object(this.helicopter, INDEX_HELI, sq);
+        draw_object(this.airplane, INDEX_PLANE, sq);
 
         if (this.cursor_x >= 0) {
             draw_cursor(this, sq);
@@ -1601,13 +1624,33 @@ function View(quality)
             }
         }
     }
-    function draw_ship(self, sq) {
-        let s = self.container_ship;
-        if (s.dir >= 0) {
-            let x = (s.x - s.y) * 2;
-            let y = (s.x + s.y) - s.z * 2;
-            mipt.draw(main_view_ctx, INDEX_SHIP + s.dir, x * sq + current_scroll_x, y * sq + current_scroll_y);
+    function draw_object(obj, index, sq) {
+        if (obj.dir >= 0) {
+            let x = (obj.x - obj.y) * 2;
+            let y = (obj.x + obj.y) - obj.z * 2;
+            mipt.draw(main_view_ctx, index + obj.dir, x * sq + current_scroll_x, y * sq + current_scroll_y);
         }
+    }
+    function draw_monster(m, sq) {
+        let idx;
+        let x = (m.x - m.y) * 2;
+        let y = m.x + m.y - 16;
+
+        if (m.water) {
+            idx = INDEX_MONSTER_WATER;
+        } else {
+            if (m.fire) {
+                idx = INDEX_MONSTER_FIRE;
+            } else if (m.walk === 1) {
+                idx = INDEX_MONSTER + 4;
+            } else if (m.walk === 3) {
+                idx = INDEX_MONSTER + 8;
+            } else {
+                idx = INDEX_MONSTER;
+            }
+            idx += m.dir >> 1;
+        }
+        mipt.draw(main_view_ctx, idx, x * sq + current_scroll_x, y * sq + current_scroll_y);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1952,6 +1995,7 @@ function View(quality)
         vehicle_rotate_cw(this, this.helicopter);
         vehicle_rotate_cw(this, this.container_ship);
         vehicle_rotate_cw(this, this.tornado);
+        vehicle_rotate_cw(this, this.monster);
         if (this.train_ticks >= 0) {
             for (let i = 0; i < this.train.length; i++) {
                 let t = this.train[i];
@@ -1977,8 +2021,9 @@ function View(quality)
         current_scroll_y = -Math.floor(offset_x / 2) + view_center_y - map_center_y;
         vehicle_rotate_ccw(this, this.airplane);
         vehicle_rotate_ccw(this, this.helicopter);
-        vehicle_rotate_cw(this, this.container_ship);
+        vehicle_rotate_ccw(this, this.container_ship);
         vehicle_rotate_ccw(this, this.tornado);
+        vehicle_rotate_ccw(this, this.monster);
         if (this.train_ticks >= 0) {
             for (let i = 0; i < this.train.length; i++) {
                 let t = this.train[i];
@@ -2192,10 +2237,8 @@ function View(quality)
                 let ctx = cvs.getContext('2d');
                 let width = img.width;
                 let height = img.height;
-                let x = POPUP_PICTURE.x * quality;
-                let y = POPUP_PICTURE.y * quality;
-                if (x < 0) { x += 640 * quality; }
-                if (y < 0) { y += 480 * quality; }
+                let x = (640 - width) * quality;
+                let y = (480 - height) * quality;
                 ctx.drawImage(img, 0, 0, width, height, x, y, width * quality, height * quality);
             });
             img.setAttribute('src', 'images/' + POPUP_PICTURE[type]);
@@ -2207,10 +2250,16 @@ function View(quality)
     };
     this.show_message_ticker_raw = function(msg, priority) {
         if (!message_ticker_priority || priority) {
-            message_ticker_priority = priority;
-            message_ticker_count = 50;
-            document.getElementById('message-ticker').style.display = 'block';
-            document.getElementById('message-ticker-content').textContent = msg;
+            if (msg != null) {
+                message_ticker_priority = priority;
+                message_ticker_count = 50;
+                document.getElementById('message-ticker').style.display = 'block';
+                document.getElementById('message-ticker-content').textContent = msg;
+            } else {
+                message_ticker_count = 0;
+                message_ticker_priority = false;
+                document.getElementById('message-ticker').style.display = '';
+            }
         }
     };
     this.message_ticker_tick = function() {

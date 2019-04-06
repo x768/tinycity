@@ -1998,7 +1998,7 @@ function City(source) {
         array_rotate_ccw(this.tile_prev_pops, map_size8);
         array_rotate_ccw(this.tile_grow_pops, map_size8);
     };
-    this.timer_tick_sub = function(simulate) {
+    this.timer_tick_sub = function(simulate, exist_mob) {
         let updated = null;
         if (this.ticks % 100 === 10) {
             simulate.traffic();
@@ -2034,7 +2034,7 @@ function City(source) {
             updated = 'pops_growth';
         }
         if (this.disaster_occurs && (this.disaster_ticks % 20) === 15) {
-            simulate.update_disaster();
+            simulate.update_disaster(exist_mob);
         }
         if (this.ticks % 100 === 80) {
             updated = 'disaster';
@@ -2066,7 +2066,7 @@ function City(source) {
         }
         return updated;
     };
-    this.timer_tick = function(simulate) {
+    this.timer_tick = function(simulate, exist_mob) {
         if (this.disaster_ticks >= 0) {
             this.disaster_ticks++;
             if (this.ruleset === 'micropolis') {
@@ -2075,11 +2075,11 @@ function City(source) {
         } else {
             this.ticks++;
         }
-        return this.timer_tick_sub(simulate);
+        return this.timer_tick_sub(simulate, exist_mob);
     };
     this.timer_tick_fast = function(simulate) {
         this.ticks = Math.floor((this.ticks + 10) / 10) * 10;
-        return this.timer_tick_sub(simulate);
+        return this.timer_tick_sub(simulate, false);
     };
     this.game_start = function(simulate) {
         this.update_power_grid();

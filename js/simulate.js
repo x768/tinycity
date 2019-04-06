@@ -29,13 +29,13 @@ function Simulate() {
     let ticks3 = 0;
     let ticks4 = 0;
     let house_pos = null;
-    let barycenter_x;
-    let barycenter_y;
     let map_edge_base = null;
     let map_edge_diff = null;
     let pos_dir = null;
     let flood_time_left = 0;
 
+    this.barycenter_x = 0;
+    this.barycenter_y = 0;
     this.airport_active_x = -1;
     this.airport_active_y = -1;
     this.airplane_departs = false;
@@ -55,8 +55,8 @@ function Simulate() {
         map_size_edge = city.map_size_edge;
         map_size2 = city.map_size2;
         // initial center position
-        barycenter_x = map_size2 >> 1;
-        barycenter_y = map_size2 >> 1;
+        this.barycenter_x = map_size2 >> 1;
+        this.barycenter_y = map_size2 >> 1;
 
         tile_r_zone = new Uint8Array(map_size_edge * map_size_edge);
         tile_c_zone = new Uint8Array(map_size_edge * map_size_edge);
@@ -769,8 +769,8 @@ function Simulate() {
         city.r_zone_pops = 0;
         city.c_zone_pops = 0;
         city.i_zone_pops = 0;
-        barycenter_x = 0;
-        barycenter_y = 0;
+        this.barycenter_x = 0;
+        this.barycenter_y = 0;
 
         for (let y = 0; y < map_size; y++) {
             for (let x = 0; x < map_size; x++) {
@@ -800,8 +800,8 @@ function Simulate() {
                         city.r_zone_pops += city.tile_sub[pos] * 160;
                     }
                     city.r_zone_count++;
-                    barycenter_x += x;
-                    barycenter_y += y;
+                    this.barycenter_x += x;
+                    this.barycenter_y += y;
                     rci_cnt++;
                     break;
                 case M_HOSPITAL:
@@ -827,8 +827,8 @@ function Simulate() {
                     }
                     city.c_zone_pops += city.tile_sub[pos] * 160;
                     city.c_zone_count++;
-                    barycenter_x += x;
-                    barycenter_y += y;
+                    this.barycenter_x += x;
+                    this.barycenter_y += y;
                     rci_cnt++;
                     break;
                 case M_I_ZONE | F_CENTER:
@@ -850,8 +850,8 @@ function Simulate() {
                     }
                     city.i_zone_pops += city.tile_sub[pos] * 160;
                     city.i_zone_count++;
-                    barycenter_x += x;
-                    barycenter_y += y;
+                    this.barycenter_x += x;
+                    this.barycenter_y += y;
                     rci_cnt++;
                     break;
                 }
@@ -859,11 +859,11 @@ function Simulate() {
         }
         city.population = city.r_zone_pops + city.c_zone_pops + city.i_zone_pops;
         if (rci_cnt > 0) {
-            barycenter_x = Math.floor(barycenter_x / rci_cnt / 2);
-            barycenter_y = Math.floor(barycenter_y / rci_cnt / 2);
+            this.barycenter_x = Math.floor(this.barycenter_x / rci_cnt / 2);
+            this.barycenter_y = Math.floor(this.barycenter_y / rci_cnt / 2);
         } else {
-            barycenter_x = map_size2 >> 1;
-            barycenter_y = map_size2 >> 1;
+            this.barycenter_x = map_size2 >> 1;
+            this.barycenter_y = map_size2 >> 1;
         }
     };
     function diffusion_sub(tile, cx, cy, level, diff) {
@@ -979,14 +979,6 @@ function Simulate() {
             tile[i] = v;
         }
     }
-    function diffusion_limit_buildings(tile) {
-        let n = map_size2 * map_size2;
-        for (let i = 0; i < n; i++) {
-            if ((tile_land_v[i] & V_BUILD) === 0) {
-                tile[i] = 0;
-            }
-        }
-    }
     this.pollution_population = function() {
         city.tile_pollution.fill(0);
         city.tile_population.fill(0);
@@ -1021,17 +1013,17 @@ function Simulate() {
                 case M_C_ZONE | F_CENTER:
                     {
                         let lv = city.tile_sub[pos];
-                        diffusion_sub(city.tile_population, x, y, lv * 10, 4);
+                        diffusion_sub(city.tile_population, x, y, lv * 16, 4);
                     }
                     break;
                 case M_R_ZONE:
                     if (city.tile_sub[pos] > 0) {
-                        diffusion_sub(city.tile_population, x, y, 2, 4);
+                        diffusion_sub(city.tile_population, x, y, 4, 4);
                     }
                     break;
                 case M_HOSPITAL:
                 case M_SCHOOL:
-                    diffusion_sub(city.tile_population, x, y, 10, 4);
+                    diffusion_sub(city.tile_population, x, y, 16, 4);
                     break;
                 case M_COAL_PWR | F_CENTER:
                     diffusion_sub(city.tile_pollution, x, y, 64, 3);
@@ -1048,7 +1040,6 @@ function Simulate() {
                 }
             }
         }
-        diffusion_limit_buildings(city.tile_population);
     };
     function set_sea_area() {
         tile_tmp.fill(0);
@@ -1335,13 +1326,15 @@ function Simulate() {
 
         let size = map_size2 * map_size2;
         for (let i = 0; i < size; i++) {
-            let c = city.tile_population[i] - city.tile_police_d[i];
-            if (city.tile_land_value[i] > 64) {
-                c -= city.tile_land_value[i] - 64;
+            if ((tile_land_v[i] & V_BUILD) !== 0) {
+                let c = city.tile_population[i] - city.tile_police_d[i];
+                if (city.tile_land_value[i] > 64) {
+                    c -= city.tile_land_value[i] - 64;
+                }
+                if (c < 0) c = 0;
+                city.tile_crime[i] = c;
+                crime_total += c;
             }
-            if (c < 0) c = 0;
-            city.tile_crime[i] = c;
-            crime_total += c;
         }
     };
     this.land_value = function() {
@@ -1393,7 +1386,7 @@ function Simulate() {
                         c -= city.tile_crime[i] - 32;
                     }
 
-                    let d = Math.floor(64 * ((map_size2 >> 1) - Math.abs(x - barycenter_x) - Math.abs(y - barycenter_y)) / map_size2);
+                    let d = Math.floor(64 * ((map_size2 >> 1) - Math.abs(x - this.barycenter_x) - Math.abs(y - this.barycenter_y)) / map_size2);
                     if (d < 0) {
                         d = 0;
                     }
@@ -1714,7 +1707,7 @@ function Simulate() {
         city.calculate_power_grid_required = true;
         city.update_power_grid_required = true;
     };
-    this.disaster_tornado = function(x, y) {
+    this.disaster_destroy = function(x, y) {
         let pos = 1 + x + (1 + y) * map_size_edge;
         let t = city.tile_data[pos];
         if ((t & M_LAND) !== 0) {
@@ -1736,8 +1729,7 @@ function Simulate() {
             return false;
         }
     };
-    this.disaster_airplane_crash = function(x, y) {
-        let pos = 1 + x + (1 + y) * map_size_edge;
+    function put_fire_1(x, y, pos) {
         let t = city.tile_data[pos];
         if ((t & M_LAND) !== 0) {
             if ((t & 0x3F00) !== 0) {
@@ -1750,11 +1742,42 @@ function Simulate() {
                 }
                 city.tile_fire[pos] |= MF_FIRE;
             }
-            city.disaster_occurs = true;
-            city.disaster_ticks = 0;
-            city.calculate_power_grid_required = true;
-            city.update_power_grid_required = true;
         }
+    }
+    this.disaster_monster_fire = function(cx, cy, d) {
+        let dx = (d === 1 ? -1 : d === 3 ? 1 : 0);
+        let dy = (d === 0 ? 1 : d === 2 ? -1 : 0);
+
+        for (let i = 1; i < 5; i++) {
+            for (let j = -i + 1; j < i; j++) {
+                let x = cx + dx * (i + 1) + dy * j;
+                let y = cy + dy * (i + 1) - dx * j;
+                if (x >= 1 && x < map_size_edge - 1 && y >= 1 && y < map_size_edge - 1) {
+                    let pos = 1 + x + (1 + y) * map_size_edge;
+                    put_fire_1(x, y, pos);
+                }
+            }
+        }
+
+        city.calculate_power_grid_required = true;
+        city.update_power_grid_required = true;
+    };
+    this.disaster_airplane_crash = function(x, y) {
+        let pos = 1 + x + (1 + y) * map_size_edge;
+        put_fire_1(x, y, pos);
+        if (x > 0 && y > 0)
+            put_fire_1(x - 1, y - 1, pos - map_size_edge - 1);
+        if (x < city.map_size - 1 && y > 0)
+            put_fire_1(x + 1, y - 1, pos - map_size_edge + 1);
+        if (x > 0 && y < city.map_size - 1)
+            put_fire_1(x - 1, y + 1, pos + map_size_edge - 1);
+        if (x < city.map_size - 1 && y < city.map_size - 1)
+            put_fire_1(x + 1, y + 1, pos + map_size_edge + 1);
+
+        city.disaster_occurs = true;
+        city.disaster_ticks = 0;
+        city.calculate_power_grid_required = true;
+        city.update_power_grid_required = true;
     };
     this.disaster_flood = function() {
         let map_size_1 = map_size - 1;
@@ -1836,7 +1859,7 @@ function Simulate() {
         }
         return r < count;
     }
-    this.update_disaster = function() {
+    this.update_disaster = function(exist_mob) {
         // spreading fire and flood
         for (let y = 0; y < map_size; y++) {
             for (let x = 0; x < map_size; x++) {
@@ -1938,7 +1961,7 @@ function Simulate() {
                 }
             }
         }
-        if (exist) {
+        if (exist || exist_mob) {
             if (flood_time_left > 0) {
                 flood_time_left--;
             }
