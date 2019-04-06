@@ -4,11 +4,8 @@ TinyCity is a city building game based on SimCity(1989).
 
 You can choose "Micropolis" ruleset which like SNES version of SimCity® and "TinyCity" ruleset which based on SimCity but diffecent.
 
-## How to play
-
-Open tinycity.html in your browser such as Firefox, Chrome or Safari.
-
-Help file (docs/help.en.html) not translated yet.
+TinyCity works in your browser such as Firefox, Chrome or Safari.
+Or download local PC and open index.html.
 
 # TinyCityとは
 
@@ -16,12 +13,12 @@ TinyCityは、初代シムシティを元にした街作りゲームです。
 
 スーパーファミコン版のシムシティーのルールを元にした"Micropolis"と、ルールを変更した"TinyCity"が選べます。
 
-## あそびかた
+Firefox、Chrome、Safariなどのブラウザで動作します。
+ローカルでもindex.htmlを開けば動作します。
 
-tinycity.htmlをブラウザ（Firefox、Chrome）で開いてください。
+# Demo
 
-詳しくは、docs/help.ja.htmlをご覧ください。
-
+https://x768.sakura.ne.jp/tinycity/
 
 # Gallery
 
