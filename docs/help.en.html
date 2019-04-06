@@ -96,94 +96,94 @@
 </ul>
 </div>
 
-<h2>地形生成</h2>
+<h2>Generate terraion</h2>
 <ul>
-<li>河川：川または枝分かれした川、池が複数のマップ。</li>
-<li>海岸：北側が海に面したマップ。川または池が配置される。</li>
-<li>湖：中心に大きい池、周囲に小さい池が配置される。陸地が最も多い。</li>
-<li>島：四方を海に囲まれたマップ。小さい池が配置される。陸地が最も小さい。</li>
+<li>River: 川または枝分かれした川、池が複数のマップ。</li>
+<li>Coast: 北側が海に面したマップ。川または池が配置される。</li>
+<li>Lake: 中心に大きい池、周囲に小さい池が配置される。陸地が最も多い。</li>
+<li>Island: 四方を海に囲まれたマップ。小さい池が配置される。陸地が最も小さい。</li>
 </ul>
 
 <h2>街の命名</h2>
 <p>街の名前を決めます。一度決めると基本的には変更できません。</p>
 
-<h2>難易度</h2>
+<h2>Difficulty</h2>
 <table>
-<tr><th>難易度</th><th>初期資金</th><th>維持費</th><th>災害</th></tr>
-<tr><td>クリエイティブ</td><td>∞</td><td>低い</td><td>なし</td></tr>
-<tr><td>ピースフル</td><td>$20000</td><td>低い</td><td>なし</td></tr>
-<tr><td>初級</td><td>$20000</td><td>低い</td><td>少ない</td></tr>
-<tr><td>中級</td><td>$10000</td><td>高い</td><td>少ない</td></tr>
-<tr><td>上級</td><td>$5000</td><td>高い</td><td>多い</td></tr>
+<tr><th>Difficulty</th><th>Funds</th><th>Maintainance costs</th><th>Disaster</th></tr>
+<tr><td>Creative</td><td>∞</td><td>Cheap</td><td>None</td></tr>
+<tr><td>Peaceful</td><td>$20000</td><td>Cheap</td><td>None</td></tr>
+<tr><td>Novice</td><td>$20000</td><td>Cheap</td><td>Rare</td></tr>
+<tr><td>Expert</td><td>$10000</td><td>Expencive</td><td>Rare</td></tr>
+<tr><td>Master</td><td>$5000</td><td>Expencive</td><td>Frequent</td></tr>
 </table>
 
-<h1>ファイルからロード</h1>
+<h1>Load from the file</h1>
 <p>過去にセーブした時点から始めることができます。点線の枠内にファイルをドロップするか、クリックしてファイルを選択してください。</p>
 
-<h1>設定</h1>
-<h2>自動整地</h2>
+<h1>Option</h1>
+<h2>Auto bulldoze</h2>
 <p>瓦礫、樹木を自動的に整地します。3x3以上の建築物は電線も自動的に整地します。</p>
 
-<h2>ポップアップウインドウ</h2>
+<h2>Popup window</h2>
 <p>街のレベルアップ、プレゼント、災害発生時にポップアップウインドウを出します。OFFにすると、遊園地・カジノの選択では自動的に遊園地が選択されます。</p>
 
-<h2 class="not-implemented">効果音</h2>
+<h2 class="not-implemented">Sound effect</h2>
 <p class="not-implemented">効果音のON/OFFを設定します。</p>
 
-<h2>色覚バリアフリー</h2>
+<h2>Color barrier-free</h2>
 <p>マップなどを、明度で区別できるような配色にします。</p>
 
-<h1>建築物</h1>
+<h1>Buildings</h1>
 <p>※橋は2倍です。中級・上級は1.5倍です。</p>
 <h2>通常の建築物</h2>
 <table>
-<tr><th>名称</th><th>建築費</th><th>収入/維持費</th><th>大きさ</th><th>説明</th></tr>
-<tr><td>(調査)</td><td>-</td><td>-</td><td>-</td><td>指定したタイル(建築物)の情報を取得します。</td></tr>
-<tr><td>整地</td><td>$1</td><td>-</td><td>1x1</td><td>1x1の建築物、樹木、瓦礫等を平地にします。<br>建物の中心(4x4,6x6の場合は少し上)を整地すると瓦礫になります。<br>橋はすべて撤去します。<br>1マスあたり$1必要です。</td></tr>
-<tr><td>道路</td><td>$10</td><td>$-0.75※</td><td>1x1</td><td>RCI地区と競技場、港、空港、駅を接続します。<br>水域では橋になり、2倍の金額になります。</td></tr>
-<tr><td>線路</td><td><span class="micropolis">$20</span><span class="tinycity">$40</span></td><td>$-1.25※</td><td>1x1</td><td><span class="tinycity">駅同士を結びます。</span><span class="micropolis">道路と同じ役割ですが、渋滞が発生しません。</span><br>水域では橋になり、2倍の金額になります。</td></tr>
-<tr><td>電線</td><td><span class="micropolis">$5</span><span class="tinycity">$2</span></td><td>-</td><td>1x1</td><td>発電所と建築物を結んで電力を供給します。電線も電力を消費します。<br>水域では2倍の金額になります。</td></tr>
-<tr><td>樹木</td><td><span class="micropolis">$10</span><span class="tinycity">$20</span></td><td>-</td><td>1x1</td><td>周囲の地価を上げます。また、工業地区の公害を緩和します。</td></tr>
-<tr><td>住宅地</td><td>$100</td><td>-</td><td>3x3</td><td>住宅が建ちます。商業地と接続している必要があります。</td></tr>
-<tr><td>商業地</td><td>$100</td><td>-</td><td>3x3</td><td>商店やオフィスビルが建ちます。住宅地と接続している必要があります。</td></tr>
-<tr><td>工業地</td><td>$100</td><td>-</td><td>3x3</td><td>工場が建ちます。住宅地と接続している必要があります。</td></tr>
-<tr class="tinycity"><td>駅</td><td>$300</td><td>-</td><td>3x3</td><td>周囲の渋滞が緩和されます。駅同士を線路で接続する必要があります。</td></tr>
-<tr><td>警察署</td><td>$500</td><td><span class="micropolis">$-100</span><span class="tinycity">$-120</span></td><td>3x3</td><td>周囲の犯罪発生率を抑えます。</td></tr>
-<tr><td>消防署</td><td>$500</td><td><span class="micropolis">$-100</span><span class="tinycity">$-120</span></td><td>3x3</td><td>周囲の火災発生率を抑え、火災の延焼を防ぎます。</td></tr>
-<tr><td>競技場</td><td>$3000</td><td>-</td><td>4x4</td><td>R地区の需要の制限を解除します。<br>住宅地と接続している必要があります。<br>サッカーと野球がありますが、効果は同じです。</td></tr>
-<tr><td>港</td><td><span class="micropolis">$5000</span><span class="tinycity">$3000</span></td><td>-</td><td>4x4</td><td>I地区の需要の制限を解除します。<br>工業地と接続している必要があります。<span class="tinycity"><br>水域に接している必要があります。</span></td></tr>
-<tr class="tinycity"><td>貨物駅</td><td>$3000</td><td>-</td><td>4x4</td><td>港と同じ効果です。線路がマップ最外周に繋がっている必要があります。</td></tr>
-<tr><td>空港</td><td>$10000</td><td>-</td><td>6x6</td><td>C地区の需要の制限を解除します。<br>商業地と接続している必要があります。</td></tr>
-<tr><td>石炭発電所</td><td>$3000</td><td>-</td><td>4x4</td><td><span class="tinycity">140MWの発電能力があります。</span><span class="micropolis">80MWの発電能力があります。</span></td></tr>
-<tr class="tinycity"><td>ガス発電所</td><td>$6000</td><td>-</td><td>4x4</td><td>100MWの発電能力があります。</td></tr>
-<tr class="micropolis"><td>原子力発電所</td><td>$5000</td><td>-</td><td>4x4</td><td>200MWの発電能力があります。上級ではメルトダウンを引き起こす可能性があります。</td></tr>
+<tr><th>Name</th><th>Cost</th><th>Income/Spends</th><th>Size</th><th>Discription</th></tr>
+<tr><td>(Inspect)</td><td>-</td><td>-</td><td>-</td><td>指定したタイル(建築物)の情報を取得します。</td></tr>
+<tr><td>Bulldoze</td><td>$1</td><td>-</td><td>1x1</td><td>1x1の建築物、樹木、瓦礫等を平地にします。<br>建物の中心(4x4,6x6の場合は少し上)を整地すると瓦礫になります。<br>橋はすべて撤去します。<br>1マスあたり$1必要です。</td></tr>
+<tr><td>Road</td><td>$10</td><td>$-0.75※</td><td>1x1</td><td>RCI地区と競技場、港、空港、駅を接続します。<br>水域では橋になり、2倍の金額になります。</td></tr>
+<tr><td>Railroad</td><td><span class="micropolis">$20</span><span class="tinycity">$40</span></td><td>$-1.25※</td><td>1x1</td><td><span class="tinycity">駅同士を結びます。</span><span class="micropolis">道路と同じ役割ですが、渋滞が発生しません。</span><br>水域では橋になり、2倍の金額になります。</td></tr>
+<tr><td>Power line</td><td><span class="micropolis">$5</span><span class="tinycity">$2</span></td><td>-</td><td>1x1</td><td>発電所と建築物を結んで電力を供給します。電線も電力を消費します。<br>水域では2倍の金額になります。</td></tr>
+<tr><td>Tree</td><td><span class="micropolis">$10</span><span class="tinycity">$20</span></td><td>-</td><td>1x1</td><td>周囲の地価を上げます。また、工業地区の公害を緩和します。</td></tr>
+<tr><td>Residential zone</td><td>$100</td><td>-</td><td>3x3</td><td>住宅が建ちます。商業地と接続している必要があります。</td></tr>
+<tr><td>Commercial zone</td><td>$100</td><td>-</td><td>3x3</td><td>商店やオフィスビルが建ちます。住宅地と接続している必要があります。</td></tr>
+<tr><td>Industrial zone</td><td>$100</td><td>-</td><td>3x3</td><td>工場が建ちます。住宅地と接続している必要があります。</td></tr>
+<tr class="tinycity"><td>Station</td><td>$300</td><td>-</td><td>3x3</td><td>周囲の渋滞が緩和されます。駅同士を線路で接続する必要があります。</td></tr>
+<tr><td>Police department</td><td>$500</td><td><span class="micropolis">$-100</span><span class="tinycity">$-120</span></td><td>3x3</td><td>周囲の犯罪発生率を抑えます。</td></tr>
+<tr><td>Fire department</td><td>$500</td><td><span class="micropolis">$-100</span><span class="tinycity">$-120</span></td><td>3x3</td><td>周囲の火災発生率を抑え、火災の延焼を防ぎます。</td></tr>
+<tr><td>Stadium</td><td>$3000</td><td>-</td><td>4x4</td><td>R地区の需要の制限を解除します。<br>住宅地と接続している必要があります。<br>サッカーと野球がありますが、効果は同じです。</td></tr>
+<tr><td>Port</td><td><span class="micropolis">$5000</span><span class="tinycity">$3000</span></td><td>-</td><td>4x4</td><td>I地区の需要の制限を解除します。<br>工業地と接続している必要があります。<span class="tinycity"><br>水域に接している必要があります。</span></td></tr>
+<tr class="tinycity"><td>Goods station</td><td>$3000</td><td>-</td><td>4x4</td><td>港と同じ効果です。線路がマップ最外周に繋がっている必要があります。</td></tr>
+<tr><td>Airport</td><td>$10000</td><td>-</td><td>6x6</td><td>C地区の需要の制限を解除します。<br>商業地と接続している必要があります。</td></tr>
+<tr><td>Coal power station</td><td>$3000</td><td>-</td><td>4x4</td><td><span class="tinycity">140MWの発電能力があります。</span><span class="micropolis">80MWの発電能力があります。</span></td></tr>
+<tr class="tinycity"><td>Gas power station</td><td>$6000</td><td>-</td><td>4x4</td><td>100MWの発電能力があります。</td></tr>
+<tr class="micropolis"><td>Nuclear power station</td><td>$5000</td><td>-</td><td>4x4</td><td>200MWの発電能力があります。上級ではメルトダウンを引き起こす可能性があります。</td></tr>
 </table>
-<h2>プレゼント</h2>
-<p>大きさは3x3、建築費は$100です。</p>
-<p><label><input type="checkbox" id="check-gift-list">表示する</label></p>
+<h2>Gift</h2>
+<p>Every gifts size are 3x3, costs $100.</p>
+<p><label><input type="checkbox" id="check-gift-list">Show list</label></p>
 <table id="gift-list">
-<tr><th>名称</th><th>条件</th><th>収入/維持費</th><th>説明</th></tr>
-<tr><td>市長の家</td><td>人口2000以上</td><td>-</td><td>周囲の地価を上げます。街の規模が大きくなるとグラフィックが変化します。</td></tr>
-<tr class="micropolis"><td>銀行</td><td>人口10000以上<br>資金$2000以下</td><td>-</td><td>$10000の融資を受けることができます。</td></tr>
-<tr><td>警察本部</td><td>警察署の数が6, 12, 18</td><td><span class="micropolis">$-100</span><span class="tinycity">$-120</span></td><td>通常の警察署より広範囲をカバーします。</td></tr>
-<tr><td>消防本部</td><td>消防署の数が6, 12, 18</td><td><span class="micropolis">$-100</span><span class="tinycity">$-120</span></td><td>通常の消防署より広範囲をカバーします。</td></tr>
-<tr class="not-implemented"><td>遊園地</td><td rowspan="2">道路が200, 300, 400<br>プレゼントが3, 6, 9(埋め立て以外)</td><td>-</td><td>周囲の地価を上げます。</td></tr>
-<tr class="not-implemented"><td>カジノ</td><td>$400</td><td>周囲の地価を上げます。周囲の犯罪発生率を上げます。</td></tr>
-<tr><td>ターミナル駅</td><td>線路が300, 600</td><td>$300</td><td><span class="tinycity">通常の駅と同じ効果があります。<br></span>周囲の地価を上げます。</td></tr>
-<tr class="not-implemented"><td>庭園</td><td>植林した樹木が200, 400, 600</td><td>-</td><td>周囲の地価を上げます。</td></tr>
-<tr class="not-implemented"><td>動物園</td><td>競技場(サッカーと野球2種)</td><td>$200</td><td>周囲の地価を上げます。</td></tr>
-<tr class="not-implemented"><td>博覧会</td><td>人口10000以上<br>空港と港or貨物駅</td><td>-</td><td>周囲の地価を上げます。</td></tr>
-<tr class="not-implemented"><td>図書館</td><td>学校が3, 6, 9</td><td>-</td><td>周囲の地価を上げます。</td></tr>
-<tr class="not-implemented"><td>風車</td><td>開発地が200, 400</td><td>-</td><td>周囲の地価を上げます。</td></tr>
-<tr class="not-implemented"><td>噴水</td><td>50年経過</td><td>-</td><td>周囲の地価を上げます。</td></tr>
-<tr class="not-implemented"><td>タワー</td><td>人口10万人以上</td><td>-</td><td>周囲の地価を上げます。</td></tr>
-<tr class="not-implemented"><td>モノリス</td><td>人口70万人以上</td><td>-</td><td>何も起こりません。</td></tr>
-<tr class="not-implemented"><td>オベリスク</td><td>選挙で再選(シナリオ)</td><td>-</td><td>周囲の地価を上げます。</td></tr>
-<tr><td>埋め立て</td><td>平地が150, 100, 50, 30</td><td>-</td><td>水域を平地にします。すでに陸地の場合は何もしません。</td></tr>
-<tr class="not-implemented"><td>城</td><td>(最初から建っている)</td><td>-</td><td>周囲の地価を上げます。</td></tr>
+<tr><th>Name</th><th>Condititon</th><th>Income/Spends</th><th>Discription</th></tr>
+<tr><td>Your house</td><td>人口2000以上</td><td>-</td><td>周囲の地価を上げます。街の規模が大きくなるとグラフィックが変化します。</td></tr>
+<tr class="micropolis"><td>Bank</td><td>人口10000以上<br>資金$2000以下</td><td>-</td><td>$10000の融資を受けることができます。</td></tr>
+<tr><td>Police Dep. Headquarters</td><td>警察署の数が6, 12, 18</td><td><span class="micropolis">$-100</span><span class="tinycity">$-120</span></td><td>通常の警察署より広範囲をカバーします。</td></tr>
+<tr><td>Fire Dep. Headquarters</td><td>消防署の数が6, 12, 18</td><td><span class="micropolis">$-100</span><span class="tinycity">$-120</span></td><td>通常の消防署より広範囲をカバーします。</td></tr>
+<tr class="not-implemented"><td>Amusement park</td><td rowspan="2">道路が200, 300, 400<br>プレゼントが3, 6, 9(埋め立て以外)</td><td>-</td><td>周囲の地価を上げます。</td></tr>
+<tr class="not-implemented"><td>Casino</td><td>$400</td><td>周囲の地価を上げます。周囲の犯罪発生率を上げます。</td></tr>
+<tr><td>Terminal station</td><td>線路が300, 600</td><td>$300</td><td><span class="tinycity">通常の駅と同じ効果があります。<br></span>周囲の地価を上げます。</td></tr>
+<tr class="not-implemented"><td>Garden</td><td>植林した樹木が200, 400, 600</td><td>-</td><td>周囲の地価を上げます。</td></tr>
+<tr class="not-implemented"><td>Zoo</td><td>競技場(サッカーと野球2種)</td><td>$200</td><td>周囲の地価を上げます。</td></tr>
+<tr class="not-implemented"><td>Exhibition center</td><td>人口10000以上<br>空港と港or貨物駅</td><td>-</td><td>周囲の地価を上げます。</td></tr>
+<tr class="not-implemented"><td>Library</td><td>学校が3, 6, 9</td><td>-</td><td>周囲の地価を上げます。</td></tr>
+<tr class="not-implemented"><td>Windmill</td><td>開発地が200, 400</td><td>-</td><td>周囲の地価を上げます。</td></tr>
+<tr class="not-implemented"><td>Fountain</td><td>50年経過</td><td>-</td><td>周囲の地価を上げます。</td></tr>
+<tr class="not-implemented"><td>Tower</td><td>人口10万人以上</td><td>-</td><td>周囲の地価を上げます。</td></tr>
+<tr class="not-implemented"><td>Monolith</td><td>人口70万人以上</td><td>-</td><td>何も起こりません。</td></tr>
+<tr class="not-implemented"><td>Obelisk</td><td>選挙で再選(シナリオ)</td><td>-</td><td>周囲の地価を上げます。</td></tr>
+<tr><td>Land fill</td><td>平地が150, 100, 50, 30</td><td>-</td><td>水域を平地にします。すでに陸地の場合は何もしません。</td></tr>
+<tr class="not-implemented"><td>Castle</td><td>(最初から建っている)</td><td>-</td><td>周囲の地価を上げます。</td></tr>
 </table>
 
-<h1>スピード</h1>
+<h1>Game Speed</h1>
 <table>
 <tr><th>
 <svg width="32" height="32">
@@ -197,24 +197,24 @@
 <rect x="0" y="0" width="32" height="32" style="fill:#ffffff"></rect>
 <path d="M6,6 l20,10 -20,10 z" style="fill:#000000"></path>
 </svg>
-</th><td>20秒で1ヶ月が経過します。</td></tr>
+</th><td>20 seconds each months.</td></tr>
 <tr><th>
 <svg width="32" height="32">
 <rect x="0" y="0" width="32" height="32" style="fill:#ffffff"></rect>
 <path d="M6,6 l10,10 -10,10 z" style="fill:#000000"></path>
 <path d="M16,6 l10,10 -10,10 z" style="fill:#000000"></path>
 </svg>
-</th><td>2秒で1ヶ月が経過します。災害発生中は選択できません。</td></tr>
+</th><td>2 seconds each months. 災害発生中は選択できません。</td></tr>
 </table>
 
-<h1>需要インジケーター</h1>
+<h1>Require Indicator</h1>
 <p>グラフが上に伸びるほど、RCI地区が発展しやすくなります。4ヶ月前のRCI地区の人口比率と現在の税率に基づいて計算されます。</p>
 <h2>R地区、C地区</h2>
 <p>需要と地価によって発展するかどうかが決まります。地価が最低の場合、需要が25%以上の場合発展し、0%以下の場合衰退します。地価が最高の場合、需要にかかわらず発展します。</p>
 <h2>I地区</h2>
 <p>需要によって発展するかどうかが決まります。需要が0%以上の場合発展し、-12.5%以下の場合衰退します。</p>
 
-<h1>RCI地区の発展</h1>
+<h1>Development of RCI</h1>
 <table>
 <tr><th>-</th><th>Level1</th><th>Level2</th><th>Level3</th><th>Level4</th><th>Level5</th><th>Top</th></tr>
 <tr><th>R</th><td>20x8</td><td>320</td><td>480</td><td>640</td><td>800</td><td>960x2</td></tr>
@@ -232,155 +232,155 @@
 <p class="micropolis">※道路または線路で一定距離以内で接続されていること。</p>
 <p class="tinycity">※道路で一定距離以内で接続されているか、駅で接続されていること。</p>
 
-<h1>ファイル</h1>
-<h2>ファイルに保存</h2>
+<h1>File</h1>
+<h2>Save to the File</h2>
 <p>現在の街の状態をファイルに保存します。ファイルを読み込むと再開できます。</p>
-<h2>タイトル画面へ</h2>
-<p>現在の街を破棄してタイトル画面に戻ります。</p>
-<h2>終了</h2>
+<h2>Restart game</h2>
+<p>Discard current city and show title screen.</p>
+<h2>Quit</h2>
 <p>終了画面が表示されます。</p>
 
-<h1>災害</h1>
+<h1>Disaster</h1>
 <p class="tinycity">災害発生中は建設、整地を行えません。災害発生中は火災、洪水、MOB等以外の時間の流れが止まります。</p>
 <table>
-<tr><th>名称</th><th>条件</th><th>説明</th></tr>
-<tr><td>火災</td><td>初級以上<br>3x3以上の建築物から発生</td><td>隣接する建築物、樹木に引火します。<span class="tinycity"><br>道路、線路、電線は燃えません。</span></td></tr>
-<tr><td>洪水</td><td>初級以上<br>水域に隣接した陸地から発生</td><td>水域の近くに広がり、建築物を瓦礫に変えます。</td></tr>
-<tr><td>竜巻</td><td>初級以上</td><td>通過した箇所の建築物を瓦礫に変えます。<br>(上級)病院・学校を潰すと発生します。</td></tr>
-<tr><td>地震</td><td>初級以上</td><td>建築物破壊、火災が同時に発生します。</td></tr>
-<tr class="not-implemented"><td>船難破</td><td>上級<br>港が稼働している</td><td>船がぶつかったところが火災、橋が壊れます。</td></tr>
-<tr><td>飛行機墜落</td><td>上級<br>空港が稼働している</td><td>墜落地点周囲で火災が発生します。</td></tr>
-<tr class="micropolis not-implemented"><td>メルトダウン</td><td>上級<br>原子力発電所</td><td>周囲30マス程度が放射能で汚染されます。</td></tr>
-<tr class="not-implemented"><td>モンスター</td><td>上級</td><td>通過した箇所の建築物が火災または破壊されます。</td></tr>
-<tr class="not-implemented"><td>UFO</td><td>上級</td><td>離れた数カ所で、火災、植林、洪水、野球場、放射能汚染の<br>いずれかの現象が起こります。</td></tr>
+<tr><th>Name</th><th>Condition</th><th>Discription</th></tr>
+<tr><td>Fire</td><td>Novice or above<br>3x3以上の建築物から発生</td><td>隣接する建築物、樹木に引火します。<span class="tinycity"><br>道路、線路、電線は燃えません。</span></td></tr>
+<tr><td>Flood</td><td>Novice or above<br>水域に隣接した陸地から発生</td><td>水域の近くに広がり、建築物を瓦礫に変えます。</td></tr>
+<tr><td>Tornado</td><td>Novice or above</td><td>通過した箇所の建築物を瓦礫に変えます。<br>(上級)病院・学校を潰すと発生します。</td></tr>
+<tr><td>Earthquake</td><td>Novice or above</td><td>建築物破壊、火災が同時に発生します。</td></tr>
+<tr class="not-implemented"><td>船難破</td><td>Master<br>港が稼働している</td><td>船がぶつかったところが火災、橋が壊れます。</td></tr>
+<tr><td>Plane crush</td><td>Master<br>空港が稼働している</td><td>墜落地点周囲で火災が発生します。</td></tr>
+<tr class="micropolis not-implemented"><td>Meltdown</td><td>Master<br>原子力発電所</td><td>周囲30マス程度が放射能で汚染されます。</td></tr>
+<tr class="not-implemented"><td>Monster</td><td>Master</td><td>通過した箇所の建築物が火災または破壊されます。</td></tr>
+<tr class="not-implemented"><td>UFO</td><td>Master</td><td>離れた数カ所で、火災、植林、洪水、野球場、放射能汚染の<br>いずれかの現象が起こります。</td></tr>
 </table>
 
-<h1>予算</h1>
+<h1>Budget</h1>
 <p>予算は、予算メニューから表示される画面と、年末に表示される画面があります。資金に反映されるのは年末です。</p>
 <p class="tinycity">すでに費用が発生しているため、年末に割当率を変更しても資金には反映されません。</p>
 <p class="micropolis">年末に割当率を変更すると、すぐに資金に反映されます。</p>
-<h2>税金</h2>
+<h2>Taxes</h2>
 <p>税率を設定します。設定した税率は翌月に反映されます。表示されている金額は年末の予想です。</p>
-<h2>特別収入</h2>
+<h2>Special income</h2>
 <p>プレゼントによる収入です。表示されている金額は年末の予想です。</p>
-<h2>交通維持費</h2>
+<h2>Traffic funds</h2>
 <p>道路、鉄道の維持費への割り当てを設定します。予算を減らすと道路で移動できる距離が短くなったり、鉄道の利用者が減ります。表示されている金額は年末の予想です。</p>
 <p class="tinycity">設定した割当率は翌月に反映されます。</p>
 <p class="micropolis">設定した割当率は翌年に反映されます。</p>
-<h2>警察費</h2>
+<h2>Police funds</h2>
 <p>警察への割り当てを設定します。予算を減らすと警察の効果が減ります。表示されている金額は年末の予想です。</p>
 <p class="tinycity">設定した割当率は翌月に反映されます。</p>
 <p class="micropolis">設定した割当率は翌年に反映されます。</p>
-<h2>消防費</h2>
+<h2>Fire funds</h2>
 <p>消防への割り当てを設定します。予算を減らすと消防の効果が減ります。表示されている金額は年末の予想です。</p>
 <p class="tinycity">設定した割当率は翌月に反映されます。</p>
 <p class="micropolis">設定した割当率は翌年に反映されます。</p>
-<h2 class="tinycity not-implemented">債券支払</h2>
+<h2 class="tinycity not-implemented">Bond payment</h2>
 <p class="tinycity not-implemented">発行した債券の支払額です。支払いが滞るとゲームオーバーです。</p>
-<h2 class="micropolis not-implemented">債務支払</h2>
+<h2 class="micropolis not-implemented">Debt payment</h2>
 <p class="micropolis not-implemented">銀行への債務の支払額です。支払いが滞るとゲームオーバーです。</p>
-<h2 class="tinycity not-implemented">債券発行</h2>
+<h2 class="tinycity not-implemented">Issue bond</h2>
 <p class="tinycity not-implemented">$1000単位で発行することができます。利息は発行時の人口によって変わります。10年後に利息も含めて返済しなければなりません。</p>
-<h2 class="micropolis not-implemented">融資</h2>
+<h2 class="micropolis not-implemented">Loan</h2>
 <p class="micropolis not-implemented">銀行から$10000借りることができます。年$500ずつ21回払いです。</p>
 
-<h1>マップ</h1>
+<h1>Map</h1>
 <table>
-<tr><td>RCI地区</td><td>住宅、商業、工業地区を表示します。</td></tr>
-<tr><td>電力</td><td>通電・停電を表示します。</td></tr>
-<tr><td>人口密度</td><td>人口密度を表示します。</td></tr>
-<tr><td>人口増加率</td><td>人口の増減を表示します。2ヶ月ごとに集計します。</td></tr>
-<tr><td>交通網</td><td>道路、鉄道を表示します。</td></tr>
-<tr><td>交通量</td><td>道路の交通量を表示します。</td></tr>
-<tr><td>犯罪</td><td>犯罪発生率を表示します。人口が多く地価が低いと高くなります。</td></tr>
-<tr><td>公害</td><td>公害を表示します。火力発電所、空港、発展した工業地、渋滞から発生します。</td></tr>
-<tr><td>地価</td><td>地価を表示します。水辺や森林の近くは高くなります。公害や犯罪の高い地域は低くなります。</td></tr>
-<tr><td>警察分布</td><td>警察の効果を表示します。警察署を中心に道路沿いに広がります。</td></tr>
-<tr><td>消防分布</td><td>消防の効果を表示します。消防署を中心に道路沿いに広がります。</td></tr>
-<tr><td>災害</td><td>火災、洪水<span class="micropolis">、放射能汚染</span>の地域を表示します。</td></tr>
+<tr><td>RCI zone</td><td>Shows Residential, Commercial and Industrial zones.</td></tr>
+<tr><td>Power grid</td><td>通電・停電を表示します。</td></tr>
+<tr><td>Population dencity</td><td>Shows population dencity.</td></tr>
+<tr><td>Population growth</td><td>Show population growth. 2ヶ月ごとに集計します。</td></tr>
+<tr><td>Transportation</td><td>Shows Roads, Railroads and Stations.</td></tr>
+<tr><td>Traffic volume</td><td>Shows road's traffic volume.</td></tr>
+<tr><td>Crime</td><td>Shows crime rate. 人口が多く地価が低いと高くなります。</td></tr>
+<tr><td>Pollution</td><td>Shows pollution. Pollution occurs at Fire power station, Airport, Developped Industrial zone and Congested roads.</td></tr>
+<tr><td>Land value</td><td>Shows land value. Land value raises near by water and forest. 公害や犯罪の高い地域は低くなります。</td></tr>
+<tr><td>Police coverage</td><td>警察の効果を表示します。警察署を中心に道路沿いに広がります。</td></tr>
+<tr><td>Fire coverage</td><td>消防の効果を表示します。消防署を中心に道路沿いに広がります。</td></tr>
+<tr><td>Disaster</td><td>Shows Fire, Flood<span class="micropolis"> and Radioactivity</span> areas.</td></tr>
 </table>
 
-<h1>グラフ</h1>
-<p>過去12年の推移を表示します。</p>
+<h1>Graph</h1>
+<p>Shows trends of last 12 years.</p>
 <h2>住宅地、商業地、工業地</h2>
 <p>それぞれの地区の人口を表示します。</p>
-<h2>公害、犯罪</h2>
+<h2>Pollution, Crime</h2>
 <p>人口で重み付けした公害、犯罪の総量を表示します。</p>
-<h2>地価</h2>
+<h2>Land value</h2>
 <p>建築物が存在する地域の地価の平均を表示します。</p>
 
-<h1>評価</h1>
+<h1>Evaluation</h1>
 <p>人口1000人以下、またはロード直後の場合「未集計」となります。毎月更新されます。</p>
 <p>まず、基本点を計算します。基本点は直接表示されません。基本点は1000点満点で、街の問題点の%に応じて減点されます。</p>
-<h2>市長の支持率</h2>
+<h2>Support rate</h2>
 <p>支持率 = 10 + 基本点 * 0.08 で、10%から90%の範囲になります。</p>
-<h2>街の問題点</h2>
-<p>人口あたりの各問題の計算値です。人口が少ないときは少なめに出ます。</p>
+<h2>Problems</h2>
+<p>人口あたりの各問題の計算値です。</p>
 <table>
-<tr><th>犯罪</th><td>人口で重み付けした犯罪発生率を合計した値です。</td></tr>
-<tr><th>公害</th><td>人口で重み付けした公害の値を合計したものです。人がいないところの公害は関係ありません。</td></tr>
-<tr><th>渋滞</th><td>人口1人あたりの交通量です。</td></tr>
-<tr><th>住宅費</th><td>R地区の地価が高すぎると高い数字が出ます。</td></tr>
-<tr><th>税金</th><td>税率が5%を超えると少しずつ上がります。</td></tr>
-<tr><th>失業</th><td>R地区の人口に対して、CとIの人口が少ないと上がります。</td></tr>
+<tr><th>Crime</th><td>人口で重み付けした犯罪発生率を合計した値です。</td></tr>
+<tr><th>Pollution</th><td>人口で重み付けした公害の値を合計したものです。人がいないところの公害は関係ありません。</td></tr>
+<tr><th>Traffic jam</th><td>人口1人あたりの交通量です。</td></tr>
+<tr><th>Housing costs</th><td>R地区の地価が高すぎると高い数字が出ます。</td></tr>
+<tr><th>Taxes</th><td>税率が5%を超えると少しずつ上がります。</td></tr>
+<tr><th>Unemployment</th><td>R地区の人口に対して、CとIの人口が少ないと上がります。</td></tr>
 </table>
 
-<h2>人口前年比</h2>
+<h2>Growth</h2>
 <p>前年の最後(今年の最初)と比較した増減です。</p>
 
-<h2>GDP</h2>
+<h2>GDP $</h2>
 <p>人口で重み付けした地価の合計です。税収に比例します。</p>
 
-<h2>評価額</h2>
+<h2>Assessed $</h2>
 <p>街の建築物を建てたときの費用の合計です。樹木や埋立地、電線はカウントしません。</p>
 
-<h2>得点</h2>
+<h2>Score</h2>
 <p>人口 * 基本点 * 0.001です。</p>
 
-<h2>難易度</h2>
+<h2>Difficulty</h2>
 <p>ゲーム開始時に設定した難易度です。</p>
 
-<h2>街の規模</h2>
+<h2>Category</h2>
 <table>
-<tr><td>0 - 1,980</td><td>村</td></tr>
-<tr><td>2,000 - 9,980</td><td>町</td></tr>
-<tr><td>10,000 - 49,980</td><td>都市</td></tr>
-<tr><td>50,000 - 99,980</td><td>首都</td></tr>
-<tr><td>100,000 - 499,980</td><td>メトロポリス</td></tr>
-<tr><td>500,000 -</td><td>メガロポリス</td></tr>
+<tr><td>0 - 1,980</td><td>Village</td></tr>
+<tr><td>2,000 - 9,980</td><td>Town</td></tr>
+<tr><td>10,000 - 49,980</td><td>City</td></tr>
+<tr><td>50,000 - 99,980</td><td>Capital</td></tr>
+<tr><td>100,000 - 499,980</td><td>Metropolis</td></tr>
+<tr><td>500,000 -</td><td>Megalopolis</td></tr>
 </table>
 
-<h2>ルールセット</h2>
+<h2>Ruleset</h2>
 <p>ゲーム開始時に設定したルールセットです。</p>
 
-<h1>統計</h1>
-<h2>住宅地、商業地、工業地</h2>
+<h1>Statistics</h1>
+<h2>R zone, C zone, I zone</h2>
 <p>RCI地区の数、割合を表示します。</p>
 
-<h2>開発地</h2>
+<h2>Developed</h2>
 <p>RCI地区に建物が立っている数(病院、学校を除く)を表示します。</p>
 
-<h2 class="not-implemented">トップ</h2>
+<h2 class="not-implemented">Top</h2>
 <p class="not-implemented">トップの数を表示します。隣接するR/C地区の地価が「最高」で人口がLevel5に達したとき、さらに1ランク成長すると隣とくっついてトップになります。</p>
 
-<h2>道路、線路、電線</h2>
-<p>それぞれの総延長を表示します。1マスあたり0.05kmです。</p>
+<h2>Road, Railroad, Power line</h2>
+<p>0.05km each tiles.</p>
 
-<h2>最大出力、電力需要</h2>
+<h2>Max output, Power required</h2>
 <p>発電所の最大出力合計と、電力消費量を表示します。1マスあたり0.1MW消費します。発電所自体も電力を消費します。</p>
 
-<h2>陸地、水域、平地、森林</h2>
-<p>1マスあたり0.0025km²です。</p>
+<h2>Land, Water, Open land, Woods</h2>
+<p>0.0025km² each tiles.</p>
 
-<h1>シナリオ</h1>
+<h1>Scenario</h1>
 <p>シナリオマップでは、すでに開発済みのマップからスタートします。市長選挙があり、一定の条件を満たすと当選しクリアとなります。当選するとそのままゲームを続行することができます。</p>
 
-<h2>公約</h2>
+<h2>Public commitment</h2>
 <p>終了時点で条件が満たされていると当選となります。複数条件が指定されている場合、すべてを満たす必要があります。</p>
 
-<h2>シナリオマップ</h2>
+<h2>Scenario map</h2>
 <table>
-<tr><th>都市名</th><th>開始年</th><th>選挙年</th><th>災害</th><th>問題点</th><th>公約</th></tr>
+<tr><th>City name</th><th>Starts</th><th>Election</th><th>Disaster</th><th>Problems</th><th>公約</th></tr>
 <tr class="micropolis"><td>San Francisco</td><td>1906</td><td>1911</td><td>1906/03<br>地震</td><td>空港要求</td><td>人口10万人以上<br>支持率50%以上</td></tr>
 <tr class="micropolis"><td>Bern</td><td>1965</td><td>1975</td><td>-</td><td>渋滞多発</td><td>人口8万人以上<br>支持率50%以上<br>渋滞5%以下</td></tr>
 <tr class="micropolis not-implemented"><td>Detroid</td><td>1972</td><td>1982</td><td>-</td><td>犯罪多発</td><td>人口8万人以上<br>支持率50%以上<br>犯罪5%以下</td></tr>
@@ -390,21 +390,21 @@
 <tr class="tinycity not-implemented"><td>Tokyo</td><td>2015</td><td>2020</td><td>2015/06<br>モンスター</td><td>公害</td><td>人口10万人以上<br>支持率50%以上</td></tr>
 </table>
 
-<h1>地形エディタ (terrain.html)</h1>
+<h1>Terrain editor (terrain.html)</h1>
 <p>陸地、水域などを編集できます。</p>
 
-<h2>ファイル</h2>
+<h2>File</h2>
 <p>TinyCityファイルの保存、読み込みを行います。</p>
 <p>また、<a href="https://github.com/SimHacker/micropolis">Micropolis</a>のセーブデータを(不完全ですが)インポートできます。</p>
 
-<h2>地形生成</h2>
+<h2>Generate terrain</h2>
 <p>マップのサイズを、40x40〜200x200の5段階から選択できます。</p>
 <p>マップの自動生成を、「全て平地」「河川」「沿岸」「湖」「島」から選択できます。</p>
 
-<h2>シナリオ</h2>
+<h2>Scenario</h2>
 <p>プレゼントを貰える条件と、災害の発生条件を設定できます。</p>
 
-<h2>選挙</h2>
+<h2>Election</h2>
 <p>選挙の年と勝利条件を設定できます。</p>
 
 </body>
