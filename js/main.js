@@ -192,7 +192,7 @@
             type: 'single',
             init: '',
             items: [
-                {text: 'start_game'},
+                {text: 'start_city'},
                 {text: 'load_file'},
                 {text: 'options'},
                 {text: 'language'},
@@ -346,7 +346,7 @@
         popup.open(() => {
             let selected = popup.get_selected();
             switch (selected) {
-            case 'start_game':
+            case 'start_city':
                 show_title_screen_rule();
                 popup.invoke();
                 break;

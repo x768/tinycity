@@ -6,7 +6,7 @@ You can choose "Micropolis" ruleset which like SNES version of SimCity® and "Ti
 
 ## How to play
 
-Open index.html in your browser such as Firefox, Chrome or Safari.
+Open tinycity.html in your browser such as Firefox, Chrome or Safari.
 
 Help file (docs/help.en.html) not translated yet.
 
@@ -18,7 +18,7 @@ TinyCityは、初代シムシティを元にした街作りゲームです。
 
 ## あそびかた
 
-index.htmlをブラウザ（Firefox、Chrome）で開いてください。
+tinycity.htmlをブラウザ（Firefox、Chrome）で開いてください。
 
 詳しくは、docs/help.ja.htmlをご覧ください。
 

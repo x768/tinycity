@@ -38,3 +38,24 @@ th, td {
 .not-implemented {
     color: gray;
 }
+.popup-list {
+    width: 640px;
+    margin: auto;
+}
+.popup-item {
+    font-size: 18px;
+    text-align: center;
+    margin: 4px 64px;
+    background: white;
+    border: 1px solid gray;
+    cursor: pointer;
+}
+.popup-item:hover {
+    background: #c0c0ff;
+}
+.popup-item a {
+    padding: 12px;
+    display: block;
+    color: black;
+    text-decoration: none;
+}
