@@ -56,7 +56,7 @@ resource.append('zh_hant', {
     cancel:           "取消",
     city_scale:       "街區的規模",
     coast:            "濱",
-    color_bf_mode:    "色彩无障碍",
+    color_bf_mode:    "色彩無障礙",
     commitment:       "公開諾言",
     cost:             "用費",
     crime:            "犯罪",
@@ -85,7 +85,7 @@ resource.append('zh_hant', {
     graph:            "統計圖",
     growth_last_year: "從去年比較",
     help:             "幇助",
-    hidden_assets:    "隱藏的資產",
+    hidden_assets:    "隱藏的資產 $",
     hospitals:        "醫院",
     housing_cost:     "住宅價格",
     i_zones:          "工業區",
@@ -240,6 +240,7 @@ resource.append('zh_hant', {
     gift_terminal_station: null,
     gift_police_hq:        null,
     gift_fire_hq:          null,
+    gift_park_casino:      null,
     gift_land_fill:        null,
 
     fn_datestr: function(year, month) {

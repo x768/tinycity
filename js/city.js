@@ -42,6 +42,12 @@ function City(source) {
             {type:'gift', name: 'your_house', cond:['population', 2000]},
             {type:'gift', name: 'terminal_station', cond:['rail', 300]},
             {type:'gift', name: 'terminal_station', cond:['rail', 600]},
+            {type:'gift', name: 'park_casino', cond:['road', 200]},
+            {type:'gift', name: 'park_casino', cond:['road', 300]},
+            {type:'gift', name: 'park_casino', cond:['road', 400]},
+            {type:'gift', name: 'park_casino', cond:['gift', 3]},
+            {type:'gift', name: 'park_casino', cond:['gift', 6]},
+            {type:'gift', name: 'park_casino', cond:['gift', 9]},
             {type:'gift', name: 'police_hq', cond:['police_dept', 6]},
             {type:'gift', name: 'police_hq', cond:['police_dept', 12]},
             {type:'gift', name: 'police_hq', cond:['police_dept', 18]},
@@ -753,7 +759,13 @@ function City(source) {
                 break;
             case M_YR_HOUSE:
                 info.name = 'your_house';
-                list.push({title:'hidden_assets', val:0});
+                list.push({title:'hidden_assets', val:this.hidden_assets});
+                break;
+            case M_AMUSEMENT:
+                info.name = 'amusement_park';
+                break;
+            case M_CASINO:
+                info.name = 'casino';
                 break;
             default:
                 info.name = '???';
@@ -763,7 +775,6 @@ function City(source) {
         list.unshift({title:'crime', val:get_level_descript(this.tile_crime[pos2], 16, 32, 96)});
         list.unshift({title:'pollution', val:get_level_descript(this.tile_pollution[pos2], 16, 32, 96)});
         list.unshift({title:'land_value', val:get_level_descript(this.tile_land_value[pos2], LAND_VALUE_LOW, LAND_VALUE_MIDDLE, LAND_VALUE_HIGH)});
-//list.push({raw_text:'Position', val:info.x + "," + info.y, format:'raw'});
         info.list = list;
         return info;
     };
@@ -851,7 +862,9 @@ function City(source) {
             }
             break;
         case 'tree':
-            if (tile_data_at === M_RUBBLE) {
+            if (this.tile_fire[pos] !== 0) {
+                return -1;
+            } else if (tile_data_at === M_RUBBLE) {
                 return selected.cost + 1;
             } else if (tile_data_at === M_LAND) {
                 return selected.cost;
@@ -1570,6 +1583,7 @@ function City(source) {
             power_plant: 0,
             power_capa: 0,
             power_req: 0,
+            gift: 0,
         };
 
         for (let y = 0; y < this.map_size; y++) {
@@ -1658,6 +1672,10 @@ function City(source) {
                         }
                         if ((t & M_LAND) === 0) {
                             st.water++;
+                        }
+                    } else if ((t & F_CENTER) !== 0) {
+                        if (t >= (M_GIFT_WT | F_CENTER)) {
+                            st.gift++;
                         }
                     }
                     break;
@@ -1921,6 +1939,7 @@ function City(source) {
             case 'schools':
             case 'stadium1':
             case 'stadium2':
+            case 'gift':
                 test = (st[c] >= d);
                 break;
             case 'funds_ge':

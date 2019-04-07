@@ -19,6 +19,7 @@ function Popup(view)
     let command_cancel = null;
     let suppress_event = false;
 
+    this.select_gift_cursor = -1;
     this.is_window_open = false;
     this.svg_list_values = null;
     this.callback_readfile = null;
@@ -59,12 +60,37 @@ function Popup(view)
         return canvas;
     };
 
+    function draw_gift_cursor(self) {
+        if (self.select_gift_cursor >= 0) {
+            let ctx = canvas.getContext('2d');
+            for (let i = 0; i < 2; i++) {
+                let x = 40 + 62 + 130 * i;
+                if (i === self.select_gift_cursor) {
+                    ctx.fillStyle = '#ffffff';
+                    ctx.beginPath();
+                    ctx.moveTo(x, 338 - 20 - 8);
+                    ctx.lineTo(x - 8, 338 - 20 + 8);
+                    ctx.lineTo(x + 8, 338 - 20 + 8);
+                    ctx.closePath();
+                    ctx.fill();
+                } else {
+                    ctx.fillStyle = '#000000';
+                    ctx.beginPath();
+                    ctx.rect(x - 8, 338 - 20 - 8, 16, 16);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+            }
+        }
+    }
+
     this.open = function(cb_click, cb_close) {
         callback_click = cb_click;
         callback_close = cb_close;
         window_back.style.display = 'flex';
         list_box.scrollTop = 0;
         this.is_window_open = true;
+        draw_gift_cursor(this);
     };
     this.open_delay = function(cb_click, cb_close) {
         let popup_window = document.getElementById('popup-window');
@@ -74,6 +100,7 @@ function Popup(view)
         popup_window.style.display = 'none';
         list_box.scrollTop = 0;
         this.is_window_open = true;
+        draw_gift_cursor(this);
         suppress_event = true;
         window.setTimeout(() => {
             popup_window.style.display = '';
@@ -109,6 +136,7 @@ function Popup(view)
         list_box.style.display = 'none';
         svg_box.style.display = 'none';
         canvas_box.style.display = 'none';
+        this.select_gift_cursor = -1;
     };
     this.invoke = function() {
         if (callback_click != null) {
@@ -982,7 +1010,22 @@ function Popup(view)
             callback_close(command_ok);
         }
     });
-    document.getElementById('popup-window').addEventListener('click', event_cancel);
+    document.getElementById('popup-window').addEventListener('click', e => {
+        if (this.select_gift_cursor >= 0) {
+            let w = document.getElementById('popup-window');
+            let x = e.clientX - w.offsetLeft;
+            let y = e.clientY - w.offsetTop;
+            if (x >= 40 && x < 296 && y >= 210 && y < 338) {
+                if (x < 168) {
+                    this.select_gift_cursor = 0;
+                } else {
+                    this.select_gift_cursor = 1;
+                }
+            }
+            draw_gift_cursor(this);
+        }
+        e.stopPropagation();
+    });
     window_back.addEventListener('mousemove', event_cancel);
     window_back.addEventListener('mousedown', event_cancel);
     window_back.addEventListener('mouseup', event_cancel);

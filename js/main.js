@@ -992,6 +992,13 @@
         case 'earthquake':
             earthquake_time_left = Math.floor(city.map_size * (1 + Math.random()) * 0.25);
             break;
+        case 'meltdown':
+            pos = simulate.disaster_meltdown();
+            if (pos == null) {
+                return;
+            }
+            show_msg = true;
+            break;
         case 'monster':
             show_msg = true;
             pos = monster_occur();
@@ -1988,6 +1995,49 @@
             simulate.ship_last_pos = -1;
         }
     }
+    function show_gift_window(name) {
+        function push_gift(n) {
+            city.gift_buildings.push(BUILD_ICON_INFO_GIFT[n]);
+            view.draw_build_icons(city, city.gift_buildings, build_icon_info.length >> 1);
+        }
+        if (options.popup_window) {
+            reset_mouse_drag();
+            popup.reset();
+            popup.set_back_half_opacity();
+            if (name === 'park_casino') {
+                popup.show_ok_cancel('ok', null);
+                popup.set_layout('canvas-text', null);
+                popup.set_title_raw(resource.gettext('amusement_park') + ' / ' + resource.gettext('casino'));
+                popup.set_text_content('gift_park_casino');
+                popup.select_gift_cursor = 0;
+                view.draw_wallpaper_room(popup.get_canvas(), 'amusement_park', 'casino');
+                view.draw_popup_window_picture(popup.get_canvas(), 'gift');
+                popup.open_delay(null, mode => {
+                    if (mode === 'ok') {
+                        popup.close();
+                        push_gift((popup.select_gift_cursor === 0) ? 'amusement_park' : 'casino');
+                    }
+                });
+            } else {
+                popup.show_close_button();
+                popup.set_layout('canvas-text', null);
+                popup.set_title(name);
+                popup.set_text_content('gift_' + name);
+                view.draw_wallpaper_room(popup.get_canvas(), name, null);
+                view.draw_popup_window_picture(popup.get_canvas(), 'gift');
+                popup.open_delay(null, mode => {
+                    popup.close();
+                    push_gift(name);
+                });
+            }
+        } else {
+            if (name === 'park_casino') {
+                name = 'amusement_park';
+            }
+            view.show_message_ticker_raw(resource.gettext('msg_gift') + resource.gettext(name), true);
+            push_gift(name);
+        }
+    }
 
     window.setInterval(() => {
         if (earthquake_time_left > 0) {
@@ -2128,6 +2178,14 @@
             }
             if (update === 'month' || update === 'all') {
                 let msg = null;
+                if (city.month === 1) {
+                    if (options.popup_window) {
+                        show_budget(false);
+                    } else {
+                        show_budget_ticker();
+                    }
+                    return;
+                }
                 if (city.election != null && city.month === 3) {
                     switch (city.election.year - city.year) {
                     case 3:
@@ -2147,13 +2205,11 @@
                         view.show_message_ticker(msg, true);
                     }
                 }
-                if (city.month === 1) {
-                    if (options.popup_window) {
-                        show_budget(false);
-                    } else {
-                        show_budget_ticker();
+                if (city.month === 6) {
+                    if (simulate.update_radioisotope_decay()) {
+                        city.calculate_power_grid_required = true;
+                        city.update_power_grid_required = true;
                     }
-                    return;
                 }
                 msg = city.get_major_problem();
                 if (msg != null) {
@@ -2170,22 +2226,7 @@
                 let event = city.peek_next_event();
                 if (event != null) {
                     if (event.type === 'gift') {
-                        city.gift_buildings.push(BUILD_ICON_INFO_GIFT[event.name]);
-                        view.draw_build_icons(city, city.gift_buildings, build_icon_info.length >> 1);
-                        if (options.popup_window) {
-                            reset_mouse_drag();
-                            popup.reset();
-                            popup.set_back_half_opacity();
-                            popup.show_close_button();
-                            popup.set_layout('canvas-text', null);
-                            popup.set_title(event.name);
-                            popup.set_text_content('gift_' + event.name);
-                            view.draw_wallpaper_room(popup.get_canvas(), event.name, null);
-                            view.draw_popup_window_picture(popup.get_canvas(), 'gift');
-                            popup.open_delay(null, mode => { popup.close(); });
-                        } else {
-                            view.show_message_ticker_raw(resource.gettext('msg_gift') + resource.gettext(event.name), true);
-                        }
+                        show_gift_window(event.name);
                     } else if (event.type === 'disaster') {
                         disaster_occur(event.name);
                     }

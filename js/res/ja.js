@@ -85,7 +85,7 @@ resource.append('ja', {
     graph:            "グラフ",
     growth_last_year: "前年比",
     help:             "ヘルプ",
-    hidden_assets:    "隠し資産",
+    hidden_assets:    "隠し資産 $",
     hospitals:        "病院",
     housing_cost:     "住宅費",
     i_zones:          "工業地",
@@ -240,6 +240,7 @@ resource.append('ja', {
     gift_terminal_station: "駅を建設して、周囲を活性化させましょう。利益は特別収入として加算されます。",
     gift_police_hq:        "凶悪化する犯罪に対処するため、警察本部を設置しましょう。\n通常の警察署より広い範囲をカバーできます。",
     gift_fire_hq:          "多発する火災に対処するため、消防本部を設置しましょう。\n通常の消防署より広い範囲をカバーできます。",
+    gift_park_casino:      "住民のために娯楽施設を建設しましょう。\nカジノは収入が増えますが、犯罪が心配です。\n遊園地とカジノのどちらにしましょう?",
     gift_land_fill:        "開発できる土地が少なくなってきました。水域を埋め立てて土地を広げましょう。",
 
     fn_datestr: function(year, month) {

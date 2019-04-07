@@ -56,7 +56,7 @@ resource.append('zh', {
     cancel:           "取消",
     city_scale:       "街区的规模",
     coast:            "滨",
-    color_bf_mode:    "色彩無障礙",
+    color_bf_mode:    "色彩无障碍",
     commitment:       "公开诺言",
     cost:             "用费",
     crime:            "犯罪",
@@ -85,7 +85,7 @@ resource.append('zh', {
     graph:            "统计图",
     growth_last_year: "从去年比较",
     help:             "幇助",
-    hidden_assets:    "隐藏的资产",
+    hidden_assets:    "隐藏的资产 $",
     hospitals:        "医院",
     housing_cost:     "住宅价格",
     i_zones:          "工业区",
@@ -240,6 +240,7 @@ resource.append('zh', {
     gift_terminal_station: null,
     gift_police_hq:        null,
     gift_fire_hq:          null,
+    gift_park_casino:      null,
     gift_land_fill:        null,
 
     fn_datestr: function(year, month) {

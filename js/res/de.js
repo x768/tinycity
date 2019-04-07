@@ -40,7 +40,7 @@ resource.append('de', {
     water_area:       "Wasserfläche",
     wire:             "Stromleitung",
     your_house:       "Dein Haus",
-    zoo:              null,
+    zoo:              "Zoo",
 
     // UI
     all_zones:        "WGI zonen",
@@ -240,6 +240,7 @@ resource.append('de', {
     gift_terminal_station: null,
     gift_police_hq:        null,
     gift_fire_hq:          null,
+    gift_park_casino:      null,
     gift_land_fill:        null,
 
     decimal: ",",

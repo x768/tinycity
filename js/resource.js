@@ -87,7 +87,7 @@ const resource = new (function() {
             graph:            "Graph",
             growth_last_year: "Growth (Last year)",
             help:             "Help",
-            hidden_assets:    "Hidden assets",
+            hidden_assets:    "Hidden assets $",
             hospitals:        "Hospitals",
             housing_cost:     "Housing costs",
             i_zones:          "I zones",
@@ -228,9 +228,9 @@ const resource = new (function() {
             msg_growth_metropolis:"Your city has now achieved to the status of METROPOLIS.\nIt's time to show your stuff.",
             msg_growth_megalopolis:"Your city have reached the highest category, the MEGALOPOLIS.\nCan you rezone areas and increace population to 700,000? Good luck!",
 
-            cond_population:    "Population not less than {pops}.",
-            cond_support_rate:  "Support rate not less than {rate}%.",
-            cond_probrems:      "Probrem '{probrem}' not more than {rate}%.",
+            cond_population:    "Population {pops} or more.",
+            cond_support_rate:  "Support rate {rate}% or more.",
+            cond_probrems:      "Probrem '{probrem}' {rate}% or less.",
 
             disaster_airplane_crash:"A plane has crashed!",
             disaster_earthquake:    "A major earthquake has occurred!\nMake sure to reconnect the power grid and rebuild the city.",
@@ -243,9 +243,10 @@ const resource = new (function() {
             disaster_ufo:           "Undefined flying objects are attacking your city!",
 
             gift_your_house:       "Where would you like to build your own house?\nDo you want to live center of the city or quiet area away from the center?",
-            gift_terminal_station: "Why don't you build a station?\nThat will help to develop the surrounding areas and bring us special income!",
+            gift_terminal_station: "Why don't you build a station?\nThat will help to develop the surrounding areas and gives us special income!",
             gift_police_hq:        "Why don't you build a Police department headquaters?\nThis facility will give your city a wider area of police protection",
             gift_fire_hq:          "Why don't you build a Police department headquaters?\nThis facility will give your city a wider area of fire protection",
+            gift_park_casino:      "Why don't you build a Amusement facility?\nCasino gives us special income but causes crime.\nWhoud you like Amusement park or Casino?",
             gift_land_fill:        "Are you running out of land to develop?\nWith the land fill, you can reclaim more land.",
 
             decimal: ".",

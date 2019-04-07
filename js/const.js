@@ -99,6 +99,8 @@ const BUILD_ICON_INFO_GIFT = {
     terminal_station: { size: 3, cost: 100, name: 'terminal_station', tile:M_TERM_STN },
     police_hq:        { size: 3, cost: 100, name: 'police_hq', tile:M_POLICE_HQ },
     fire_hq:          { size: 3, cost: 100, name: 'fire_hq', tile:M_FIRE_HQ },
+    amusement_park:   { size: 3, cost: 100, name: 'amusement_park', tile:M_AMUSEMENT },
+    casino:           { size: 3, cost: 100, name: 'casino', tile:M_CASINO },
     land_fill:        { size: 3, cost: 100, name: 'land_fill' },
 };
 

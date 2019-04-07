@@ -784,7 +784,7 @@ function Simulate() {
                     // small houses grows fast
                     if (cnt === ticks4 || city.tile_sub[pos] === 0) {
                         let inc = increase_rc_p(x, y, city.r_demand - city.tile_sub[pos] * 0.0625);
-                        if (inc > 0 && city.tile_power[pos] === 2 && is_traffic_connected(tile_c_zone, 'c_zone', pos, 3)) {
+                        if (inc > 0 && city.tile_power[pos] === 2 && city.tile_fire[pos] === 0 && is_traffic_connected(tile_c_zone, 'c_zone', pos, 3)) {
                             inc_r_zone(pos);
                         } else if (inc < 0) {
                             dec_r_zone(pos);
@@ -815,7 +815,7 @@ function Simulate() {
                     }
                     if (cnt === ticks4) {
                         let inc = increase_rc_p(x, y, city.c_demand - city.tile_sub[pos] * 0.0625);
-                        if (inc > 0 && city.tile_power[pos] === 2 && is_traffic_connected(tile_r_zone, 'r_zone', pos, 3)) {
+                        if (inc > 0 && city.tile_power[pos] === 2 && city.tile_fire[pos] === 0 && is_traffic_connected(tile_r_zone, 'r_zone', pos, 3)) {
                             if (city.tile_sub[pos] < 5) {
                                 city.tile_sub[pos]++;
                             }
@@ -838,7 +838,7 @@ function Simulate() {
                     }
                     if (cnt === ticks4) {
                         let inc = increase_i_p(city.i_demand - city.tile_sub[pos] * 0.0625);
-                        if (inc > 0 && city.tile_power[pos] === 2 && is_traffic_connected(tile_r_zone, 'r_zone', pos, 3)) {
+                        if (inc > 0 && city.tile_power[pos] === 2 && city.tile_fire[pos] === 0 && is_traffic_connected(tile_r_zone, 'r_zone', pos, 3)) {
                             if (city.tile_sub[pos] < 4) {
                                 city.tile_sub[pos]++;
                             }
@@ -1037,6 +1037,10 @@ function Simulate() {
                     diffusion_sub(city.tile_pollution, x, y, 96, 3);
                     pollution_total += 96;
                     break;
+                }
+                if ((city.tile_fire[pos] & MF_RADIO) !== 0) {
+                    diffusion_sub(city.tile_pollution, x, y, 12, 2);
+                    pollution_total += 12;
                 }
             }
         }
@@ -1349,6 +1353,8 @@ function Simulate() {
 
                 switch (city.tile_data[pos]) {
                 case M_YR_HOUSE | F_CENTER:
+                case M_AMUSEMENT | F_CENTER:
+                case M_CASINO | F_CENTER:
                     if (city.tile_power[pos] === 2) {
                         diffusion_sub(city.tile_land_value, x, y, 80, 4);
                     }
@@ -1637,25 +1643,22 @@ function Simulate() {
     }
     this.disaster_fire = function() {
         let buildings = [];
-        for (let y = 0; y < map_size; y++) {
-            for (let x = 0; x < map_size; x++) {
-                let pos = x + 1 + (y + 1) * map_size_edge;
-                let t = city.tile_data[pos];
-                if ((t & F_CENTER) !== 0 && (t & 0x3F00) !== 0) {
-                    switch (t) {
-                    case M_GOODS_ST | F_CENTER:
-                    case M_STADIUM1 | F_CENTER:
-                    case M_STADIUM2 | F_CENTER:
-                    case M_PORT | F_CENTER:
-                    case M_COAL_PWR | F_CENTER:
-                    case M_GAS_PWR | F_CENTER:
-                    case M_NUKE_PWR | F_CENTER:
-                    case M_AIRPORT | F_CENTER:
-                        break;
-                    default:
-                        buildings.push(pos);
-                        break;
-                    }
+        for (let pos = map_size_edge; pos < map_size_edge * map_size; pos++) {
+            let t = city.tile_data[pos];
+            if ((t & F_CENTER) !== 0 && (t & 0x3F00) !== 0) {
+                switch (t) {
+                case M_GOODS_ST | F_CENTER:
+                case M_STADIUM1 | F_CENTER:
+                case M_STADIUM2 | F_CENTER:
+                case M_PORT | F_CENTER:
+                case M_COAL_PWR | F_CENTER:
+                case M_GAS_PWR | F_CENTER:
+                case M_NUKE_PWR | F_CENTER:
+                case M_AIRPORT | F_CENTER:
+                    break;
+                default:
+                    buildings.push(pos);
+                    break;
                 }
             }
         }
@@ -1706,6 +1709,44 @@ function Simulate() {
         }
         city.calculate_power_grid_required = true;
         city.update_power_grid_required = true;
+    };
+    this.disaster_meltdown = function() {
+        let nuke_power = [];
+        for (let pos = map_size_edge; pos < map_size_edge * map_size; pos++) {
+            let t = city.tile_data[pos];
+            if (t === (M_NUKE_PWR | F_CENTER)) {
+                nuke_power.push(pos);
+            }
+        }
+        if (nuke_power.length === 0) {
+            return null;
+        }
+        let p = choice_random(nuke_power);
+        let x = (p % map_size_edge) - 1;
+        let y = Math.floor(p / map_size_edge) - 1;
+
+        put_fire(p, 4, MF_FIRE|MF_RADIO);
+        for (let i = 0; i < 200; i++) {
+            let th = Math.random() * Math.PI * 2;
+            let r = Math.random() * 20;
+            let xx = Math.floor(x + Math.sin(th) * r);
+            let yy = Math.floor(y + Math.cos(th) * r);
+            if (xx >= 1 && xx < map_size_edge - 1 && yy >= 1 && yy < map_size_edge - 1) {
+                let pos2 = 1 + xx + (1 + yy) * map_size_edge;
+                if ((city.tile_data[pos2] & M_LAND) !== 0) {
+                    let p = city.get_center(xx, yy);
+                    pos2 = 1 + p.x + (1 + p.y) * map_size_edge;
+                    city.tile_fire[pos2] = MF_RADIO;
+                }
+            }
+        }
+
+        city.disaster_occurs = true;
+        city.disaster_ticks = 0;
+        city.calculate_power_grid_required = true;
+        city.update_power_grid_required = true;
+
+        return {x:x, y:y};
     };
     this.disaster_destroy = function(x, y) {
         let pos = 1 + x + (1 + y) * map_size_edge;
@@ -1971,6 +2012,18 @@ function Simulate() {
         }
         city.calculate_power_grid_required = true;
         city.update_power_grid_required = true;
+    };
+    this.update_radioisotope_decay = function() {
+        let decay = false;
+        for (let i = map_size_edge; i < map_size_edge * map_size; i++) {
+            if ((city.tile_fire[i] & MF_RADIO) !== 0) {
+                if (Math.random() < 0.0625) {
+                    city.tile_fire[i] &= ~MF_RADIO;
+                    decay = true;
+                }
+            }
+        }
+        return decay;
     };
 
     this.rotate_cw = function() {

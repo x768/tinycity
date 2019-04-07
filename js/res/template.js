@@ -241,6 +241,7 @@ resource.append('??', {
     gift_terminal_station: null,
     gift_police_hq:        null,
     gift_fire_hq:          null,
+    gift_park_casino:      null,
     gift_land_fill:        null,
 
     decimal: null,

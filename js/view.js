@@ -82,6 +82,8 @@ function View(quality)
     const INDEX_TML_STATION = 69;
     const INDEX_POLICE_HQ = 71;
     const INDEX_FIRE_HQ = 72;
+    const INDEX_AMUSEMENT = 73;
+    const INDEX_CASINO = 74;
 
     const INDEX_PAVED = 1;
     const INDEX_STADIUM = 2;
@@ -646,6 +648,8 @@ function View(quality)
         mip3.set_qtile(INDEX_TML_STATION + 1, maptip.tstation_we, null);
         mip3.set_qtile(INDEX_POLICE_HQ, maptip.police_hq, null);
         mip3.set_qtile(INDEX_FIRE_HQ, maptip.fire_hq, null);
+        mip3.set_qtile(INDEX_AMUSEMENT, maptip.amusement_park, null);
+        mip3.set_qtile(INDEX_CASINO, maptip.casino, null);
 
 
         mip4.set_offset_y(7, 1, 7);
@@ -1232,8 +1236,18 @@ function View(quality)
                     name_d = INDEX_TILE3;
                     name_u = INDEX_FIRE_HQ | INDEX_TILE3;
                     break;
+                case M_AMUSEMENT | F_CENTER:
+                    name_d = INDEX_TILE3;
+                    name_u = INDEX_AMUSEMENT | INDEX_TILE3;
+                    break;
+                case M_CASINO | F_CENTER:
+                    name_d = INDEX_TILE3;
+                    name_u = INDEX_CASINO | INDEX_TILE3;
+                    break;
                 }
-                if ((t & F_CENTER) !== 0) {
+                if ((city.tile_fire[i + x] & MF_RADIO) !== 0) {
+                    name_a = INDEX_RADIO;
+                } else if ((t & F_CENTER) !== 0) {
                     if (city.tile_power[i + x] === 1) {
                         name_a = INDEX_BLACKOUT;
                     }
@@ -1284,7 +1298,9 @@ function View(quality)
                     }
                     u_tiles[pos] = (INDEX_YOUR_HOUSE + offset) | INDEX_TILE3;
                 }
-                if ((t & F_CENTER) !== 0 && (t & M_LAND) !== 0) {
+                if ((city.tile_fire[i + x] & MF_RADIO) !== 0) {
+                    name_a = INDEX_RADIO;
+                } else if ((t & F_CENTER) !== 0 && (t & M_LAND) !== 0) {
                     if (city.tile_power[i + x] === 1) {
                         name_a = INDEX_BLACKOUT;
                     }
@@ -1909,6 +1925,14 @@ function View(quality)
                 draw_maptip_q(build_icons_ctx, maptip.station_rail_ns, x, y, quality_3);
                 draw_maptip_q(build_icons_ctx, maptip.tstation_ns, x, y, quality_3);
                 break;
+            case 'amusement_park':
+                draw_maptip_q(build_icons_ctx, maptip.land3, x, y, quality_3);
+                draw_maptip_q(build_icons_ctx, maptip.amusement_park, x, y, quality_3);
+                break;
+            case 'casino':
+                draw_maptip_q(build_icons_ctx, maptip.land3, x, y, quality_3);
+                draw_maptip_q(build_icons_ctx, maptip.casino, x, y, quality_3);
+                break;
             case 'land_fill':
                 draw_maptip_q(build_icons_ctx, maptip.land3, x, y, quality_3);
                 break;
@@ -2180,9 +2204,10 @@ function View(quality)
         }
     };
     function draw_wallpaper_gift(ctx, gift, x, y, scale) {
+        draw_maptip_q(ctx, maptip.land3, x, y, quality * scale);
+
         switch (gift) {
         case 'your_house':
-            draw_maptip_q(ctx, maptip.land3, x, y, quality * scale);
             draw_maptip_q(ctx, maptip.your_house1, x, y, quality * scale);
             break;
         case 'terminal_station':
@@ -2190,15 +2215,18 @@ function View(quality)
             draw_maptip_q(ctx, maptip.tstation_ns, x, y, quality * scale);
             break;
         case 'police_hq':
-            draw_maptip_q(ctx, maptip.land3, x, y, quality * scale);
             draw_maptip_q(ctx, maptip.police_hq, x, y, quality * scale);
             break;
         case 'fire_hq':
-            draw_maptip_q(ctx, maptip.land3, x, y, quality * scale);
             draw_maptip_q(ctx, maptip.fire_hq, x, y, quality * scale);
             break;
+        case 'amusement_park':
+            draw_maptip_q(ctx, maptip.amusement_park, x, y, quality * scale);
+            break;
+        case 'casino':
+            draw_maptip_q(ctx, maptip.casino, x, y, quality * scale);
+            break;
         case 'land_fill':
-            draw_maptip_q(ctx, maptip.land3, x, y, quality * scale);
             break;
         }
     }
@@ -2226,8 +2254,8 @@ function View(quality)
         if (gift2 == null) {
             draw_wallpaper_gift(ctx, gift1, 40 + 128, 210 + 64, 1);
         } else {
-            draw_wallpaper_gift(ctx, gift1, 40 + 64, 210 + 64, 0.5);
-            draw_wallpaper_gift(ctx, gift2, 40 + 192, 210 + 64, 0.5);
+            draw_wallpaper_gift(ctx, gift1, 40 + 62, 210 + 64, 0.625);
+            draw_wallpaper_gift(ctx, gift2, 40 + 192, 210 + 64, 0.625);
         }
     };
     this.draw_popup_window_picture = function(cvs, type) {

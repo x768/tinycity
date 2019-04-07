@@ -12,7 +12,7 @@ resource.append('es', {
     crossing:         null,
     c_zone:           "Zona comercial",
     fire_dept:        "Cuerpo de Bomberos",
-    fire_hq:          null,
+    fire_hq:          "Sede del Cuerpo de Bomberos",
     garden:           "Jardín",
     gas_power_plant:  "Gas termoeléctrica",
     goods_st:         "Estación de mercancías",
@@ -23,7 +23,7 @@ resource.append('es', {
     land_fill:        "Relleno de Tierra",
     nuke_power_plant: "Central nuclear",
     police_dept:      "Departamento de Policia",
-    police_hq:        null,
+    police_hq:        "Sede del Policía",
     railroad:         "Ferrocarril",
     rail_bridge:      "Puente del Ferrocarril",
     road:             "Carretera",
@@ -40,7 +40,7 @@ resource.append('es', {
     water_area:       "Agua",
     wire:             "Línea eléctrica",
     your_house:       "Tu casa",
-    zoo:              null,
+    zoo:              "Zoo",
 
     // UI
     all_zones:        "Zonas RCIs",
@@ -85,7 +85,7 @@ resource.append('es', {
     graph:            "Gráfico",
     growth_last_year: "Aumento(Año)",
     help:             "Ayuda",
-    hidden_assets:    "Activos ocultos",
+    hidden_assets:    "Activos ocultos $",
     hospitals:        "Hospitales",
     housing_cost:     "Gastos de vivienda",
     i_zones:          "Zonas Is",
@@ -240,6 +240,7 @@ resource.append('es', {
     gift_terminal_station: null,
     gift_police_hq:        null,
     gift_fire_hq:          null,
+    gift_park_casino:      null,
     gift_land_fill:        null,
 
     decimal: ",",
