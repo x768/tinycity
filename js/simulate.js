@@ -1187,8 +1187,8 @@ function Simulate() {
         return true;
     }
     this.police_fire_port = function() {
-        let police_power = Math.floor(18 * city.police_funds_term / 100);
-        let fire_power = Math.floor(18 * city.fire_funds_term / 100);
+        let police_power = Math.floor(24 * city.police_funds_term / 100);
+        let fire_power = Math.floor(24 * city.fire_funds_term / 100);
         let ship_dest = [];
         let port_dest = [];
 
@@ -1433,8 +1433,8 @@ function Simulate() {
                 }
                 let x1 = (x > 3 ? (x - 3) * 2 : 0);
                 let y1 = (y > 3 ? (y - 3) * 2 : 0);
-                let x2 = (x < map_size2 - 3 ? (x + 3) * 2 : 0);
-                let y2 = (y < map_size2 - 3 ? (y + 3) * 2 : 0);
+                let x2 = (x < map_size2 - 3 ? (x + 3) * 2 : map_size2 * 2);
+                let y2 = (y < map_size2 - 3 ? (y + 3) * 2 : map_size2 * 2);
                 let tree = 0;
                 for (let yy = y1; yy < y2; yy++) {
                     let pos = 1 + (yy + 1) * map_size_edge;

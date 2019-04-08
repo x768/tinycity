@@ -84,6 +84,7 @@ function View(quality)
     const INDEX_FIRE_HQ = 72;
     const INDEX_AMUSEMENT = 73;
     const INDEX_CASINO = 74;
+    const INDEX_BANK = 75;
 
     const INDEX_PAVED = 1;
     const INDEX_STADIUM = 2;
@@ -650,6 +651,7 @@ function View(quality)
         mip3.set_qtile(INDEX_FIRE_HQ, maptip.fire_hq, null);
         mip3.set_qtile(INDEX_AMUSEMENT, maptip.amusement_park, null);
         mip3.set_qtile(INDEX_CASINO, maptip.casino, null);
+        mip3.set_qtile(INDEX_BANK, maptip.bank, null);
 
 
         mip4.set_offset_y(7, 1, 7);
@@ -824,6 +826,71 @@ function View(quality)
             }
         }
     };
+    function draw_building_tile(ctx, name, x, y, scale) {
+        let sq = scale * quality;
+
+        switch (name) {
+        case 'r_zone':
+            draw_maptip_q(ctx, maptip.r_frame, x, y, sq);
+            draw_maptip_q(ctx, resource.gettext('vec_r_mark'), x, y, sq);
+            break;
+        case 'c_zone':
+            draw_maptip_q(ctx, maptip.c_frame, x, y, sq);
+            draw_maptip_q(ctx, resource.gettext('vec_c_mark'), x, y, sq);
+            break;
+        case 'i_zone':
+            draw_maptip_q(ctx, maptip.i_frame, x, y, sq);
+            draw_maptip_q(ctx, resource.gettext('vec_i_mark'), x, y, sq);
+            break;
+        case 'hospital':
+            draw_maptip_q(ctx, maptip.land3, x, y, sq);
+            draw_maptip_q(ctx, maptip.hospital, x, y, sq);
+            break;
+        case 'school':
+            draw_maptip_q(ctx, maptip.land3, x, y, sq);
+            draw_maptip_q(ctx, maptip.school, x, y, sq);
+            break;
+        case 'station':
+            draw_maptip_q(ctx, maptip.station_rail_ns, x, y, sq);
+            draw_maptip_q(ctx, maptip.station_ns, x, y, sq);
+            break;
+        case 'police_dept':
+            draw_maptip_q(ctx, maptip.land3, x, y, sq);
+            draw_maptip_q(ctx, maptip.police_dept, x, y, sq);
+            break;
+        case 'fire_dept':
+            draw_maptip_q(ctx, maptip.land3, x, y, sq);
+            draw_maptip_q(ctx, maptip.fire_dept, x, y, sq);
+            break;
+        case 'police_hq':
+            draw_maptip_q(ctx, maptip.land3, x, y, sq);
+            draw_maptip_q(ctx, maptip.police_hq, x, y, sq);
+            break;
+        case 'fire_hq':
+            draw_maptip_q(ctx, maptip.land3, x, y, sq);
+            draw_maptip_q(ctx, maptip.fire_hq, x, y, sq);
+            break;
+        case 'your_house':
+            draw_maptip_q(ctx, maptip.land3, x, y, sq);
+            draw_maptip_q(ctx, maptip.your_house1, x, y, sq);
+            break;
+        case 'terminal_station':
+            draw_maptip_q(ctx, maptip.station_rail_ns, x, y, sq);
+            draw_maptip_q(ctx, maptip.tstation_ns, x, y, sq);
+            break;
+        case 'amusement_park':
+            draw_maptip_q(ctx, maptip.land3, x, y, sq);
+            draw_maptip_q(ctx, maptip.amusement_park, x, y, sq);
+            break;
+        case 'casino':
+            draw_maptip_q(ctx, maptip.land3, x, y, sq);
+            draw_maptip_q(ctx, maptip.casino, x, y, sq);
+            break;
+        case 'land_fill':
+            draw_maptip_q(ctx, maptip.land3, x, y, sq);
+            break;
+        }
+    }
     this.init_full_canvas = function() {
         document.getElementById('indicator-text').style.display = 'none';
         document.getElementById('indicator-menu').style.display = 'none';
@@ -1243,6 +1310,10 @@ function View(quality)
                 case M_CASINO | F_CENTER:
                     name_d = INDEX_TILE3;
                     name_u = INDEX_CASINO | INDEX_TILE3;
+                    break;
+                case M_BANK | F_CENTER:
+                    name_d = INDEX_TILE3;
+                    name_u = INDEX_BANK | INDEX_TILE3;
                     break;
                 }
                 if ((city.tile_fire[i + x] & MF_RADIO) !== 0) {
@@ -1819,12 +1890,12 @@ function View(quality)
 
         let ix = left;
         let iy = 0;
-        let quality_3 = quality / 3;
         let quality_4 = quality / 4;
         for (let i = 0; i < build_icon_info.length; i++) {
             let x = icon_w * ix + tile_size * 0.5;
             let y = icon_h * (iy + 1) - tile_size * 0.25;
-            switch (build_icon_info[i].name) {
+            let name = build_icon_info[i].name;
+            switch (name) {
             case 'inspect':
                 draw_maptip_q(build_icons_ctx, maptip.query, x - tile_size * 0.125, y - tile_size * 0.1875, quality);
                 break;
@@ -1846,54 +1917,14 @@ function View(quality)
                 draw_maptip_q(build_icons_ctx, maptip.land1, x, y, quality);
                 draw_maptip_q(build_icons_ctx, maptip.tree, x, y, quality);
                 break;
-            case 'r_zone':
-                draw_maptip_q(build_icons_ctx, maptip.r_frame, x, y, quality_3);
-                draw_maptip_q(build_icons_ctx, resource.gettext('vec_r_mark'), x, y, quality_3);
-                break;
-            case 'c_zone':
-                draw_maptip_q(build_icons_ctx, maptip.c_frame, x, y, quality_3);
-                draw_maptip_q(build_icons_ctx, resource.gettext('vec_c_mark'), x, y, quality_3);
-                break;
-            case 'i_zone':
-                draw_maptip_q(build_icons_ctx, maptip.i_frame, x, y, quality_3);
-                draw_maptip_q(build_icons_ctx, resource.gettext('vec_i_mark'), x, y, quality_3);
-                break;
-            case 'hospital':
-                draw_maptip_q(build_icons_ctx, maptip.land3, x, y, quality_3);
-                draw_maptip_q(build_icons_ctx, maptip.hospital, x, y, quality_3);
-                break;
-            case 'school':
-                draw_maptip_q(build_icons_ctx, maptip.land3, x, y, quality_3);
-                draw_maptip_q(build_icons_ctx, maptip.school, x, y, quality_3);
-                break;
-            case 'station':
-                draw_maptip_q(build_icons_ctx, maptip.station_rail_ns, x, y, quality_3);
-                draw_maptip_q(build_icons_ctx, maptip.station_ns, x, y, quality_3);
-                break;
-            case 'police_dept':
-                draw_maptip_q(build_icons_ctx, maptip.land3, x, y, quality_3);
-                draw_maptip_q(build_icons_ctx, maptip.police_dept, x, y, quality_3);
-                break;
-            case 'fire_dept':
-                draw_maptip_q(build_icons_ctx, maptip.land3, x, y, quality_3);
-                draw_maptip_q(build_icons_ctx, maptip.fire_dept, x, y, quality_3);
-                break;
-            case 'police_hq':
-                draw_maptip_q(build_icons_ctx, maptip.land3, x, y, quality_3);
-                draw_maptip_q(build_icons_ctx, maptip.police_hq, x, y, quality_3);
-                break;
-            case 'fire_hq':
-                draw_maptip_q(build_icons_ctx, maptip.land3, x, y, quality_3);
-                draw_maptip_q(build_icons_ctx, maptip.fire_hq, x, y, quality_3);
-                break;
             case 'stadium':
             case 'stadium1':
-                draw_maptip_q(build_icons_ctx, maptip.paved4, x, y, quality_3);
-                draw_maptip_q(build_icons_ctx, maptip.stadium1, x, y, quality_3);
+                draw_maptip_q(build_icons_ctx, maptip.paved4, x, y, quality_4);
+                draw_maptip_q(build_icons_ctx, maptip.stadium1, x, y, quality_4);
                 break;
             case 'stadium2':
-                draw_maptip_q(build_icons_ctx, maptip.paved4, x, y, quality_3);
-                draw_maptip_q(build_icons_ctx, maptip.stadium2, x, y, quality_3);
+                draw_maptip_q(build_icons_ctx, maptip.paved4, x, y, quality_4);
+                draw_maptip_q(build_icons_ctx, maptip.stadium2, x, y, quality_4);
                 break;
             case 'goods_st':
                 draw_maptip_q(build_icons_ctx, maptip.goods_st_ns, x, y, quality_4);
@@ -1917,24 +1948,8 @@ function View(quality)
                 draw_maptip_q(build_icons_ctx, maptip.paved4, x, y, quality_4);
                 draw_maptip_q(build_icons_ctx, maptip.nuke_power, x, y, quality_4);
                 break;
-            case 'your_house':
-                draw_maptip_q(build_icons_ctx, maptip.land3, x, y, quality_3);
-                draw_maptip_q(build_icons_ctx, maptip.your_house1, x, y, quality_3);
-                break;
-            case 'terminal_station':
-                draw_maptip_q(build_icons_ctx, maptip.station_rail_ns, x, y, quality_3);
-                draw_maptip_q(build_icons_ctx, maptip.tstation_ns, x, y, quality_3);
-                break;
-            case 'amusement_park':
-                draw_maptip_q(build_icons_ctx, maptip.land3, x, y, quality_3);
-                draw_maptip_q(build_icons_ctx, maptip.amusement_park, x, y, quality_3);
-                break;
-            case 'casino':
-                draw_maptip_q(build_icons_ctx, maptip.land3, x, y, quality_3);
-                draw_maptip_q(build_icons_ctx, maptip.casino, x, y, quality_3);
-                break;
-            case 'land_fill':
-                draw_maptip_q(build_icons_ctx, maptip.land3, x, y, quality_3);
+            default:
+                draw_building_tile(build_icons_ctx, name, x, y, 1 / 3);
                 break;
             }
             if (iy === 0) {
@@ -2203,33 +2218,6 @@ function View(quality)
             }
         }
     };
-    function draw_wallpaper_gift(ctx, gift, x, y, scale) {
-        draw_maptip_q(ctx, maptip.land3, x, y, quality * scale);
-
-        switch (gift) {
-        case 'your_house':
-            draw_maptip_q(ctx, maptip.your_house1, x, y, quality * scale);
-            break;
-        case 'terminal_station':
-            draw_maptip_q(ctx, maptip.station_rail_ns, x, y, quality * scale);
-            draw_maptip_q(ctx, maptip.tstation_ns, x, y, quality * scale);
-            break;
-        case 'police_hq':
-            draw_maptip_q(ctx, maptip.police_hq, x, y, quality * scale);
-            break;
-        case 'fire_hq':
-            draw_maptip_q(ctx, maptip.fire_hq, x, y, quality * scale);
-            break;
-        case 'amusement_park':
-            draw_maptip_q(ctx, maptip.amusement_park, x, y, quality * scale);
-            break;
-        case 'casino':
-            draw_maptip_q(ctx, maptip.casino, x, y, quality * scale);
-            break;
-        case 'land_fill':
-            break;
-        }
-    }
     this.draw_wallpaper_room = function(cvs, gift1, gift2) {
         let width = cvs.width;
         let height = cvs.height;
@@ -2252,10 +2240,10 @@ function View(quality)
         ctx.stroke();
 
         if (gift2 == null) {
-            draw_wallpaper_gift(ctx, gift1, 40 + 128, 210 + 64, 1);
+            draw_building_tile(ctx, gift1, 40 + 128, 210 + 64, 1);
         } else {
-            draw_wallpaper_gift(ctx, gift1, 40 + 62, 210 + 64, 0.625);
-            draw_wallpaper_gift(ctx, gift2, 40 + 192, 210 + 64, 0.625);
+            draw_building_tile(ctx, gift1, 40 + 62, 210 + 64, 0.625);
+            draw_building_tile(ctx, gift2, 40 + 192, 210 + 64, 0.625);
         }
     };
     this.draw_popup_window_picture = function(cvs, type) {

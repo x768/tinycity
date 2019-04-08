@@ -39,8 +39,9 @@ const M_POLICE_HQ= 0x2200 | M_WIRE;
 const M_FIRE_HQ  = 0x2300 | M_WIRE;
 const M_AMUSEMENT= 0x2400 | M_WIRE;
 const M_CASINO   = 0x2500 | M_WIRE;
-const M_GARDEN   = 0x2600 | M_WIRE;
-const M_ZOO      = 0x2700 | M_WIRE;
+const M_BANK     = 0x2600 | M_WIRE;
+const M_GARDEN   = 0x2700 | M_WIRE;
+const M_ZOO      = 0x2800 | M_WIRE;
 
 const MF_FIRE      = 1;
 const MF_FIRE_TMP  = 2;
@@ -101,6 +102,7 @@ const BUILD_ICON_INFO_GIFT = {
     fire_hq:          { size: 3, cost: 100, name: 'fire_hq', tile:M_FIRE_HQ },
     amusement_park:   { size: 3, cost: 100, name: 'amusement_park', tile:M_AMUSEMENT },
     casino:           { size: 3, cost: 100, name: 'casino', tile:M_CASINO },
+    bank:             { size: 3, cost: 100, name: 'bank', tile:M_BANK },
     land_fill:        { size: 3, cost: 100, name: 'land_fill' },
 };
 

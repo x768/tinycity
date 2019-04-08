@@ -685,22 +685,22 @@ function City(source) {
             case M_POLICE_D:
                 info.name = 'police_dept';
                 info.size = 3;
-                list.push({title:'arrested', val:this.tile_sub[pos]});
-                break;
-            case M_FIRE_D:
-                info.name = 'fire_dept';
-                info.size = 3;
-                list.push({title:'dispatched', val:this.tile_sub[pos]});
+                list.push({title:'arrested', val:this.tile_sub[pos] >> 1});
                 break;
             case M_POLICE_HQ:
                 info.name = 'police_hq';
                 info.size = 3;
-                list.push({title:'arrested', val:this.tile_sub[pos]});
+                list.push({title:'arrested', val:this.tile_sub[pos] >> 1});
+                break;
+            case M_FIRE_D:
+                info.name = 'fire_dept';
+                info.size = 3;
+                list.push({title:'dispatched', val:this.tile_sub[pos] >> 1});
                 break;
             case M_FIRE_HQ:
                 info.name = 'fire_hq';
                 info.size = 3;
-                list.push({title:'dispatched', val:this.tile_sub[pos]});
+                list.push({title:'dispatched', val:this.tile_sub[pos] >> 1});
                 break;
             case M_STATION:
                 info.name = 'station';
@@ -766,6 +766,9 @@ function City(source) {
                 break;
             case M_CASINO:
                 info.name = 'casino';
+                break;
+            case M_BANK:
+                info.name = 'bank';
                 break;
             default:
                 info.name = '???';
