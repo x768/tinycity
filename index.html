@@ -2,63 +2,122 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<style type="text/css"> @import "docs/help.css"; </style>
+<style type="text/css"> @import "css/help.css"; </style>
 <script type="text/javascript" src="js/resource.js" defer></script>
-<script type="text/javascript">
-
-'use strict';
-
-(fn => {
-    if (document.readyState !== 'loading'){
-        fn();
-    } else {
-        document.addEventListener('DOMContentLoaded', fn);
-    }
-})(() => {
-    let lang_select = document.getElementById('lang-select');
-
-    function set_menu(key) {
-        document.getElementById('menu-' + key).textContent = resource.gettext(key);
-    }
-
-    lang_select.addEventListener('change', e => {
-        resource.set_language(lang_select.value, () => {
-            set_menu('start_game');
-            set_menu('terrain_editor');
-            set_menu('help');
-            document.getElementById('menu-help').setAttribute('href', (lang_select.value === 'ja') ? 'docs/help.ja.html' : 'docs/help.en.html');
-        });
-    });
-
-    resource.init(() => {
-        for (let i = 0; i < resource.language_menu.length; i++) {
-            let m = resource.language_menu[i];
-            let option = document.createElement('option');
-            option.textContent = m.text_raw;
-            option.value = m.value.substr(5);
-            lang_select.appendChild(option);
-        }
-        lang_select.value = resource.current_language;
-        lang_select.dispatchEvent(new Event('change'));
-    });
-});
-
-</script>
+<script type="text/javascript" src="js/index.js" defer></script>
 <title>TinyCity</title>
 </head>
 <body>
 <div style="text-align:right; margin: 0 8px 2px"><select id="lang-select"></select></div>
 <div id="title-logo">
 <svg width="640" height="110">
+<defs>
+<linearGradient id="night-sky" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#808080"/><stop offset="100%" stop-color="#d0d0d0"/></linearGradient>
+</defs>
 <path style="stroke:#ffffff;stroke-width:4;fill:#ff0000" d="m 180,20 -61,5 2,19 h 23 l 5,39 22,-5 -7,-38 14,-1 z m 84,17 -17,0 4,18 -28,-18 -1,45 18,0 -0,-16 28,15 z m 16,-2 -7,13 12,12 -0,22 11,-0 1,-22 11,-15 -8,-8 -9,9 z m -70,6 -22,2 -1,37 23,-0 z"></path>
 <path style="stroke:#ffffff;stroke-width:4;fill:#0000ff" d="m 345,19 -10,22 2,27 9,14 h 28 l 11,-16 -16,-12 -8,10 -9,-6 -1,-12 11,-7 8,7 15,-6 -11,-19 z m 120,19 -4,11 12,13 -5,19 17,2 1,-19 14,-11 -4,-15 -16,12 z m -46,5 -0,13 12,0 -3,25 15,0 -1,-22 10,-2 2,-19 z m -24,0 -2,38 22,1 -4,-42 z"></path>
 </svg>
 </div>
 
 <div class="popup-list">
-<div class="popup-item"><a href="tinycity.html" id="menu-start_game"></a></div>
-<div class="popup-item"><a href="terrain.html" id="menu-terrain_editor"></a></div>
-<div class="popup-item"><a href="docs/help.en.html" id="menu-help"></a></div>
+<div class="popup-item"><a href="tinycity.html" class="resource" data-key="start_game"></a></div>
+<div class="popup-item"><a href="terrain.html" class="resource" data-key="terrain_editor"></a></div>
+<div class="popup-item"><a href="docs/help.en.html" class="resource" id="menu-help" data-key="help"></a></div>
 </div>
+<div class="city-list">
+
+<div class="city-list-item" data-city="cisco">
+<div class="city-list-name">San Francisco</div>
+<div class="city-list-descript resource" data-key="earthquake"></div>
+<svg width="200" height="120">
+<rect style="fill:url(#night-sky)" x="0" y="0" width="240" height="120"></rect>
+</svg>
+<div class="city-list-year">1906</div>
+</div>
+
+<div class="city-list-item" data-city="bern">
+<div class="city-list-name">Bern</div>
+<div class="city-list-descript resource" data-key="traffic_jam"></div>
+<svg width="200" height="120">
+<rect style="fill:url(#night-sky)" x="0" y="0" width="240" height="120"></rect>
+</svg>
+<div class="city-list-year">1965</div>
+</div>
+
+<div class="city-list-item" data-city="tokyo">
+<div class="city-list-name">Tokyo</div>
+<div class="city-list-descript resource" data-key="monster"></div>
+<svg width="200" height="120">
+<rect style="fill:url(#night-sky)" x="0" y="0" width="240" height="120"></rect>
+</svg>
+<div class="city-list-year">1967</div>
+</div>
+
+<div class="city-list-item" data-city="detroit">
+<div class="city-list-name">Detroit</div>
+<div class="city-list-descript resource" data-key="crime"></div>
+<svg width="200" height="120">
+<rect style="fill:url(#night-sky)" x="0" y="0" width="240" height="120"></rect>
+</svg>
+<div class="city-list-year">1972</div>
+</div>
+
+<div class="city-list-item" data-city="boston">
+<div class="city-list-name">Boston</div>
+<div class="city-list-descript resource" data-key="meltdown"></div>
+<svg width="200" height="120">
+<rect style="fill:url(#night-sky)" x="0" y="0" width="240" height="120"></rect>
+</svg>
+<div class="city-list-year">2010</div>
+</div>
+
+<div class="city-list-item" data-city="rio">
+<div class="city-list-name">Rio de Janeiro</div>
+<div class="city-list-descript resource" data-key="flood"></div>
+<svg width="200" height="120">
+<rect style="fill:url(#night-sky)" x="0" y="0" width="240" height="120"></rect>
+</svg>
+<div class="city-list-year">2047</div>
+</div>
+
+<div class="city-list-item" data-city="lasvegas">
+<div class="city-list-name">Las Vegas</div>
+<div class="city-list-descript resource" data-key="ufo"></div>
+<svg width="200" height="120">
+<rect style="fill:url(#night-sky)" x="0" y="0" width="240" height="120"></rect>
+</svg>
+<div class="city-list-year">2096</div>
+</div>
+
+<div class="city-list-item" data-city="tokyo2">
+<div class="city-list-name">Tokyo</div>
+<div class="city-list-descript resource" data-key="monster"></div>
+<svg width="200" height="120">
+<rect style="fill:url(#night-sky)" x="0" y="0" width="240" height="120"></rect>
+</svg>
+<div class="city-list-year">2016</div>
+</div>
+
+</div>
+
+<div id="popup-window-back">
+<div id="popup-window">
+<div id="popup-top-button">
+<svg width="640" height="32">
+<g id="popup-cancel">
+<rect style="fill:#ffffff;stroke:#a0a0a0;stroke-width:1px" x="0" y="0" width="128" height="32" rx="16" ry="16"></rect>
+<text style="fill:#000000" x="64" y="24" text-anchor="middle" id="popup-cancel-text"></text>
+</g>
+<g id="popup-ok" transform="translate(512)">
+<rect style="fill:#ffffff;stroke:#a0a0a0;stroke-width:1px" x="0" y="0" width="128" height="32" rx="16" ry="16"></rect>
+<text style="fill:#000000" x="64" y="24" text-anchor="middle" id="popup-ok-text"></text>
+</g>
+</svg>
+</div>
+<div id="popup-title"></div>
+<div id="popup-text"></div>
+</div>
+</div>
+
 </body>
 </html>
