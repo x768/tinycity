@@ -428,6 +428,12 @@
         }
         popup.set_svg_list(32, 32, 260, list_items);
     }
+    function show_error_window(e) {
+        popup.reset();
+        popup.set_layout('text', null);
+        popup.set_title_raw("Error");
+        popup.set_text_content_raw(e.message);
+    }
     function update_indicator() {
         document.getElementById('indicator-date').value = String(city.year);
         document.getElementById('indicator-funds').value = (city.difficulty !== 'creative' ? String(city.funds) : '∞');
@@ -1152,8 +1158,7 @@
                     city_tmp.city_name = file.name.replace(/\.[a-zA-Z]+$/, '');
                     show_load_file('import_mp');
                 } catch (e) {
-                    // TODO
-                    window.alert(e);
+                    show_error_window(e);
                 }
             });
             fr.readAsArrayBuffer(file);
@@ -1164,7 +1169,7 @@
                     //show_load_file('load_file');
                 } catch (e) {
                     // TODO
-                    window.alert(e);
+                    show_error_window(e);
                 }
             });
             fr.readAsText(file);
@@ -1172,10 +1177,11 @@
             fr.addEventListener('load', e => {
                 try {
                     city_tmp = new City(JSON.parse(e.target.result));
+                    city_tmp.month = 1;
                     show_load_file('load_file');
                 } catch (e) {
                     // TODO
-                    window.alert(e);
+                    show_error_window(e);
                 }
             });
             fr.readAsText(file);
@@ -1205,5 +1211,8 @@
         }
     }, 100);
 
+    if (window.location.hash !== '') {
+        resource.current_language = window.location.hash.substr(1);
+    }
     resource.init(init);
 });

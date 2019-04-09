@@ -35,6 +35,7 @@
     let build_icon_info = BUILD_ICON_INFO_TINYCITY;
     let city_tmp = null;
     let graph_selected = null;
+    let init_filename = null;
 
     let is_airplane_arrival = false;
     let earthquake_time_left = 0;
@@ -1565,7 +1566,7 @@
         city_tmp = new City(json);
         popup.reset();
         popup.set_title('load_file');
-        popup.show_ok_cancel('file_ok', from_url ? 'drop_cancel' : 'file_cancel');
+        popup.show_ok_cancel('file_ok', from_url ? null : 'file_cancel');
         popup.set_layout('canvas:' + (city_tmp.map_size * 2 + 2), 'svg');
         popup.draw_map_q(city_tmp);
 
@@ -1582,6 +1583,12 @@
             list.push({title: 'election', val: resource.datestr(city_tmp.election.year, 3), format: 'raw'});
         }
         popup.set_svg_list(32, 32, 260, list);
+    }
+    function show_error_window(message) {
+        popup.reset();
+        popup.set_title_raw("Error");
+        popup.set_layout('text', null);
+        popup.set_text_content_raw(message);
     }
     popup.callback_readfile = (file => {
         let fr = new FileReader();
@@ -2252,26 +2259,30 @@
         view.message_ticker_tick();
     }, 100);
 
+    if (window.location.hash !== '') {
+        resource.current_language = window.location.hash.substr(1);
+    }
+
     resource.init(() => {
         show_title_screen();
-        let filename = null;
-        if (document.location.hash !== '') {
-            filename = document.location.hash.substr(1);
-            if (!/^[a-z0-9_]+$/.test(filename)) {
-                filename = null;
+        init_filename = null;
+        if (window.location.search !== '') {
+            init_filename = window.location.search.substr(1);
+            if (!/^[a-z0-9_]+$/.test(init_filename)) {
+                init_filename = null;
             }
         }
-        if (filename != null) {
-            fetch('./cities/' + filename + '.json').then(response => {
+        if (init_filename != null) {
+            fetch('./cities/' + init_filename + '.json').then(response => {
                 if (response.ok) {
                     return response.json();
                 } else {
-                    throw new Error('Cannot read file ' + filename);
+                    throw new Error('Cannot read file ' + init_filename);
                 }
             }).then(json => {
                 show_city_file_info(json, true);
             }).catch(err => {
-                alert(err);
+                show_error_window('Cannot read file ' + init_filename + '.json');
             });
         }
     });

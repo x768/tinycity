@@ -1,5 +1,7 @@
 html {
-    background: #e0c8a0;
+    background: linear-gradient(#000000, #000080);
+    background-attachment: fixed;
+    height: 100%;
 }
 body {
     margin: 1em 10%;
@@ -14,6 +16,7 @@ h1 {
     border-width: 0 0 1px 4px;
     border-style: none none solid solid;
     border-color: black;
+    color: black;
     padding: .1em .5em;
     background: white;
 }
@@ -27,6 +30,10 @@ p {
 }
 .content {
     display: none;
+}
+article {
+    padding: 12px 20px;
+    background: #c0c0ff;
 }
 table {
     border-collapse: collapse;
@@ -124,7 +131,7 @@ th, td {
 }
 #popup-text {
     font-size: 18px;
-    padding: 32px 80px;
+    padding: 32px 72px;
     line-height: 1.5;
     white-space: pre-wrap;
 }
