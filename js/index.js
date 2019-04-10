@@ -63,11 +63,11 @@ function ScenarioMessage()
             ja: "地球温暖化により海面が上昇し、21世紀中頃には世界的に海面が上昇しました。そのため、海に面した地域で洪水が発生しました。\nあなたの使命は、水浸しになった街を再建することです。\n市長の任期は10年です。",
         },
         lasvegas: {
-            en: "The largest amusement city was attacked by strange flying object and the city suffered devastated damage.\nYou have 10 years to withstand attack and rebuild the city.",
-            ja: "世界最大の娯楽都市は、謎の飛行物体による度重なる攻撃により、壊滅的な被害を受けました。\nあなたの使命は、UFOの攻撃に耐え、街を再建することです。\n市長の任期は10年です。",
+            en: "The world's largest gambling city was attacked by strange flying objects and the city suffered devastated damage.\nYou have 10 years to withstand attack and rebuild the city.",
+            ja: "世界最大のカジノ都市は、謎の飛行物体による度重なる攻撃により、壊滅的な被害を受けました。\nあなたの使命は、UFOの攻撃に耐え、街を再建することです。\n市長の任期は10年です。",
         },
         tokyo2: {
-            en: "A large creature has been landed at Kamata and city was devastated by catastrophic disaster.\nYour mission is to rebuild the city and achieve to the status of metropolis.\nYou have 10 years.",
+            en: "A large creature has been landed at Kamata and city was devastated by catastrophic disaster.\nYour mission is to rebuild the city to an active metropolis within 10 years.",
             ja: "巨大な生物が蒲田に上陸し、街は壊滅的な被害を受けました。\nあなたの使命は、街を再建し、メトロポリスにすることです。\n市長の任期は10年です。",
         },
     };
@@ -118,7 +118,11 @@ function ScenarioMessage()
         popup.set_content(scenario_msg.gettext(resource.current_language, name));
         popup.show(m => {
             if (m === 'ok') {
-                window.location.href = 'tinycity.html?' + name;
+                let link = 'tinycity.html?' + name;
+                if (lang_select.value !== init_lang) {
+                    link += '#' + lang_select.value;
+                }
+                window.location.href = link;
             }
         });
     }

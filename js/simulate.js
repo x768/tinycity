@@ -44,6 +44,7 @@ function Simulate() {
     this.ship_last_pos = -1;
 
     let ship_port_dir = 0;
+    let is_ship_approaching_port = true;
     this.port_departs = false;
 
     this.station_active_pos = -1;
@@ -1244,21 +1245,18 @@ function Simulate() {
 
         if (this.ship_route.length === 0 && ship_dest.length > 0 && port_dest.length > 0) {
             let dest;
-            let is_dest_port;
-            if (this.ship_last_pos < 0) {
+            if (is_ship_approaching_port) {
                 let p = choice_random(ship_dest);
                 this.ship_last_pos = p[0];
                 dest = choice_random(port_dest);
                 ship_port_dir = dest[1];
-                is_dest_port = true;
             } else {
                 dest = choice_random(ship_dest);
-                is_dest_port = false;
             }
             tile_tmp[dest[0]] = 252;
             spread_zone_effect(tile_tmp, [dest[0]]);
-            if (!trace_ship_route(this, this.ship_last_pos, is_dest_port)) {
-                this.ship_last_pos = -1;
+            if (trace_ship_route(this, this.ship_last_pos, is_ship_approaching_port)) {
+                is_ship_approaching_port = !is_ship_approaching_port;
             }
         }
 
