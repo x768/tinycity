@@ -45,7 +45,6 @@ function Simulate() {
 
     let ship_port_dir = 0;
     let is_ship_approaching_port = true;
-    this.port_departs = false;
 
     this.station_active_pos = -1;
 
@@ -1801,7 +1800,7 @@ function Simulate() {
         city.calculate_power_grid_required = true;
         city.update_power_grid_required = true;
     };
-    this.disaster_airplane_crash = function(x, y) {
+    this.disaster_vehicle_crash = function(x, y, is_ship) {
         let pos = 1 + x + (1 + y) * map_size_edge;
         put_fire_1(x, y, pos);
         if (x > 0 && y > 0)
@@ -1813,6 +1812,9 @@ function Simulate() {
         if (x < city.map_size - 1 && y < city.map_size - 1)
             put_fire_1(x + 1, y + 1, pos + map_size_edge + 1);
 
+        if (is_ship) {
+            is_ship_approaching_port = true;
+        }
         city.disaster_occurs = true;
         city.disaster_ticks = 0;
         city.calculate_power_grid_required = true;

@@ -34,6 +34,7 @@
     let rbuttondown = false;
     let build_icon_info = BUILD_ICON_INFO_TINYCITY;
     let city_tmp = null;
+    let map_type_selected = null;
     let graph_selected = null;
     let init_filename = null;
 
@@ -304,6 +305,7 @@
         current_build_index = 0;
         current_build = build_icon_info[current_build_index];
         current_speed = 'normal';
+        map_type_selected = 'all_zones';
         graph_selected = {
             r_zones: true,
             c_zones: true,
@@ -798,6 +800,11 @@
         view.update_power_grid(city);
         view.draw_main(current_speed);
 
+        if (current_speed !== 'normal') {
+            current_speed = 'normal';
+            update_speed();
+        }
+
         if (options.popup_window) {
             popup.reset();
             popup.set_back_half_opacity();
@@ -952,6 +959,16 @@
             break;
         }
     }
+    function shipwreck_occur(pos) {
+        let x = pos % city.map_size_edge - 1;
+        let y = Math.floor(pos / city.map_size_edge) - 1;
+        if (pos != null) {
+            view.move_position_at(x, y);
+        }
+        simulate.disaster_vehicle_crash(x, y, true);
+        simulate.ship_route = [];
+        disaster_occur_message('shipwreck');
+    }
     function disaster_occur(disaster) {
         reset_mouse_drag();
 
@@ -980,7 +997,10 @@
             }
             return;
         case 'shipwreck':
-            view.show_message_ticker_raw('Not implemented');
+            if (view.container_ship.dir >= 0) {
+                let d = Math.floor(Math.random() * 8);
+                simulate.ship_route = [d, d, d, d, 64];
+            }
             return;
         case 'tornado':
             show_msg = true;
@@ -1011,10 +1031,6 @@
         case 'ufo':
             view.show_message_ticker_raw('Not implemented');
             return;
-        }
-        if (current_speed !== 'normal') {
-            current_speed = 'normal';
-            update_speed();
         }
         if (city.ruleset === 'tinycity' && current_build_index !== 0) {
             current_build_index = 0;
@@ -1245,7 +1261,7 @@
         popup.set_layout('map:' + (city.map_size * 2 + 2), 'list');
         popup.set_list_items({
             type: 'single',
-            init: 'all_zones',
+            init: map_type_selected,
             items: [
                 //{text: 'debug', text_raw:'Debug'},
                 {text: 'all_zones'},
@@ -1263,7 +1279,8 @@
             ],
         });
         popup.open(() => {
-            switch (popup.get_selected()) {
+            map_type_selected = popup.get_selected();
+            switch (map_type_selected) {
             case 'all_zones':
                 popup.draw_map_base(city, true);
                 popup.set_map_legand([
@@ -1824,7 +1841,7 @@
             let y = a.y >> 4;
             if (x >= 0 && x < city.map_size && y >= 0 && y < city.map_size) {
                 if ((city.tile_data[1 + x + (1 + y) * city.map_size_edge] & ~F_CENTER) !== M_AIRPORT) {
-                    simulate.disaster_airplane_crash(x, y);
+                    simulate.disaster_vehicle_crash(x, y, false);
                     disaster_occur_message('airplane_crash');
                 }
             }
@@ -1973,7 +1990,13 @@
     }
     function ship_set_direction(s, dir) {
         if (dir != null) {
-            if (dir === 32) {
+            if (dir === 64) {
+                // shipwreck
+                s.dir = -1;
+                s.d = -1;
+                shipwreck_occur(simulate.ship_last_pos);
+                simulate.ship_last_pos = -1;
+            } else if (dir === 32) {
                 s.dx = 0;
                 s.dy = 0;
                 s.d = 32;
@@ -1988,13 +2011,19 @@
                 } else {
                     s.dir = dir;
                 }
-                s.d = 30;
+                s.d = 32;
             } else {
                 s.dx = DIR8_X[dir];
                 s.dy = DIR8_Y[dir];
                 s.dir = dir;
                 s.d = 16;
                 simulate.ship_last_pos += s.dx + s.dy * city.map_size_edge;
+                if ((city.tile_data[simulate.ship_last_pos] & M_LAND) !== 0) {
+                    s.dir = -1;
+                    s.d = -1;
+                    shipwreck_occur(simulate.ship_last_pos);
+                    simulate.ship_last_pos = -1;
+                }
             }
         } else {
             s.dir = -1;
