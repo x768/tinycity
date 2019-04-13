@@ -26,45 +26,136 @@ body {
 </svg>
 </div>
 
-<div class="popup-list">
-<div class="popup-item"><a href="tinycity.html" class="resource" data-key="start_game" id="menu-start-game"></a></div>
-<div class="popup-item"><a href="terrain.html" class="resource" data-key="terrain_editor" id="menu-terrain-editor"></a></div>
-<div class="popup-item"><a href="docs/help.en.html" class="resource" data-key="help" id="menu-help"></a></div>
-</div>
 <div class="city-list">
+<a href="tinycity.html" id="menu-start-game">
+<div class="city-list-item">
+<div class="city-list-name resource" data-key="start_game"></div>
+<svg width="200" height="120" style="margin-top:1.5em">
+<rect style="fill:url(#night-sky)" x="0" y="0" width="200" height="120"></rect>
+<g transform="translate(25,20) scale(0.25)">
+<path style="stroke:#ffffff;stroke-width:4;fill:#808080" d="m 180,20 -61,5 2,19 h 23 l 5,39 22,-5 -7,-38 14,-1 z m 84,17 -17,0 4,18 -28,-18 -1,45 18,0 -0,-16 28,15 z m 16,-2 -7,13 12,12 -0,22 11,-0 1,-22 11,-15 -8,-8 -9,9 z m -70,6 -22,2 -1,37 23,-0 z"></path>
+<path style="stroke:#ffffff;stroke-width:4;fill:#505050" d="m 345,19 -10,22 2,27 9,14 h 28 l 11,-16 -16,-12 -8,10 -9,-6 -1,-12 11,-7 8,7 15,-6 -11,-19 z m 120,19 -4,11 12,13 -5,19 17,2 1,-19 14,-11 -4,-15 -16,12 z m -46,5 -0,13 12,0 -3,25 15,0 -1,-22 10,-2 2,-19 z m -24,0 -2,38 22,1 -4,-42 z"></path>
+</g>
+<rect style="stroke:#000000;stroke-width:1;fill:#ffffff" x="70" y="54" width="60" height="10"></rect>
+<rect style="stroke:#000000;stroke-width:1;fill:#ffffff" x="70" y="66" width="60" height="10"></rect>
+<rect style="stroke:#000000;stroke-width:1;fill:#ffffff" x="70" y="78" width="60" height="10"></rect>
+<rect style="stroke:#000000;stroke-width:1;fill:#ffffff" x="70" y="90" width="60" height="10"></rect>
+</svg>
+</a>
+</div>
 
+<div class="city-list-item">
+<a href="terrain.html" id="menu-terrain-editor">
+<div class="city-list-name resource" data-key="terrain_editor"></div>
+<svg width="200" height="120" style="margin-top:1.5em">
+<rect style="fill:url(#night-sky)" x="0" y="0" width="200" height="120"></rect>
+<path style="fill:#e0e0e0" d="m 20,80 80 -40 80 40 -80,40 z"></path>
+<path style="fill:#404040" d="m 70,105 20,-20 20,-10 40,-10 10,5 -60,20 -20,20 z"></path>
+<path style="stroke:#404040;stroke-width:4;fill:none" d="m 90,90 -15,-5 -1,-8 6,-8"></path>
+<path style="stroke:#000000;stroke-width:1;fill:#ffffff" d="m 80,68 12,12 -5,0 4,8 -4,2 -4,-8 -3,3 z"></path>
+</svg>
+</a>
+</div>
+
+<div class="city-list-item">
+<a href="docs/help.en.html" id="menu-help">
+<div class="city-list-name resource" data-key="help"></div>
+<svg width="200" height="120" style="margin-top:1.5em">
+<rect style="fill:url(#night-sky)" x="0" y="0" width="200" height="120"></rect>
+<path style="fill:#000000" d="m 40,50 60,-30 60,30 5,5 0,20 -5,5 -56 28 -8,0 -56,-28 30,-15 z"></path>
+<path style="fill:#ffffff" d="m 48,54 48,24 5,5 0,16 -5,5 -48,-24 z"></path>
+</svg>
+</a>
+</div>
+</div>
+
+<div class="city-list">
 <div class="city-list-item" data-city="cisco">
 <div class="city-list-name">San Francisco</div>
 <div class="city-list-descript resource" data-key="earthquake"></div>
 <svg width="200" height="120">
-<rect style="fill:url(#night-sky)" x="0" y="0" width="240" height="120"></rect>
+<rect style="fill:url(#night-sky)" x="0" y="0" width="200" height="120"></rect>
+<path style="fill:#ffffff" d="m 80,120 30,-30 25,10 10,-20 10,15 20,-30 10,30 5,-5 5,30 z"></path>
+<path style="fill:#ffffff" d="m 110,80 -3,-5 3,0 z"></path>
+<path style="fill:#ffffff" d="m 106,40 -3,-5 3,0 z"></path>
+<path style="fill:#ffffff" d="m 140,60 -3,-5 3,0 z"></path>
+<path style="fill:#ffffff" d="m 170,50 -3,-5 3,0 z"></path>
+<path style="fill:#000000" d="m 0,40 30,4 -8,46 -20,-10 10,7 -8,14 10,-12 6,3 8,27 -30,0 z"></path>
+<path style="fill:#000000" d="m 31,120 -1,-13 30,-2 -3,15 z"></path>
+<path style="stroke:#000000;stroke-width:2;fill:none" d="m 38,106 -1,-11 1,-3 5,-2"></path>
+<path style="stroke:#000000;stroke-width:2;fill:none" d="m 45,106 -1,-4"></path>
+<path style="stroke:#000000;stroke-width:2;fill:none" d="m 52,106 -1,-7"></path>
+<path style="fill:#000000" d="m 62,120 2,-10 120,14 z"></path>
+<path style="fill:#000000" d="m 70,114 2,-20 10,0 -10,-2 -10,-10 10,-10 10,10 -6,4 7,-2 2,10 -2,18 z"></path>
+<path style="fill:#000000" d="m 90,116 2,-26 -2,1 8,-1 -2,14 24,2 -6,-4 4,-2 6,4 -1,12 z"></path>
+<path style="fill:#000000" d="m 150,120 8,-12 10,4 5,-5 8,12 z"></path>
 </svg>
 <div class="city-list-year">1906</div>
-</div>
-
-<div class="city-list-item" data-city="bern">
-<div class="city-list-name">Bern</div>
-<div class="city-list-descript resource" data-key="traffic_jam"></div>
-<svg width="200" height="120">
-<rect style="fill:url(#night-sky)" x="0" y="0" width="240" height="120"></rect>
-</svg>
-<div class="city-list-year">1965</div>
 </div>
 
 <div class="city-list-item" data-city="tokyo">
 <div class="city-list-name">Tokyo</div>
 <div class="city-list-descript resource" data-key="monster"></div>
 <svg width="200" height="120">
-<rect style="fill:url(#night-sky)" x="0" y="0" width="240" height="120"></rect>
+<rect style="fill:url(#night-sky)" x="0" y="0" width="200" height="120"></rect>
+<rect style="fill:#000000" x="0" y="100" width="200" height="20"></rect>
+<path style="fill:#000000" d="m 90,66 -10,2 2,5 5,2 -1,2 2,17 6,6 20,0 -8,-4 -6,-6 -6,-16 z"></path>
+<path style="fill:#000000" d="m 90,87 -5,2 0,7 -2,4 9,0 -2,-5 z"></path>
+<path style="fill:#000000" d="m 89,78 -3,3 -3,-3 -1,3 4,3 5,-3 z"></path>
+<rect style="fill:#000000" x="20" y="80" width="10" height="21"></rect>
+<rect style="fill:#000000" x="32" y="88" width="8" height="13"></rect>
+<rect style="fill:#000000" x="45" y="75" width="14" height="26"></rect>
+<rect style="fill:#000000" x="65" y="80" width="12" height="21"></rect>
+<rect style="fill:#000000" x="115" y="80" width="10" height="21"></rect>
+<rect style="fill:#000000" x="130" y="90" width="18" height="11"></rect>
+<rect style="fill:#000000" x="134" y="80" width="10" height="13"></rect>
+<path stylr="fill:#000000" d="m 162,101 4,-8 2,-8 -2,0 0,-2 2,0 1,-16 1,0 1,16 2,0 0,2 -2,0 2,8 4,8 -8,-3 z"></path>
 </svg>
-<div class="city-list-year">1967</div>
+<div class="city-list-year">1961</div>
+</div>
+
+<div class="city-list-item" data-city="bern">
+<div class="city-list-name">Bern</div>
+<div class="city-list-descript resource" data-key="traffic_jam"></div>
+<svg width="200" height="120">
+<rect style="fill:url(#night-sky)" x="0" y="0" width="200" height="120"></rect>
+<rect style="fill:#000000" x="0" y="50" width="200" height="70"></rect>
+<path style="fill:#808080" d="m 0,120 0,-10 200,-50 0,10 -140,50 z"></path>
+<path style="fill:#000000" d="m 10,110 0,3 10,5 12,-6 0,-3 -10,-5 -10,0 z"></path>
+<path style="fill:#000000" d="m 40,102 0,3 10,5 12,-6 0,-3 -10,-5 -10,0 z"></path>
+<path style="fill:#000000" d="m 70,94 0,3 9,5 11,-6 0,-3 -9,-5 -9,0 z"></path>
+<path style="fill:#000000" d="m 100,86 0,3 8,4 10,-5 0,-3 -8,-4 -8,0 z"></path>
+<path style="fill:#000000" d="m 130,78 0,2 7,4 9,-5 0,-2 -7,-4 -7,0 z"></path>
+<path style="fill:#000000" d="m 160,70 0,2 7,4 9,-5 0,-2 -7,-4 -7,0 z"></path>
+
+<path style="fill:#000000" d="m 50,112 0,3 10,5 12,-6 0,-3 -10,-5 -10,0 z"></path>
+<path style="fill:#000000" d="m 80,104 0,3 9,5 11,-6 0,-3 -9,-5 -9,0 z"></path>
+<path style="fill:#000000" d="m 110,94 0,3 8,4 10,-5 0,-3 -8,-4 -8,0 z"></path>
+<path style="fill:#000000" d="m 140,85 0,2 7,4 9,-5 0,-2 -7,-4 -7,0 z"></path>
+<path style="fill:#000000" d="m 170,77 0,2 7,4 9,-5 0,-2 -7,-4 -7,0 z"></path>
+
+<rect style="fill:#000000" x="40" y="40" width="40" height="11"></rect>
+<rect style="fill:#000000" x="140" y="35" width="30" height="16"></rect>
+<path style="fill:#000000" d="m 110,51 3,-3 0,-8 3,0 0,-6 2,0 0,6 3,0 0,8 3,3 z"></path>
+</svg>
+<div class="city-list-year">1965</div>
 </div>
 
 <div class="city-list-item" data-city="detroit">
 <div class="city-list-name">Detroit</div>
 <div class="city-list-descript resource" data-key="crime"></div>
 <svg width="200" height="120">
-<rect style="fill:url(#night-sky)" x="0" y="0" width="240" height="120"></rect>
+<rect style="fill:url(#night-sky)" x="0" y="0" width="200" height="120"></rect>
+<path style="fill:#000000" d="m 0,30 20,0 0,20 10,0 0,-40 20,0 0,20 20,0 0,10 20,0 0,-10 110,0 0,90 -200,0 z"></path>
+<rect style="fill:#606060" x="110" y="0" width="90" height="100"></rect>
+<path style="stroke:#000000;stroke-width:4;fill:none" d="m 108,30 92,0"></path>
+<path style="stroke:#c0c0c0;stroke-width:4;fill:none" d="m 108,30 0,-10 92,0"></path>
+<rect style="fill:#c0c0c0" x="130" y="50" width="30" height="30"></rect>
+<path style="fill:#000000" d="m 130,80 0,-20 4,12 10,-8 -6,10 7,5 z"></path>
+<path style="stroke:#000000;stroke-width:4;fill:none" d="m 150,70 23,-20 -4,30 30,-13 m-15,-10 4,30"></path>
+<path style="fill:#c0c0c0" d="m 30,90 0,10 10,0 10,-5 6,-1 4,6 30,0 5,-5 10,0 5,5 5,0 0,-10 -5,-10 -25,4 -30,-4 -10,8 z"></path>
+<path style="stroke:#c0c0c0;stroke-width:4;fill:none" d="m 34,71 20,10 15,-10 20,2"></path>
+<path style="stroke:#c0c0c0;stroke-width:4;fill:none" d="m 83,85 7,-15 7 1 6 10"></path>
 </svg>
 <div class="city-list-year">1972</div>
 </div>
@@ -73,7 +164,20 @@ body {
 <div class="city-list-name">Boston</div>
 <div class="city-list-descript resource" data-key="meltdown"></div>
 <svg width="200" height="120">
-<rect style="fill:url(#night-sky)" x="0" y="0" width="240" height="120"></rect>
+<rect style="fill:url(#night-sky)" x="0" y="0" width="200" height="120"></rect>
+<rect style="fill:#000000" x="0" y="40" width="200" height="80"></rect>
+<rect style="fill:#000000" x="110" y="26" width="40" height="15"></rect>
+<rect style="fill:#000000" x="149" y="36" width="43" height="5"></rect>
+<rect style="fill:#000000" x="154" y="16" width="15" height="25"></rect>
+<rect style="fill:#000000" x="172" y="16" width="15" height="25"></rect>
+<path style="stroke:#a0a0a0;stroke-width:1;fill:none" d="m 0,62 33,-2 23,4 25,-2 44,4 45,-5 30,3"></path>
+<path style="stroke:#a0a0a0;stroke-width:1;fill:none" d="m 0,86 33,-6 23,4 25,-2 44,4 41,-5 34,9"></path>
+<rect style="fill:#a0a0a0" x="82" y="52" width="36" height="36"></rect>
+<path style="fill:#000000" d="m 100,70 -6,11 6,1 6,-1 z"></path>
+<path style="fill:#000000" d="m 100,70 11,0 -1,-6 -4,-5 z"></path>
+<path style="fill:#000000" d="m 100,70 -11,0 1,-6 4,-5 z"></path>
+<path style="stroke:#a0a0a0;stroke-width:4;fill:none" d="m 32,54 4,50"></path>
+<path style="stroke:#a0a0a0;stroke-width:4;fill:none" d="m 172,54 -14,50"></path>
 </svg>
 <div class="city-list-year">2010</div>
 </div>
@@ -82,7 +186,17 @@ body {
 <div class="city-list-name">Rio de Janeiro</div>
 <div class="city-list-descript resource" data-key="flood"></div>
 <svg width="200" height="120">
-<rect style="fill:url(#night-sky)" x="0" y="0" width="240" height="120"></rect>
+<rect style="fill:url(#night-sky)" x="0" y="0" width="200" height="120"></rect>
+<path style="fill:#000000" d="m 0,60 200,0 0,-5 -40,-8 -50,8 -20,0 -40,-4 -50,4 z"></path>
+<path style="fill:#000000" d="m 90,33 0,2 8,0 3,-3 4,0 0,-3 -2,2 -2,0 -1,-1 -7,0 z"></path>
+<path style="fill:#000000" d="m 100,80 0,20 10,1 10,4 10,1 10,-10 0,-20 -10,10 z"></path>
+<path style="fill:#404040" d="m 100,80 10,-10 30,6 -10,10 -30,-6 z"></path>
+<path style="fill:#000000" d="m 160,90 30,-4 10,-10 -10,-5 z"></path>
+<path style="stroke:#000000;stroke-width:3" d="m 155,80 5,-13 z"></path>
+<path style="fill:#000000" d="m 20,100 10,1 10,4 10,1 14,-14 17,-2 -30,-6 -17,2 z"></path>
+<path style="fill:#404040" d="m 50,106 14,-14 17,-2 z"></path>
+<path style="stroke:#000000;stroke-width:3" d="m 90,110 -5,-23 z"></path>
+<path style="fill:#000000" d="m 40,68 8,2 3,-6 z"></path>
 </svg>
 <div class="city-list-year">2047</div>
 </div>
@@ -91,7 +205,11 @@ body {
 <div class="city-list-name">Las Vegas</div>
 <div class="city-list-descript resource" data-key="ufo"></div>
 <svg width="200" height="120">
-<rect style="fill:url(#night-sky)" x="0" y="0" width="240" height="120"></rect>
+<rect style="fill:url(#night-sky)" x="0" y="0" width="200" height="120"></rect>
+<path style="fill:#000000" d="m 0,60 0,60 200,0 0,-60 0,-5 -40,-8 -50,8 -40,0 -30,-8 -40,8 z"></path>
+<path style="fill:#ffffff" d="m 100,10 2,-2 4,0 2,2 -2,2 -4,0 -2,-2 z"></path>
+<path style="fill:#ffffff" d="m 120,16 3,-3 6,0 3,3 -3,3 -6,0 -3,-3 z"></path>
+<path style="fill:#ffffff" d="m 80,35 4,-4 10,0 4,4 -4,4 -10,0 -4,-4 z"></path>
 </svg>
 <div class="city-list-year">2096</div>
 </div>
@@ -100,7 +218,18 @@ body {
 <div class="city-list-name">Tokyo</div>
 <div class="city-list-descript resource" data-key="monster"></div>
 <svg width="200" height="120">
-<rect style="fill:url(#night-sky)" x="0" y="0" width="240" height="120"></rect>
+<rect style="fill:url(#night-sky)" x="0" y="0" width="200" height="120"></rect>
+<rect style="fill:#000000" x="0" y="100" width="200" height="20"></rect>
+<path style="fill:#000000" d="m 90,66 -10,2 2,5 5,2 -1,2 2,17 6,6 20,0 -8,-4 -6,-6 -6,-16 z"></path>
+<path style="fill:#000000" d="m 90,87 -5,2 0,7 -2,4 9,0 -2,-5 z"></path>
+<path style="fill:#000000" d="m 89,78 -3,3 -3,-3 -1,3 4,3 5,-3 z"></path>
+<rect style="fill:#000000" x="20" y="80" width="10" height="21"></rect>
+<rect style="fill:#000000" x="32" y="88" width="8" height="13"></rect>
+<path style="fill:#000000" d="m 48,101 0,-28 6,0 0,10 6,0 0,-10 6,0 0,28 z"></path>
+<path style="fill:#000000" d="m 115,101 0,-16 3,-10 1,0 3,10 0,16 z"></path>
+<rect style="fill:#000000" x="130" y="80" width="10" height="21"></rect>
+<path style="fill:#000000" d="m 150,101 1,-18 -3,-2 3,0 0,-8 1,0 0,-8 1,0 0,8 1,0 0,8 3,0 -3,2 1,18 z"></path>
+<path style="fill:#000000" d="m 160,101 0,-4 6,-3 1,0 6,3 0,4 z"></path>
 </svg>
 <div class="city-list-year">2016</div>
 </div>
@@ -116,8 +245,10 @@ body {
 <text style="fill:#000000" x="64" y="24" text-anchor="middle" id="popup-cancel-text"></text>
 </g>
 <g id="popup-ok" transform="translate(512)">
+<a xlink:href="#" id="popup-ok-link">
 <rect style="fill:#ffffff;stroke:#a0a0a0;stroke-width:1px" x="0" y="0" width="128" height="32" rx="16" ry="16"></rect>
 <text style="fill:#000000" x="64" y="24" text-anchor="middle" id="popup-ok-text"></text>
+</a>
 </g>
 </svg>
 </div>

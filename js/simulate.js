@@ -1500,6 +1500,9 @@ function Simulate() {
                 case M_TERM_STN | F_CENTER:
                     special_income += 300;
                     break;
+                case M_CASINO | F_CENTER:
+                    special_income += 400;
+                    break;
                 }
             }
         }

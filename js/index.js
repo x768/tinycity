@@ -6,11 +6,8 @@ function Popup()
     const title = document.getElementById('popup-title');
     const content = document.getElementById('popup-text');
 
-    let callback = null;
-
-    this.show = function(cb) {
+    this.show = function() {
         window_back.style.display = 'block';
-        callback = cb;
     };
     this.set_title = function(city, year) {
         title.textContent = city + " " + resource.yearstr(year);
@@ -18,21 +15,18 @@ function Popup()
     this.set_content = function(text) {
         content.textContent = text;
     };
+    this.set_ok_link = function(link) {
+        document.getElementById('popup-ok-link').setAttribute('href', link);
+    };
 
     window_back.addEventListener('click', e => {
         window_back.style.display = '';
-        callback('cancel');
     });
     document.getElementById('popup-window').addEventListener('click', e => {
         e.stopPropagation();
     });
     document.getElementById('popup-cancel').addEventListener('click', e => {
         window_back.style.display = '';
-        callback('cancel');
-    });
-    document.getElementById('popup-ok').addEventListener('click', e => {
-        window_back.style.display = '';
-        callback('ok');
     });
 }
 function ScenarioMessage()
@@ -116,15 +110,14 @@ function ScenarioMessage()
         let name = t.getAttribute('data-city');
         popup.set_title(city_name, year);
         popup.set_content(scenario_msg.gettext(resource.current_language, name));
-        popup.show(m => {
-            if (m === 'ok') {
-                let link = 'tinycity.html?' + name;
-                if (lang_select.value !== init_lang) {
-                    link += '#' + lang_select.value;
-                }
-                window.location.href = link;
+        {
+            let link = 'tinycity.html?' + name;
+            if (lang_select.value !== init_lang) {
+                link += '#' + lang_select.value;
             }
-        });
+            popup.set_ok_link(link);
+        }
+        popup.show();
     }
 
     let li = document.getElementsByClassName('city-list-item');

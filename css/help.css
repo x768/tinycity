@@ -46,27 +46,6 @@ th, td {
 .not-implemented {
     color: gray;
 }
-.popup-list {
-    width: 640px;
-    margin: auto;
-}
-.popup-item {
-    font-size: 18px;
-    text-align: center;
-    margin: 4px 64px;
-    background: white;
-    border: 1px solid gray;
-    cursor: pointer;
-}
-.popup-item:hover {
-    background: #c0c0ff;
-}
-.popup-item a {
-    padding: 8px;
-    display: block;
-    color: black;
-    text-decoration: none;
-}
 .city-list {
     margin: 32px;
     display: flex;
@@ -88,9 +67,10 @@ th, td {
 .city-list-item:hover {
     background: #e0e0ff;
 }
-.city-list-name {
-}
-.city-list-descript {
+.city-list-item a {
+    display: block;
+    color: black;
+    text-decoration: none;
 }
 .city-list-year {
     font-size: 120%;
@@ -121,7 +101,7 @@ th, td {
     border: solid 8px;
     border-color: #e0e0e0 #808080 #808080 #e0e0e0;
 }
-#popup-cancel,#popup-ok {
+#popup-cancel {
     cursor: pointer;
 }
 #popup-title {

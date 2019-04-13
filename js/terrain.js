@@ -995,6 +995,7 @@
         document.getElementById('minimap-sw-back').setAttribute('style', 'fill:' + (view.opaque_buildings ? '#ffffff' : '#808080'));
     });
     function load_micropolis(buf) {
+        // refer to https://github.com/SimHacker/micropolis/blob/master/MicropolisCore/src/MicropolisEngine/src/micropolis.h
         function get_uint16(buf, offset) {
             return (buf[offset] << 8) | buf[offset + 1];
         }
@@ -1141,12 +1142,120 @@
                 c.tile_data[dst + x] = c.tile_data[src + x] & M_LAND;
             }
         }
-
         return c;
     }
-    function micropolis_adjust(c) {
-        c.month = 1;
-        c.ticks = 0;
+    function load_city_csv(src) {
+        let lines = src.split('\n');
+        for (let i = 0; i < lines.length; ) {
+            let tmp = lines[i].trim();
+            if (tmp.length > 0) {
+                if (tmp.indexOf(',') >= 0) {
+                    lines[i] = tmp.split(',');
+                } else if (tmp.indexOf("\t") >= 0) {
+                    lines[i] = tmp.split("\t");
+                } else {
+                    throw new Error("File format is not CSV nor TSV");
+                }
+                i++;
+            } else {
+                lines.splice(i, 1);
+            }
+        }
+        let size = Math.floor((lines.length + 39) / 40) * 40;
+        if (size > 200) {
+            size = 200;
+        }
+        let c = new City(size);
+        let tiles = c.tile_data;
+        let size_edge = c.map_size_edge;
+
+        function build_at(pos, t, l, u) {
+            for (let y = l; y <= u; y++) {
+                for (let x = l; x <= u; x++) {
+                    tiles[pos + y * size_edge + x] = t;
+                }
+            }
+            tiles[pos] |= F_CENTER;
+        }
+
+        for (let y = 0; y < size && y < lines.length; y++) {
+            let line = lines[y];
+            let n = size < line.length ? size : line.length;
+            for (let x = 0; x < n; x++) {
+                let i = 1 + x + (y + 1) * size_edge;
+                switch (line[x]) {
+                case '.':
+                    tiles[i] = M_LAND;
+                    break;
+                case '-':
+                    tiles[i] = M_WATER;
+                    break;
+                case 't':
+                    tiles[i] = M_TREE;
+                    break;
+                case 'r':
+                    tiles[i] = M_ROAD;
+                    break;
+                case 'm':
+                    tiles[i] = M_RAIL;
+                    break;
+                case 'w':
+                    tiles[i] = M_WIRE;
+                    break;
+                case 'rm':
+                case 'mr':
+                    tiles[i] = M_ROADRAIL;
+                    break;
+                case 'mw':
+                case 'wm':
+                    tiles[i] = M_RAILWIRE;
+                    break;
+                case 'rw':
+                case 'wr':
+                    tiles[i] = M_ROADWIRE;
+                    break;
+                case 'R':
+                    build_at(i, M_R_ZONE, -1, 1);
+                    break;
+                case 'Rh':
+                    build_at(i, M_HOSPITAL, -1, 1);
+                    break;
+                case 'Rs':
+                    build_at(i, M_SCHOOL, -1, 1);
+                    break;
+                case 'C':
+                    build_at(i, M_C_ZONE, -1, 1);
+                    break;
+                case 'I':
+                    build_at(i, M_I_ZONE, -1, 1);
+                    break;
+                case 'PD':
+                    build_at(i, M_POLICE_D, -1, 1);
+                    break;
+                case 'FD':
+                    build_at(i, M_FIRE_D, -1, 1);
+                    break;
+                case 'S':
+                    build_at(i, M_STADIUM1, -1, 2);
+                    break;
+                case 'P':
+                    build_at(i, M_PORT, -1, 2);
+                    break;
+                case 'AP':
+                    build_at(i, M_AIRPORT, -2, 3);
+                    break;
+                case 'FP':
+                    build_at(i, M_COAL_PWR, -1, 2);
+                    break;
+                case 'NP':
+                    build_at(i, M_NUKE_PWR, -1, 2);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+        return c;
     }
     popup.callback_readfile = (file => {
         let fr = new FileReader();
@@ -1154,7 +1263,8 @@
             fr.addEventListener('load', e => {
                 try {
                     city_tmp = load_micropolis(new Uint8Array(e.target.result));
-                    micropolis_adjust(city_tmp);
+                    city_tmp.month = 1;
+                    city_tmp.ticks = 0;
                     city_tmp.city_name = file.name.replace(/\.[a-zA-Z]+$/, '');
                     show_load_file('import_mp');
                 } catch (e) {
@@ -1165,10 +1275,9 @@
         } else if (import_from === 'csv') {
             fr.addEventListener('load', e => {
                 try {
-                    //city_tmp = new City(JSON.parse(e.target.result));
-                    //show_load_file('load_file');
+                    city_tmp = load_city_csv(e.target.result);
+                    show_load_file('import_csv');
                 } catch (e) {
-                    // TODO
                     show_error_window(e);
                 }
             });

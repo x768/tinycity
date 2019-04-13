@@ -2018,7 +2018,13 @@
                 s.dir = dir;
                 s.d = 16;
                 simulate.ship_last_pos += s.dx + s.dy * city.map_size_edge;
-                if ((city.tile_data[simulate.ship_last_pos] & M_LAND) !== 0) {
+                let x = simulate.ship_last_pos % city.map_size_edge - 1;
+                let y = Math.floor(simulate.ship_last_pos / city.map_size_edge) - 1;
+                if (x < 0 || x >= city.map_size || y < 0 || y >= city.map_size) {
+                    s.dir = -1;
+                    s.d = -1;
+                    simulate.ship_last_pos = -1;
+                } else if ((city.tile_data[simulate.ship_last_pos] & M_LAND) !== 0) {
                     s.dir = -1;
                     s.d = -1;
                     shipwreck_occur(simulate.ship_last_pos);
@@ -2080,9 +2086,9 @@
             if (earthquake_time_left % 2 == 0) {
                 view.move_relative(-16, 0);
             } else {
-                simulate.disaster_quake();
                 view.move_relative(16, 0);
             }
+            simulate.disaster_quake();
             earthquake_time_left--;
             if (earthquake_time_left === 0) {
                 disaster_occur_message('earthquake');
