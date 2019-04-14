@@ -21,6 +21,8 @@ resource.append('ja', {
     land:             "陸地",
     land_clear:       "平地",
     land_fill:        "埋め立て",
+    monolith:         "モノリス",
+    monster_statue:   "50万人記念像",
     nuke_power_plant: "原子力発電所",
     police_dept:      "警察署",
     police_hq:        "警察本部",
@@ -241,6 +243,9 @@ resource.append('ja', {
     gift_police_hq:        "凶悪化する犯罪に対処するため、警察本部を設置しましょう。\n通常の警察署より広い範囲をカバーできます。",
     gift_fire_hq:          "多発する火災に対処するため、消防本部を設置しましょう。\n通常の消防署より広い範囲をカバーできます。",
     gift_park_casino:      "住民のために娯楽施設を建設しましょう。\nカジノは収入が増えますが、犯罪が心配です。\n遊園地とカジノのどちらにしましょう?",
+    gift_bank:             "この街に銀行を建設しましょう。\n資金が必要になった場合、$10000の融資を受けることができます。",
+    gift_monster_statue:   "50万人達成おめでとうございます。\nこの像は、とある芸術家が街の発展を祝して制作したものです。",
+    gift_monolith:         "おめでとうございます!! 70万人達成しました!\nこれほどの市長は他にはいないでしょう。\nえ、モノリス? 知りませんね。",
     gift_land_fill:        "開発できる土地が少なくなってきました。水域を埋め立てて土地を広げましょう。",
 
     fn_datestr: function(year, month) {

@@ -1202,6 +1202,18 @@
                 case 'w':
                     tiles[i] = M_WIRE;
                     break;
+                case 'ar':
+                case 'ra':
+                    tiles[i] = M_ROAD_WT;
+                    break;
+                case 'am':
+                case 'ma':
+                    tiles[i] = M_RAIL_WT;
+                    break;
+                case 'aw':
+                case 'wa':
+                    tiles[i] = M_WIRE_WT;
+                    break;
                 case 'rm':
                 case 'mr':
                     tiles[i] = M_ROADRAIL;
@@ -1235,20 +1247,44 @@
                 case 'FD':
                     build_at(i, M_FIRE_D, -1, 1);
                     break;
+                case 'ST':
+                    build_at(i, M_STATION, -1, 1);
+                    break;
                 case 'S':
                     build_at(i, M_STADIUM1, -1, 2);
                     break;
                 case 'P':
                     build_at(i, M_PORT, -1, 2);
                     break;
+                case 'GS':
+                    build_at(i, M_GOODS_ST, -1, 2);
+                    break;
                 case 'AP':
                     build_at(i, M_AIRPORT, -2, 3);
                     break;
-                case 'FP':
+                case 'CP':
                     build_at(i, M_COAL_PWR, -1, 2);
+                    break;
+                case 'GP':
+                    build_at(i, M_GAS_PWR, -1, 2);
                     break;
                 case 'NP':
                     build_at(i, M_NUKE_PWR, -1, 2);
+                    break;
+                case 'PQ':
+                    build_at(i, M_POLICE_HQ, -1, 1);
+                    break;
+                case 'FQ':
+                    build_at(i, M_FIRE_HQ, -1, 1);
+                    break;
+                case 'TST':
+                    build_at(i, M_TERM_STN, -1, 1);
+                    break;
+                case 'AMS':
+                    build_at(i, M_AMUSEMENT, -1, 1);
+                    break;
+                case 'CSN':
+                    build_at(i, M_CASINO, -1, 1);
                     break;
                 default:
                     break;
@@ -1277,6 +1313,7 @@
                 try {
                     city_tmp = load_city_csv(e.target.result);
                     show_load_file('import_csv');
+                    city_tmp.city_name = file.name.replace(/\.[a-zA-Z]+$/, '');
                 } catch (e) {
                     show_error_window(e);
                 }

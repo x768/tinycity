@@ -85,6 +85,8 @@ function View(quality)
     const INDEX_AMUSEMENT = 73;
     const INDEX_CASINO = 74;
     const INDEX_BANK = 75;
+    const INDEX_M_STATUE = 76;
+    const INDEX_MONOLITH = 77;
 
     const INDEX_PAVED = 1;
     const INDEX_STADIUM = 2;
@@ -652,6 +654,8 @@ function View(quality)
         mip3.set_qtile(INDEX_AMUSEMENT, maptip.amusement_park, null);
         mip3.set_qtile(INDEX_CASINO, maptip.casino, null);
         mip3.set_qtile(INDEX_BANK, maptip.bank, null);
+        mip3.set_qtile(INDEX_M_STATUE, maptip.monster_statue, null);
+        mip3.set_qtile(INDEX_MONOLITH, maptip.monolith, null);
 
 
         mip4.set_offset_y(7, 1, 7);
@@ -885,6 +889,18 @@ function View(quality)
         case 'casino':
             draw_maptip_q(ctx, maptip.land3, x, y, sq);
             draw_maptip_q(ctx, maptip.casino, x, y, sq);
+            break;
+        case 'bank':
+            draw_maptip_q(ctx, maptip.land3, x, y, sq);
+            draw_maptip_q(ctx, maptip.bank, x, y, sq);
+            break;
+        case 'monster_statue':
+            draw_maptip_q(ctx, maptip.land3, x, y, sq);
+            draw_maptip_q(ctx, maptip.monster_statue, x, y, sq);
+            break;
+        case 'monolith':
+            draw_maptip_q(ctx, maptip.land3, x, y, sq);
+            draw_maptip_q(ctx, maptip.monolith, x, y, sq);
             break;
         case 'land_fill':
             draw_maptip_q(ctx, maptip.land3, x, y, sq);
@@ -1315,6 +1331,14 @@ function View(quality)
                     name_d = INDEX_TILE3;
                     name_u = INDEX_BANK | INDEX_TILE3;
                     break;
+                case M_M_STATUE | F_CENTER:
+                    name_d = INDEX_TILE3;
+                    name_u = INDEX_M_STATUE | INDEX_TILE3;
+                    break;
+                case M_MONOLITH | F_CENTER:
+                    name_d = INDEX_TILE3;
+                    name_u = INDEX_MONOLITH | INDEX_TILE3;
+                    break;
                 }
                 if ((city.tile_fire[i + x] & MF_RADIO) !== 0) {
                     name_a = INDEX_RADIO;
@@ -1721,7 +1745,7 @@ function View(quality)
     function draw_monster(m, sq) {
         let idx;
         let x = (m.x - m.y) * 2;
-        let y = m.x + m.y - 16;
+        let y = m.x + m.y;
 
         if (m.water) {
             idx = INDEX_MONSTER_WATER;
@@ -1736,6 +1760,7 @@ function View(quality)
                 idx = INDEX_MONSTER;
             }
             idx += m.dir >> 1;
+            y -= 16;
         }
         mipt.draw(main_view_ctx, idx, x * sq + current_scroll_x, y * sq + current_scroll_y);
     }

@@ -23,6 +23,8 @@ const resource = new (function() {
             land:             "Land",
             land_clear:       "Open land",
             land_fill:        "Land fill",
+            monolith:         "Monolith",
+            monster_statue:   "500,000 Monument",
             nuke_power_plant: "Nuclear Power Plant",
             police_dept:      "Police Department",
             police_hq:        "Police Dep. Headquarters",
@@ -240,13 +242,16 @@ const resource = new (function() {
             disaster_monster:       "A large creature has been observed.\nTry calling ウルトラ警備隊 or wait till he/she leaves.",
             disaster_shipwreck:     "A ship has wrecked!",
             disaster_tornado:       "A tornado has been reported!",
-            disaster_ufo:           "Undefined flying objects are attacking your city!",
+            disaster_ufo:           "Unidentified flying objects are attacking your city!",
 
             gift_your_house:       "Where would you like to build your own house?\nDo you want to live center of the city or quiet area away from the center?",
             gift_terminal_station: "Why don't you build a station?\nThat will help to develop the surrounding areas and gives us special income!",
-            gift_police_hq:        "Why don't you build a Police department headquaters?\nThis facility will give your city a wider area of police protection",
-            gift_fire_hq:          "Why don't you build a Police department headquaters?\nThis facility will give your city a wider area of fire protection",
-            gift_park_casino:      "Why don't you build a Amusement facility?\nCasino gives us special income but causes crime.\nWhoud you like Amusement park or Casino?",
+            gift_police_hq:        "Why don't you build a Police department headquaters?\nThis facility will give your city a wider area of police protection.",
+            gift_fire_hq:          "Why don't you build a Police department headquaters?\nThis facility will give your city a wider area of fire protection.",
+            gift_park_casino:      "Why don't you build a Amusement facility?\nCasino gives us special income but causes crime.\nWhich do you like Amusement park or Casino?",
+            gift_bank:             "Why don't you build a Bank?\nIf you need funding, you can get a loan $10000.",
+            gift_monster_statue:   "Congratulations!!\nThis statue is made by some artist to bless that the city have reached population 500,000.",
+            gift_monolith:         "Congratulations!! This city have reached population 700,000!\nYou are the greatest mayer I have seen.\nMonolith? I have never heard.",
             gift_land_fill:        "Are you running out of land to develop?\nWith the land fill, you can reclaim more land.",
 
             decimal: ".",
@@ -283,9 +288,9 @@ const resource = new (function() {
     ];
     this.language_info = {
         // A:OK   B:Correction needed
-        de:      { progress:  87, quality: 'B', authors: ['x768'] },
+        de:      { progress:  89, quality: 'B', authors: ['x768'] },
         en:      { progress: 100, quality: 'A', authors: ['x768'] },
-        es:      { progress:  86, quality: 'B', authors: ['x768'] },
+        es:      { progress:  89, quality: 'B', authors: ['x768'] },
         ja:      { progress: 100, quality: 'A', authors: ['x768'] },
         zh:      { progress:  95, quality: 'B', authors: ['x768'] },
         zh_hant: { progress:  95, quality: 'B', authors: ['x768'] },

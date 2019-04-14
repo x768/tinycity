@@ -21,6 +21,8 @@ resource.append('??', {
     land:             null,
     land_clear:       null,
     land_fill:        null,
+    monolith:         null,
+    monster_statue:   null,
     nuke_power_plant: null,
     police_dept:      null,
     police_hq:        null,
@@ -242,6 +244,9 @@ resource.append('??', {
     gift_police_hq:        null,
     gift_fire_hq:          null,
     gift_park_casino:      null,
+    gift_bank:             null,
+    gift_monster_statue:   null,
+    gift_monolith:         null,
     gift_land_fill:        null,
 
     decimal: null,

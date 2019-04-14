@@ -1352,6 +1352,7 @@ function Simulate() {
                 case M_YR_HOUSE | F_CENTER:
                 case M_AMUSEMENT | F_CENTER:
                 case M_CASINO | F_CENTER:
+                case M_M_STATUE | F_CENTER:
                     if (city.tile_power[pos] === 2) {
                         diffusion_sub(city.tile_land_value, x, y, 80, 4);
                     }
@@ -1986,7 +1987,7 @@ function Simulate() {
                         exist = true;
                     }
                 } else if ((f & MF_FIRE_TMP) !== 0) {
-                    city.tile_fire[pos] = MF_FIRE;
+                    city.tile_fire[pos] = (city.tile_fire[pos] & ~MF_FIRE_TMP) | MF_FIRE;
                     exist = true;
                 } else if ((f & MF_FLOOD) !== 0) {
                     if (flood_time_left === 0 && Math.random() < 0.75) {

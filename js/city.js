@@ -54,6 +54,8 @@ function City(source) {
             {type:'gift', name: 'fire_hq', cond:['fire_dept', 6]},
             {type:'gift', name: 'fire_hq', cond:['fire_dept', 12]},
             {type:'gift', name: 'fire_hq', cond:['fire_dept', 18]},
+            {type:'gift', name: 'monster_statue', cond:['population', 500000]},
+            {type:'gift', name: 'monolith', cond:['population', 700000]},
             {type:'gift', name: 'land_fill', cond:['land_clear', 150]},
             {type:'gift', name: 'land_fill', cond:['land_clear', 100]},
             {type:'gift', name: 'land_fill', cond:['land_clear', 50]},
@@ -769,6 +771,12 @@ function City(source) {
                 break;
             case M_BANK:
                 info.name = 'bank';
+                break;
+            case M_M_STATUE:
+                info.name = 'monster_statue';
+                break;
+            case M_MONOLITH:
+                info.name = 'monolith';
                 break;
             default:
                 info.name = '???';
