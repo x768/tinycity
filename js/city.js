@@ -11,6 +11,10 @@ function City(source) {
         this.ticks = 0;
         this.disaster_ticks = -1;
 
+        this.tornado = null;
+        this.monster = null;
+        this.flood_time_left = 0;
+
         this.city_name = '';
         this.population = 0;
         this.prev_population = 0;
@@ -91,6 +95,10 @@ function City(source) {
         this.month = source.month;
         this.ticks = source.ticks;
         this.disaster_ticks = source.disaster_ticks;
+
+        this.tornado = source.tornado;
+        this.monster = source.monster;
+        this.flood_time_left = source.flood_time_left;
 
         this.city_name = source.city_name;
         this.population = source.population;
@@ -2133,15 +2141,19 @@ function City(source) {
             population: this.population,
             prev_population: this.prev_population,
             next_population: this.next_population,
-            funds: this.funds,
-            hidden_assets: this.hidden_assets,
-            rotate: this.rotate,
+            funds: this.funds || 0,
+            hidden_assets: this.hidden_assets || 0,
+            rotate: this.rotate || 0,
 
-            map_size: this.map_size,
-            year: this.year,
-            month: this.month,
-            ticks: this.ticks,
-            disaster_ticks: this.disaster_ticks,
+            map_size: this.map_size || 120,
+            year: this.year || 1900,
+            month: this.month || 1,
+            ticks: this.ticks || 0,
+            disaster_ticks: this.disaster_ticks || 0,
+
+            tornado: this.tornado || null,
+            monster: this.monster || null,
+            flood_time_left: this.flood_time_left || 0,
 
             ruleset: this.ruleset,
             difficulty: this.difficulty,
@@ -2160,11 +2172,10 @@ function City(source) {
             police_cost: this.police_cost,
             fire_cost: this.fire_cost,
 
-            afforestion: this.afforestion,
-            event_reserved: this.event_reserved,
-            election: this.election,
+            afforestion: this.afforestion || 0,
+            event_reserved: this.event_reserved || [],
+            election: this.election || null,
 
-            status: 'continue',
             disaster_occurs: this.disaster_occurs,
         };
         let offset = this.map_size_edge;

@@ -67,11 +67,12 @@
 <p>Micropolis ruleset is almost the same as the SNES version of SimCity®. Following list shows differences.</p>
 <ul>
 <li>Map size (120x120) is larger than SimCity.</li>
-<li>RCI需要の計算方法が異なります。</li>
+<li>人口増減の計算方法が異なります。</li>
 <li>渋滞、犯罪、公害の計算方法が異なります。</li>
 <li>警察、消防の計算方法が異なります。</li>
 <li>税収、交通維持費の計算方法が異なります。</li>
 <li>洪水による建築物の壊れ方が異なります。</li>
+<li>飛行機は頻繁に落ちません。</li>
 <li>Rの初期の小さい家を削っても、平地になりません。</li>
 <li>橋を途中で曲げたり、途中で止めたりできません。</li>
 <li>災害による建物の壊れ方は、常に全壊になります。</li>
@@ -99,10 +100,10 @@
 
 <h2>Generate terraion</h2>
 <ul>
-<li>River: 川または枝分かれした川、池が複数のマップ。</li>
-<li>Coast: 北側が海に面したマップ。川または池が配置される。</li>
-<li>Lake: 中心に大きい池、周囲に小さい池が配置される。陸地が最も多い。</li>
-<li>Island: 四方を海に囲まれたマップ。小さい池が配置される。陸地が最も小さい。</li>
+<li>River: River, branch and Ponds.</li>
+<li>Coast: North side faces ocean, River or Ponds.</li>
+<li>Lake: Big Lake in the center and Small Ponds around the lake. This map has the most land.</li>
+<li>Island: 四方を海に囲まれたマップ。小さい池が配置される。This map has the least land.</li>
 </ul>
 
 <h2>街の命名</h2>
@@ -139,7 +140,7 @@
 <h2>通常の建築物</h2>
 <table>
 <tr><th>Name</th><th>Cost</th><th>Income/Spends</th><th>Size</th><th>Discription</th></tr>
-<tr><td>(Inspect)</td><td>-</td><td>-</td><td>-</td><td>指定したタイル(建築物)の情報を取得します。</td></tr>
+<tr><td>(Inspect)</td><td>-</td><td>-</td><td>-</td><td>Shows information window of the pointed building.</td></tr>
 <tr><td>Bulldoze</td><td>$1</td><td>-</td><td>1x1</td><td>1x1の建築物、樹木、瓦礫等を平地にします。<br>建物の中心(4x4,6x6の場合は少し上)を整地すると瓦礫になります。<br>橋はすべて撤去します。<br>1マスあたり$1必要です。</td></tr>
 <tr><td>Road</td><td>$10</td><td>$-0.75※</td><td>1x1</td><td>RCI地区と競技場、港、空港、駅を接続します。<br>水域では橋になり、2倍の金額になります。</td></tr>
 <tr><td>Railroad</td><td><span class="micropolis">$20</span><span class="tinycity">$40</span></td><td>$-1.25※</td><td>1x1</td><td><span class="tinycity">駅同士を結びます。</span><span class="micropolis">道路と同じ役割ですが、渋滞が発生しません。</span><br>水域では橋になり、2倍の金額になります。</td></tr>
@@ -239,7 +240,7 @@
 <h2>Restart game</h2>
 <p>Discard current city and show title screen.</p>
 <h2>Quit</h2>
-<p>終了画面が表示されます。</p>
+<p>See you soon. Good bye.</p>
 
 <h1>Disaster</h1>
 <p class="tinycity">During disaster occurs, You cannot bulldoze any buildings. 災害発生中は火災、洪水、MOB等以外の時間の流れが止まります。</p>
@@ -249,11 +250,11 @@
 <tr><td>Flood</td><td>Novice or above<br>Neighbor water tiles</td><td>水域の近くに広がり、建築物を瓦礫に変えます。</td></tr>
 <tr><td>Tornado</td><td>Novice or above</td><td>通過した箇所の建築物を瓦礫に変えます。<br>(上級)病院・学校を潰すと発生します。</td></tr>
 <tr><td>Earthquake</td><td>Novice or above</td><td>建築物破壊、火災が同時に発生します。</td></tr>
-<tr class="not-implemented"><td>Shipwreck</td><td>Master<br>Seaport (Working)</td><td>船がぶつかったところが火災、橋が壊れます。</td></tr>
+<tr><td>Shipwreck</td><td>Master<br>Seaport (Working)</td><td>船がぶつかったところが火災、橋が壊れます。</td></tr>
 <tr><td>Plane crush</td><td>Master<br>Airport (Working)</td><td>墜落地点周囲で火災が発生します。</td></tr>
 <tr class="micropolis"><td>Meltdown</td><td>Master<br>Nuclear Power Plant</td><td>周囲30マス程度が放射能で汚染されます。Half-life of radioisotope is about 10 years.</td></tr>
 <tr><td>Monster</td><td>Master</td><td>通過した箇所の建築物が火災または破壊されます。</td></tr>
-<tr class="not-implemented"><td>UFO</td><td>Master</td><td>離れた数カ所で、火災、植林、洪水、野球場、放射能汚染の<br>いずれかの現象が起こります。</td></tr>
+<tr class="not-implemented"><td>UFO</td><td>(Only Scenario mode)</td><td>離れた数カ所で、火災、植林、洪水、野球場、放射能汚染の<br>いずれかの現象が起こります。</td></tr>
 </table>
 
 <h1>Budget</h1>
@@ -382,12 +383,13 @@
 <h2>Scenario map</h2>
 <table>
 <tr><th>City name</th><th>Starts</th><th>Election</th><th>Disaster</th><th>Problems</th><th>公約</th></tr>
-<tr class="micropolis not-implemented"><td>San Francisco</td><td>1906</td><td>1911</td><td>1906/03<br>地震</td><td>空港要求</td><td>人口10万人以上<br>支持率50%以上</td></tr>
-<tr class="micropolis not-implemented"><td>Bern</td><td>1965</td><td>1975</td><td>-</td><td>渋滞多発</td><td>人口8万人以上<br>支持率50%以上<br>渋滞5%以下</td></tr>
-<tr class="micropolis not-implemented"><td>Detroid</td><td>1972</td><td>1982</td><td>-</td><td>犯罪多発</td><td>人口8万人以上<br>支持率50%以上<br>犯罪5%以下</td></tr>
+<tr class="micropolis"><td>San Francisco</td><td>1906</td><td>1911</td><td>1906/03<br>地震</td><td>空港要求</td><td>人口10万人以上<br>支持率50%以上</td></tr>
+<tr class="micropolis"><td>Bern</td><td>1965</td><td>1975</td><td>-</td><td>渋滞多発</td><td>人口8万人以上<br>支持率50%以上<br>渋滞5%以下</td></tr>
+<tr class="micropolis"><td>Detroid</td><td>1972</td><td>1982</td><td>-</td><td>犯罪多発</td><td>人口8万人以上<br>支持率50%以上<br>犯罪5%以下</td></tr>
 <tr class="micropolis not-implemented"><td>Tokyo</td><td>1967</td><td>1972</td><td>1967/06<br>モンスター</td><td>公害</td><td>人口10万人以上<br>支持率50%以上</td></tr>
-<tr class="micropolis not-implemented"><td>Boston</td><td>2010</td><td>2015</td><td>2010/02<br>メルトダウン</td><td>-</td><td>人口10万人以上<br>支持率50%以上</td></tr>
-<tr class="micropolis not-implemented"><td>Rio de Janeiro</td><td>2047</td><td>2057</td><td>2048-2056<br>洪水</td><td>犯罪多発</td><td>人口10万人以上<br>支持率50%以上</td></tr>
+<tr class="micropolis"><td>Boston</td><td>2010</td><td>2015</td><td>2010/02<br>メルトダウン</td><td>-</td><td>人口10万人以上<br>支持率50%以上</td></tr>
+<tr class="micropolis not-implemented"><td>Rio de Janeiro</td><td>2047</td><td>2057</td><td>2048-2055<br>洪水</td><td>犯罪多発</td><td>人口10万人以上<br>支持率50%以上</td></tr>
+<tr class="micropolis not-implemented"><td>Las Vegas</td><td>2096</td><td>2106</td><td>2097-2104<br>UFO</td><td>-</td><td>人口10万人以上<br>支持率50%以上</td></tr>
 <tr class="tinycity not-implemented"><td>Tokyo</td><td>2016</td><td>2021</td><td>2016/06<br>モンスター</td><td>公害</td><td>人口10万人以上<br>支持率50%以上</td></tr>
 </table>
 

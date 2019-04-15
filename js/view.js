@@ -1340,11 +1340,15 @@ function View(quality)
                     name_u = INDEX_MONOLITH | INDEX_TILE3;
                     break;
                 }
-                if ((city.tile_fire[i + x] & MF_RADIO) !== 0) {
-                    name_a = INDEX_RADIO;
-                } else if ((t & F_CENTER) !== 0) {
-                    if (city.tile_power[i + x] === 1) {
+                if ((t & F_CENTER) !== 0) {
+                    if ((city.tile_fire[i + x] & MF_RADIO) !== 0) {
+                        name_a = INDEX_RADIO;
+                    } else if (city.tile_power[i + x] === 1) {
                         name_a = INDEX_BLACKOUT;
+                    }
+                } else if ((t & 0x3F00) === 0) {
+                    if ((city.tile_fire[i + x] & MF_RADIO) !== 0) {
+                        name_a = INDEX_RADIO;
                     }
                 }
                 d_tiles[pos] = name_d;
@@ -1393,11 +1397,15 @@ function View(quality)
                     }
                     u_tiles[pos] = (INDEX_YOUR_HOUSE + offset) | INDEX_TILE3;
                 }
-                if ((city.tile_fire[i + x] & MF_RADIO) !== 0) {
-                    name_a = INDEX_RADIO;
-                } else if ((t & F_CENTER) !== 0 && (t & M_LAND) !== 0) {
-                    if (city.tile_power[i + x] === 1) {
+                if ((t & F_CENTER) !== 0) {
+                    if ((city.tile_fire[i + x] & MF_RADIO) !== 0) {
+                        name_a = INDEX_RADIO;
+                    } else if (city.tile_power[i + x] === 1) {
                         name_a = INDEX_BLACKOUT;
+                    }
+                } else if ((t & 0x3F00) === 0) {
+                    if ((city.tile_fire[i + x] & MF_RADIO) !== 0) {
+                        name_a = INDEX_RADIO;
                     }
                 }
                 a_tiles[pos] = name_a;

@@ -251,7 +251,7 @@ const resource = new (function() {
             gift_park_casino:      "Why don't you build a Amusement facility?\nCasino gives us special income but causes crime.\nWhich do you like Amusement park or Casino?",
             gift_bank:             "Why don't you build a Bank?\nIf you need funding, you can get a loan $10000.",
             gift_monster_statue:   "Congratulations!!\nThis statue is made by some artist to bless that the city have reached population 500,000.",
-            gift_monolith:         "Congratulations!! This city have reached population 700,000!\nYou are the greatest mayer I have seen.\nMonolith? I have never heard.",
+            gift_monolith:         "Congratulations!! This city have reached population 700,000!\nYou are the greatest mayer I have seen.",
             gift_land_fill:        "Are you running out of land to develop?\nWith the land fill, you can reclaim more land.",
 
             decimal: ".",

@@ -290,6 +290,28 @@
 
         document.getElementById('menu-election').style.display = (city.election != null ? '' : 'none');
 
+        if (city.tornado != null) {
+            let t = city.tornado;
+            let v = view.tornado;
+            v.dir = t.dir;
+            v.x   = t.x;
+            v.y   = t.y;
+            v.d   = t.d;
+            v.dx  = t.dx;
+            v.dy  = t.dy;
+            tornado_time_left = t.left;
+        }
+        if (city.monster != null) {
+            let m = city.monster;
+            let v = view.monster;
+            v.dir = m.dir;
+            v.x   = m.x;
+            v.y   = m.y;
+            v.d   = m.d;
+            v.dx  = m.dx;
+            v.dy  = m.dy;
+            monster_time_left = m.left;
+        }
         simulate.set_city(city);
         city.game_start(simulate);
 
@@ -1029,7 +1051,7 @@
             monster_time_left = (Math.floor(Math.random() * 3) + 4) * 3 + 1;
             break;
         case 'ufo':
-            view.show_message_ticker_raw('Not implemented');
+            ufo_time_left = 3;
             return;
         }
         if (city.ruleset === 'tinycity' && current_build_index !== 0) {
@@ -1620,9 +1642,41 @@
         fr.readAsText(file);
     });
     document.getElementById('file-download').addEventListener('click', e => {
-        let a = e.target;
+        city.flood_time_left = simulate.flood_time_left;
+
+        if (view.tornado.dir >= 0) {
+            let t = view.tornado;
+            city.tornado = {
+                dir: t.dir,
+                x:   t.x,
+                y:   t.y,
+                d:   t.d,
+                dx:  t.dx,
+                dy:  t.dy,
+                left:tornado_time_left,
+            };
+        } else {
+            city.tornado = null;
+        }
+        if (view.monster.dir >= 0) {
+            let m = view.monster;
+            city.monster = {
+                dir: m.dir,
+                x:   m.x,
+                y:   m.y,
+                d:   m.d,
+                dx:  m.dx,
+                dy:  m.dy,
+                left:monster_time_left,
+            };
+        } else {
+            city.monster = null;
+        }
+
         let json = city.to_json();
         let blob = new Blob([JSON.stringify(json)], {type: "application/json"});
+
+        let a = e.target;
         a.href = URL.createObjectURL(blob);
     });
 

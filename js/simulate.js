@@ -32,7 +32,6 @@ function Simulate() {
     let map_edge_base = null;
     let map_edge_diff = null;
     let pos_dir = null;
-    let flood_time_left = 0;
 
     this.barycenter_x = 0;
     this.barycenter_y = 0;
@@ -47,6 +46,8 @@ function Simulate() {
     let is_ship_approaching_port = true;
 
     this.station_active_pos = -1;
+
+    this.flood_time_left = 0;
 
     this.set_city = function(c) {
         city = c;
@@ -1771,6 +1772,10 @@ function Simulate() {
             return false;
         }
     };
+    this.disaster_ufo = function() {
+        let x = Math.floor((Math.random() * 0.75 + 0.125) * map_size);
+        let y = Math.floor((Math.random() * 0.75 + 0.125) * map_size);
+    };
     function put_fire_1(x, y, pos) {
         let t = city.tile_data[pos];
         if ((t & M_LAND) !== 0) {
@@ -1850,8 +1855,8 @@ function Simulate() {
         let y = Math.floor(pos / map_size_edge) - 1;
         city.disaster_occurs = true;
         city.disaster_ticks = 0;
-        if (flood_time_left === 0) {
-            flood_time_left = Math.floor(Math.random() * 16) + 8;
+        if (this.flood_time_left === 0) {
+            this.flood_time_left = Math.floor(Math.random() * 16) + 8;
         }
         return {x:x, y:y};
     };
@@ -1954,7 +1959,7 @@ function Simulate() {
                     }
                     break;
                 }
-                if ((city.tile_fire[pos] & MF_FLOOD) !== 0 && flood_time_left > 0) {
+                if ((city.tile_fire[pos] & MF_FLOOD) !== 0 && this.flood_time_left > 0) {
                     for (let i = 0; i < 4; i++) {
                         if (Math.random() < 0.5 && (city.tile_data[pos + pos_dir[i]] & M_LAND) !== 0) {
                             let p_dir = pos + pos_dir[i];
@@ -1990,7 +1995,7 @@ function Simulate() {
                     city.tile_fire[pos] = (city.tile_fire[pos] & ~MF_FIRE_TMP) | MF_FIRE;
                     exist = true;
                 } else if ((f & MF_FLOOD) !== 0) {
-                    if (flood_time_left === 0 && Math.random() < 0.75) {
+                    if (this.flood_time_left === 0 && Math.random() < 0.75) {
                         city.tile_fire[pos] = 0;
                         let t = city.tile_data[pos];
                         if (Math.random() < 0.0625 && (t & 0x3F00) !== 0) {
@@ -2007,12 +2012,12 @@ function Simulate() {
             }
         }
         if (exist || exist_mob) {
-            if (flood_time_left > 0) {
-                flood_time_left--;
+            if (this.flood_time_left > 0) {
+                this.flood_time_left--;
             }
         } else {
             city.disaster_occurs = false;
-            flood_time_left = 0;
+            this.flood_time_left = 0;
         }
         city.calculate_power_grid_required = true;
         city.update_power_grid_required = true;

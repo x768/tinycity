@@ -1250,8 +1250,11 @@
                 case 'ST':
                     build_at(i, M_STATION, -1, 1);
                     break;
-                case 'S':
+                case 'S1':
                     build_at(i, M_STADIUM1, -1, 2);
+                    break;
+                case 'S2':
+                    build_at(i, M_STADIUM2, -1, 2);
                     break;
                 case 'P':
                     build_at(i, M_PORT, -1, 2);

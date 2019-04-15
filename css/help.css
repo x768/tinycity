@@ -74,10 +74,26 @@ th, td {
 }
 .city-list-year {
     font-size: 120%;
-    color: #808080;
+    color: #404040;
     font-style: italic;
     font-weight: bold;
     text-align: right;
+}
+.city-ruleset-micropolis {
+    font-size: 70%;
+    float: right;
+    width: 70px;
+    text-align: center;
+    background: red;
+    color: white;
+}
+.city-ruleset-tinycity {
+    font-size: 70%;
+    float: right;
+    width: 70px;
+    text-align: center;
+    background: blue;
+    color: white;
 }
 
 #popup-window-back {

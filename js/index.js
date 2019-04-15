@@ -90,13 +90,23 @@ function ScenarioMessage()
 
     lang_select.addEventListener('change', e => {
         resource.set_language(lang_select.value, () => {
-            document.getElementById('menu-start-game').setAttribute('href', (lang_select.value !== init_lang) ? 'tinycity.html#' + lang_select.value : 'tinycity.html');
-            document.getElementById('menu-terrain-editor').setAttribute('href', (lang_select.value !== init_lang) ? 'terrain.html#' + lang_select.value : 'terrain.html');
-            document.getElementById('menu-help').setAttribute('href', (lang_select.value === 'ja') ? 'docs/help.ja.html' : 'docs/help.en.html');
+            document.getElementById('link-menu-help').setAttribute('href', (lang_select.value === 'ja') ? 'docs/help.ja.html' : 'docs/help.en.html');
 
-            let re = document.getElementsByClassName('resource');
-            for (let i = 0; i < re.length; i++) {
-                re[i].textContent = resource.gettext(re[i].getAttribute('data-key'));
+            {
+                let re = document.getElementsByClassName('resource');
+                for (let i = 0; i < re.length; i++) {
+                    re[i].textContent = resource.gettext(re[i].getAttribute('data-key'));
+                }
+            }
+            {
+                let re = document.getElementsByClassName('link-lang-tag');
+                for (let i = 0; i < re.length; i++) {
+                    let link = re[i].getAttribute('href').replace(/#.*$/, '');
+                    if (lang_select.value !== init_lang) {
+                        link += '#' + lang_select.value;
+                    }
+                    re[i].setAttribute('href', link);
+                }
             }
             document.getElementById('popup-cancel-text').textContent = resource.gettext('cancel');
             document.getElementById('popup-ok-text').textContent = resource.gettext('ok');
@@ -120,7 +130,7 @@ function ScenarioMessage()
         popup.show();
     }
 
-    let li = document.getElementsByClassName('city-list-item');
+    let li = document.getElementsByClassName('scenario-item');
     for (let i = 0; i < li.length; i++) {
         li[i].addEventListener('click', city_open);
     }
