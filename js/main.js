@@ -290,6 +290,7 @@
 
         document.getElementById('menu-election').style.display = (city.election != null ? '' : 'none');
 
+        simulate.flood_time_left = city.flood_time_left;
         if (city.tornado != null) {
             let t = city.tornado;
             let v = view.tornado;
@@ -533,6 +534,9 @@
                 case 'master':
                     city.funds = 5000;
                     break;
+                }
+                if (city.ruleset === 'micropolis') {
+                    city.event_reserved.push({type:'gift', name: 'bank', cond:['population', 1000, 'funds_lt', 3000]});
                 }
                 start_game();
                 break;
@@ -1643,7 +1647,6 @@
     });
     document.getElementById('file-download').addEventListener('click', e => {
         city.flood_time_left = simulate.flood_time_left;
-
         if (view.tornado.dir >= 0) {
             let t = view.tornado;
             city.tornado = {
