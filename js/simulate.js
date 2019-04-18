@@ -41,6 +41,7 @@ function Simulate() {
     this.helicopter_departs = false;
     this.ship_route = [];
     this.ship_last_pos = -1;
+    this.ufo_route = [];
 
     let ship_port_dir = 0;
     let is_ship_approaching_port = true;
@@ -1324,14 +1325,22 @@ function Simulate() {
     };
     this.crime = function() {
         city.tile_crime.fill(0);
+        tile_tmp.fill(0);
         crime_total = 0;
 
         let size = map_size2 * map_size2;
+        for (let y = 0; y < map_size; y++) {
+            for (let x = 0; x < map_size; x++) {
+                if (city.tile_data[x + y * map_size2] === (M_CASINO | F_CENTER)) {
+                    diffusion_sub(tile_tmp, x >> 1, y >> 1, 72, 3);
+                }
+            }
+        }
         for (let i = 0; i < size; i++) {
             if ((tile_land_v[i] & V_BUILD) !== 0) {
-                let c = city.tile_population[i] - city.tile_police_d[i];
-                if (city.tile_land_value[i] > 64) {
-                    c -= city.tile_land_value[i] - 64;
+                let c = city.tile_population[i] - city.tile_police_d[i] + tile_tmp[i];
+                if (city.tile_land_value[i] > 48) {
+                    c -= city.tile_land_value[i] - 48;
                 }
                 if (c < 0) c = 0;
                 city.tile_crime[i] = c;
@@ -1359,6 +1368,7 @@ function Simulate() {
                     }
                     break;
                 case M_TERM_STN | F_CENTER:
+                case M_BANK | F_CENTER:
                     if (city.tile_power[pos] === 2) {
                         diffusion_sub(city.tile_land_value, x, y, 64, 3);
                     }
@@ -1773,8 +1783,55 @@ function Simulate() {
         }
     };
     this.disaster_ufo = function() {
+        this.ufo_route = [];
+
         let x = Math.floor((Math.random() * 0.75 + 0.125) * map_size);
         let y = Math.floor((Math.random() * 0.75 + 0.125) * map_size);
+
+        if ((city.tile[1 + x + (1 + y) * map_size_edge] & M_LAND) === 0 && Math.random() < 0.5) {
+            this.ufo_route.push({type: 'none', x:x, y:y});
+            for (let i = 0; i < 6 && this.ufo_route.length < 4; i++) {
+                x = Math.floor((Math.random() * 0.75 + 0.125) * map_size);
+                y = Math.floor((Math.random() * 0.75 + 0.125) * map_size);
+                if ((city.tile[1 + x + (1 + y) * map_size_edge] & M_LAND) !== 0) {
+                    this.ufo_route.push({type: 'flood', x:x, y:y});
+                }
+            }
+            return true;
+        }
+        let presents = [];
+        for (let i = map_size_edge; i < map_size_edge * map_size; i++) {
+            let t = city.tile_data[i];
+            if ((t & F_CENTER) !== 0 && t >= M_GIFT_WT) {
+                presents.push(i);
+            }
+        }
+        if (presents.length > 4 && Math.random() < 0.5) {
+            for (let i = 0; i < 3; i++) {
+                let n = Math.floor(Math.random() * presents.length);
+                let pos = presents[n];
+                this.ufo_route.push({type: 'fire', x:(pos % map_size_edge - 1), y:Math.floor(pos / map_size_edge) - 1});
+                presents.splice(n, 1);
+            }
+            return true;
+        }
+        let rnd = Math.random();
+        let type;
+        if (rnd < 0.25) {
+            type = 'fire';
+        } else if (rnd < 0.5) {
+            type = 'tree';
+        } else if (rnd < 0.75) {
+            type = 'radio';
+        } else {
+            type = 'stadium';
+        }
+        for (let i = 0; i < 4; i++) {
+            x = Math.floor((Math.random() * 0.75 + 0.125) * map_size);
+            y = Math.floor((Math.random() * 0.75 + 0.125) * map_size);
+            this.ufo_route.push({type: type, x:x, y:y});
+        }
+        return true;
     };
     function put_fire_1(x, y, pos) {
         let t = city.tile_data[pos];

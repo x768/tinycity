@@ -1,3 +1,8 @@
+# ⚠ IMPORTANT NOTICE ⚠
+
+This is ALPHA VERSION software which may contains many bugs and lack of important features.
+Therefore, do not mind if your city submerse to the ocean floor!
+
 # About TinyCity
 
 TinyCity is a city building game based on SimCity(1989).
@@ -19,6 +24,12 @@ Firefox、Chrome、Safariなどのブラウザで動作します。
 # Demo
 
 https://x768.sakura.ne.jp/tinycity/
+
+# Link
+
+Micropolis is based on the original SimCity (Classic) written by Will Wright.
+
+https://github.com/SimHacker/micropolis
 
 # Gallery
 

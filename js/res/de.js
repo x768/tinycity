@@ -98,6 +98,7 @@ resource.append('de', {
     inspect:          "Prüfen",
     lake:             "See",
     land_value:       "Land Wert",
+    llama:            "Lama",
     load_file:        "Lade von der Datei",
     map:              "Karte",
     max_output:       "Leistung",

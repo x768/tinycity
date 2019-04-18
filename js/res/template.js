@@ -98,6 +98,7 @@ resource.append('??', {
     inspect:          null,
     lake:             null,
     land_value:       null,
+    llama:            null,
     load_file:        null,
     map:              null,
     max_output:       null,

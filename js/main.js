@@ -1746,7 +1746,7 @@
                 rate = 1.8;
             }
             let votes1 = Math.round(votes * rate);
-            let votes2 = Math.round(votes * (1 - rate));
+            let votes2 = Math.round(votes * (2 - rate));
             if (win) {
                 if (votes1 <= votes2) {
                     votes1 = votes2 + 1;

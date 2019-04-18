@@ -101,6 +101,7 @@ const resource = new (function() {
             lake:             "Lake",
             land_value:       "Land value",
             language:         "Language",
+            llama:            "Llamas",
             load_file:        "Load from the file",
             map:              "Map",
             max_output:       "Max output",

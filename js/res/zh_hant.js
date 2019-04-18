@@ -98,6 +98,7 @@ resource.append('zh_hant', {
     inspect:          "檢查",
     lake:             "湖",
     land_value:       "土地價值",
+    llama:            "大羊駝",
     load_file:        "打開文件",
     map:              "地圖",
     max_output:       "最大輸出",

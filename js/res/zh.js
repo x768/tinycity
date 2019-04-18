@@ -98,6 +98,7 @@ resource.append('zh', {
     inspect:          "检查",
     lake:             "湖",
     land_value:       "土地价值",
+    llama:            "大羊驼",
     load_file:        "打开文件",
     map:              "地图",
     max_output:       "最大输出",

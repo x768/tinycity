@@ -106,6 +106,7 @@ const BUILD_ICON_INFO_GIFT = {
     casino:           { size: 3, cost: 100, name: 'casino', tile:M_CASINO },
     bank:             { size: 3, cost: 100, name: 'bank', tile:M_BANK },
     monster_statue:   { size: 3, cost: 100, name: 'monster_statue', tile:M_M_STATUE },
+    zoo:              { size: 3, cost: 100, name: 'zoo', tile:M_ZOO },
     monolith:         { size: 3, cost: 100, name: 'monolith', tile:M_MONOLITH },
     land_fill:        { size: 3, cost: 100, name: 'land_fill' },
 };

@@ -98,6 +98,7 @@ resource.append('es', {
     inspect:          "Inspeccionar",
     lake:             "Lago",
     land_value:       "Precio del Terreno",
+    llama:            "Lama",
     load_file:        "Carga del Archivo",
     map:              "Mapa",
     max_output:       "Salida máxima",

@@ -98,6 +98,7 @@ resource.append('ja', {
     inspect:          "調査",
     lake:             "湖",
     land_value:       "地価",
+    llama:            "ラマ",
     load_file:        "ファイルからロード",
     map:              "マップ",
     max_output:       "最大出力",

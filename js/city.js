@@ -780,6 +780,10 @@ function City(source) {
             case M_BANK:
                 info.name = 'bank';
                 break;
+            case M_ZOO:
+                info.name = 'zoo';
+                list.push({title:'llama', val:(this.population > 0 ? Math.round(Math.log(this.population)) : 0)});
+                break;
             case M_M_STATUE:
                 info.name = 'monster_statue';
                 break;
