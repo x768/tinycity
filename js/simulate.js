@@ -1363,12 +1363,14 @@ function Simulate() {
                 case M_AMUSEMENT | F_CENTER:
                 case M_CASINO | F_CENTER:
                 case M_M_STATUE | F_CENTER:
+                case M_ZOO | F_CENTER:
                     if (city.tile_power[pos] === 2) {
                         diffusion_sub(city.tile_land_value, x, y, 80, 4);
                     }
                     break;
                 case M_TERM_STN | F_CENTER:
                 case M_BANK | F_CENTER:
+                case M_LIBRARY | F_CENTER:
                     if (city.tile_power[pos] === 2) {
                         diffusion_sub(city.tile_land_value, x, y, 64, 3);
                     }
@@ -1514,6 +1516,9 @@ function Simulate() {
                     break;
                 case M_CASINO | F_CENTER:
                     special_income += 400;
+                    break;
+                case M_ZOO | F_CENTER:
+                    special_income += 200;
                     break;
                 }
             }

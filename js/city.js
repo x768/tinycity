@@ -14,6 +14,7 @@ function City(source) {
         this.tornado = null;
         this.monster = null;
         this.flood_time_left = 0;
+        this.bank_working = false;
 
         this.city_name = '';
         this.population = 0;
@@ -43,27 +44,31 @@ function City(source) {
         this.afforestion = 0;   // hidden parameter
         this.gift_buildings = [];
         this.event_reserved = [
-            {type:'gift', name: 'your_house', cond:['population', 2000]},
-            {type:'gift', name: 'terminal_station', cond:['rail', 300]},
-            {type:'gift', name: 'terminal_station', cond:['rail', 600]},
-            {type:'gift', name: 'park_casino', cond:['road', 200]},
-            {type:'gift', name: 'park_casino', cond:['road', 300]},
-            {type:'gift', name: 'park_casino', cond:['road', 400]},
-            {type:'gift', name: 'park_casino', cond:['gift', 3]},
-            {type:'gift', name: 'park_casino', cond:['gift', 6]},
-            {type:'gift', name: 'park_casino', cond:['gift', 9]},
-            {type:'gift', name: 'police_hq', cond:['police_dept', 6]},
-            {type:'gift', name: 'police_hq', cond:['police_dept', 12]},
-            {type:'gift', name: 'police_hq', cond:['police_dept', 18]},
-            {type:'gift', name: 'fire_hq', cond:['fire_dept', 6]},
-            {type:'gift', name: 'fire_hq', cond:['fire_dept', 12]},
-            {type:'gift', name: 'fire_hq', cond:['fire_dept', 18]},
-            {type:'gift', name: 'monster_statue', cond:['population', 500000]},
-            {type:'gift', name: 'monolith', cond:['population', 700000]},
-            {type:'gift', name: 'land_fill', cond:['land_clear', 150]},
-            {type:'gift', name: 'land_fill', cond:['land_clear', 100]},
-            {type:'gift', name: 'land_fill', cond:['land_clear', 50]},
-            {type:'gift', name: 'land_fill', cond:['land_clear', 30]},
+            {type:'gift', name:'your_house', cond:['population', 2000]},
+            {type:'gift', name:'terminal_station', cond:['rail', 300]},
+            {type:'gift', name:'terminal_station', cond:['rail', 600]},
+            {type:'gift', name:'park_casino', cond:['road', 200]},
+            {type:'gift', name:'park_casino', cond:['road', 300]},
+            {type:'gift', name:'park_casino', cond:['road', 400]},
+            {type:'gift', name:'park_casino', cond:['gift', 3]},
+            {type:'gift', name:'park_casino', cond:['gift', 6]},
+            {type:'gift', name:'park_casino', cond:['gift', 9]},
+            {type:'gift', name:'police_hq', cond:['police_dept', 6]},
+            {type:'gift', name:'police_hq', cond:['police_dept', 12]},
+            {type:'gift', name:'police_hq', cond:['police_dept', 18]},
+            {type:'gift', name:'fire_hq', cond:['fire_dept', 6]},
+            {type:'gift', name:'fire_hq', cond:['fire_dept', 12]},
+            {type:'gift', name:'fire_hq', cond:['fire_dept', 18]},
+            {type:'gift', name:'zoo', cond:['stadium1', 1, 'stadium2', 1]},
+            {type:'gift', name:'library', cond:['school', 3]},
+            {type:'gift', name:'library', cond:['school', 6]},
+            {type:'gift', name:'library', cond:['school', 9]},
+            {type:'gift', name:'monster_statue', cond:['population', 500000]},
+            {type:'gift', name:'monolith', cond:['population', 700000]},
+            {type:'gift', name:'land_fill', cond:['land_clear', 150]},
+            {type:'gift', name:'land_fill', cond:['land_clear', 100]},
+            {type:'gift', name:'land_fill', cond:['land_clear', 50]},
+            {type:'gift', name:'land_fill', cond:['land_clear', 30]},
         ];
         this.election = null;
 
@@ -99,6 +104,7 @@ function City(source) {
         this.tornado = source.tornado;
         this.monster = source.monster;
         this.flood_time_left = source.flood_time_left;
+        this.bank_working = source.bank_working;
 
         this.city_name = source.city_name;
         this.population = source.population;
@@ -783,6 +789,9 @@ function City(source) {
             case M_ZOO:
                 info.name = 'zoo';
                 list.push({title:'llama', val:(this.population > 0 ? Math.round(Math.log(this.population)) : 0)});
+                break;
+            case M_LIBRARY:
+                info.name = 'library';
                 break;
             case M_M_STATUE:
                 info.name = 'monster_statue';
@@ -2143,8 +2152,8 @@ function City(source) {
             version: SAVEDATA_VERSION,
             city_name: this.city_name,
             population: this.population,
-            prev_population: this.prev_population,
-            next_population: this.next_population,
+            prev_population: this.prev_population || 0,
+            next_population: this.next_population || 2000,
             funds: this.funds || 0,
             hidden_assets: this.hidden_assets || 0,
             rotate: this.rotate || 0,
@@ -2154,13 +2163,14 @@ function City(source) {
             month: this.month || 1,
             ticks: this.ticks || 0,
             disaster_ticks: this.disaster_ticks || 0,
+            bank_working: this.bank_working || false,
 
             tornado: this.tornado || null,
             monster: this.monster || null,
             flood_time_left: this.flood_time_left || 0,
 
-            ruleset: this.ruleset,
-            difficulty: this.difficulty,
+            ruleset: this.ruleset || 'micropolis',
+            difficulty: this.difficulty || 'novice',
 
             tax_rate: this.tax_rate,
             traffic_funds: this.traffic_funds,
@@ -2180,7 +2190,7 @@ function City(source) {
             event_reserved: this.event_reserved || [],
             election: this.election || null,
 
-            disaster_occurs: this.disaster_occurs,
+            disaster_occurs: this.disaster_occurs || false,
         };
         let offset = this.map_size_edge;
         let length = (this.map_size_edge - 2) * this.map_size_edge;

@@ -88,6 +88,7 @@ function View(quality)
     const INDEX_M_STATUE = 76;
     const INDEX_ZOO = 77;
     const INDEX_MONOLITH = 78;
+    const INDEX_LIBRARY = 79;
 
     const INDEX_PAVED = 1;
     const INDEX_STADIUM = 2;
@@ -658,6 +659,7 @@ function View(quality)
         mip3.set_qtile(INDEX_M_STATUE, maptip.monster_statue, null);
         mip3.set_qtile(INDEX_ZOO, maptip.zoo, null);
         mip3.set_qtile(INDEX_MONOLITH, maptip.monolith, null);
+        mip3.set_qtile(INDEX_LIBRARY, maptip.library, null);
 
 
         mip4.set_offset_y(7, 1, 7);
@@ -903,6 +905,10 @@ function View(quality)
         case 'zoo':
             draw_maptip_q(ctx, maptip.land3, x, y, sq);
             draw_maptip_q(ctx, maptip.zoo, x, y, sq);
+            break;
+        case 'library':
+            draw_maptip_q(ctx, maptip.land3, x, y, sq);
+            draw_maptip_q(ctx, maptip.library, x, y, sq);
             break;
         case 'monolith':
             draw_maptip_q(ctx, maptip.land3, x, y, sq);
@@ -1344,6 +1350,10 @@ function View(quality)
                 case M_ZOO | F_CENTER:
                     name_d = INDEX_TILE3;
                     name_u = INDEX_ZOO | INDEX_TILE3;
+                    break;
+                case M_LIBRARY | F_CENTER:
+                    name_d = INDEX_TILE3;
+                    name_u = INDEX_LIBRARY | INDEX_TILE3;
                     break;
                 case M_MONOLITH | F_CENTER:
                     name_d = INDEX_TILE3;
