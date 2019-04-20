@@ -1871,6 +1871,11 @@ function Simulate() {
             city.disaster_ticks = 0;
             break;
         case 'radio':
+            if ((city.tile_data[pos] & M_LAND) !== 0) {
+                let p = city.get_center(x, y);
+                let pos2 = 1 + p.x + (1 + p.y) * map_size_edge;
+                city.tile_fire[pos2] = MF_RADIO;
+            }
             break;
         case 'stadium':
             {
