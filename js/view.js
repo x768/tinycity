@@ -89,6 +89,7 @@ function View(quality)
     const INDEX_ZOO = 77;
     const INDEX_MONOLITH = 78;
     const INDEX_LIBRARY = 79;
+    const INDEX_WINDMILL = 80;
 
     const INDEX_PAVED = 1;
     const INDEX_STADIUM = 2;
@@ -109,6 +110,8 @@ function View(quality)
     const INDEX_MONSTER = 29;
     const INDEX_MONSTER_FIRE = 41;
     const INDEX_MONSTER_WATER = 45;
+    const INDEX_UFO = 46;
+    const INDEX_UFO_RAY = 48;
 
     const minimap_view_area = document.getElementById('minimap-view-area');
 
@@ -145,17 +148,18 @@ function View(quality)
     this.airplane = {
         dir: -1,
         x: -1, y: -1, z: -1,
-        d: -1, dx: -1, dy: -1, dz: -1, landing: false,
+        d: -1, dx: 0, dy: 0, dz: 0,
+        landing: false,
     };
     this.helicopter = {
         dir: -1,
         x: -1, y: -1, z: -1,
-        d: -1, dx: -1, dy: -1, dz: -1,
+        d: -1, dx: 0, dy: 0, dz: -1,
     };
     this.container_ship = {
         dir: -1,
         x: -1, y: -1, z: 0,
-        d: -1, dx: -1, dy: -1, dz: 0,
+        d: -1, dx: 0, dy: 0, dz: 0,
     };
     this.train_ticks = -1;
     this.train = [
@@ -167,20 +171,21 @@ function View(quality)
     this.tornado = {
         dir: -1,
         x: -1, y: -1,
-        d: -1, dx: -1, dy: -1,
+        d: -1, dx: 0, dy: 0,
         scatter: [0, 0, 0, 0, 0, 0],
         spin: 0, dust: false,
     };
     this.monster = {
         dir: -1,
         x: -1, y: -1,
-        d: -1, dx: -1, dy: -1,
+        d: -1, dx: 0, dy: 0,
         walk: 0, fire: false,
     };
     this.ufo_disaster = {
         dir: -1,
-        x: -1, y: -1, z: 0,
-        d: -1, dx: -1, dy: -1, dz: 0, ray: false,
+        x: -1, y: -1,
+        cx: -1, cy: -1,
+        ticks: -1,
     };
 
     let train_sort = [
@@ -660,6 +665,10 @@ function View(quality)
         mip3.set_qtile(INDEX_ZOO, maptip.zoo, null);
         mip3.set_qtile(INDEX_MONOLITH, maptip.monolith, null);
         mip3.set_qtile(INDEX_LIBRARY, maptip.library, null);
+        mip3.set_qtile(INDEX_WINDMILL + 0, maptip.windmill_0, null);
+        mip3.set_qtile(INDEX_WINDMILL + 1, maptip.windmill_1, null);
+        mip3.set_qtile(INDEX_WINDMILL + 2, maptip.windmill_2, null);
+        mip3.set_qtile(INDEX_WINDMILL + 3, maptip.windmill_3, null);
 
 
         mip4.set_offset_y(7, 1, 7);
@@ -740,6 +749,10 @@ function View(quality)
         mipt.set_qtile(INDEX_MONSTER_FIRE +  2, maptip.monster_b2, null);
         mipt.set_qtile(INDEX_MONSTER_FIRE +  3, maptip.monster_b3, null);
         mipt.set_qtile(INDEX_MONSTER_WATER, maptip.monster_water, null);
+
+        mipt.set_qtile(INDEX_UFO + 0, maptip.ufo_0, null);
+        mipt.set_qtile(INDEX_UFO + 1, maptip.ufo_1, null);
+        mipt.set_qtile(INDEX_UFO_RAY, maptip.ufo_ray, null);
     };
     this.draw_maptip = function(ctx, idx, x, y) {
         switch (idx & MASK_TILESIZE) {
@@ -909,6 +922,10 @@ function View(quality)
         case 'library':
             draw_maptip_q(ctx, maptip.land3, x, y, sq);
             draw_maptip_q(ctx, maptip.library, x, y, sq);
+            break;
+        case 'windmill':
+            draw_maptip_q(ctx, maptip.land3, x, y, sq);
+            draw_maptip_q(ctx, maptip.windmill_0, x, y, sq);
             break;
         case 'monolith':
             draw_maptip_q(ctx, maptip.land3, x, y, sq);
@@ -1355,6 +1372,10 @@ function View(quality)
                     name_d = INDEX_TILE3;
                     name_u = INDEX_LIBRARY | INDEX_TILE3;
                     break;
+                case M_WINDMILL | F_CENTER:
+                    name_d = INDEX_TILE3;
+                    name_u = INDEX_WINDMILL | INDEX_TILE3;
+                    break;
                 case M_MONOLITH | F_CENTER:
                     name_d = INDEX_TILE3;
                     name_u = INDEX_MONOLITH | INDEX_TILE3;
@@ -1743,6 +1764,7 @@ function View(quality)
         }
         draw_object(this.helicopter, INDEX_HELI, sq);
         draw_object(this.airplane, INDEX_PLANE, sq);
+        draw_ufo(this.ufo_disaster, sq);
 
         if (this.cursor_x >= 0) {
             draw_cursor(this, sq);
@@ -1791,6 +1813,17 @@ function View(quality)
             y -= 16;
         }
         mipt.draw(main_view_ctx, idx, x * sq + current_scroll_x, y * sq + current_scroll_y);
+    }
+    function draw_ufo(u, sq) {
+        if (u.dir >= 0) {
+            let x = (u.x - u.y) * 2;
+            let y = u.x + u.y;
+            let idx = INDEX_UFO + u.ticks % 2;
+            if (u.ticks >= 10 && u.ticks < 30) {
+                mipt.draw(main_view_ctx, INDEX_UFO_RAY, x * sq + current_scroll_x, (y - 16) * sq + current_scroll_y);
+            }
+            mipt.draw(main_view_ctx, idx, x * sq + current_scroll_x, (y - 64) * sq + current_scroll_y);
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////

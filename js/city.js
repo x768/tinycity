@@ -96,15 +96,15 @@ function City(source) {
         this.map_size_edge = this.map_size + 2;
         this.map_size2 = this.map_size >> 1;
 
-        this.year = source.year;
-        this.month = source.month;
-        this.ticks = source.ticks;
-        this.disaster_ticks = source.disaster_ticks;
+        this.year = source.year || 1900;
+        this.month = source.month || 1;
+        this.ticks = source.ticks || 0;
+        this.disaster_ticks = source.disaster_ticks || -1;
 
-        this.tornado = source.tornado;
-        this.monster = source.monster;
-        this.flood_time_left = source.flood_time_left;
-        this.bank_working = source.bank_working;
+        this.tornado = source.tornado || null;
+        this.monster = source.monster || null;
+        this.flood_time_left = source.flood_time_left || 0;
+        this.bank_working = source.bank_working || false;
 
         this.city_name = source.city_name;
         this.population = source.population;
@@ -117,27 +117,27 @@ function City(source) {
         this.ruleset = source.ruleset;
         this.difficulty = source.difficulty;
 
-        this.tax_rate = source.tax_rate;
-        this.traffic_funds = source.traffic_funds;
-        this.traffic_funds_term = source.traffic_funds_term;
-        this.police_funds = source.police_funds;
-        this.police_funds_term = source.police_funds_term;
-        this.fire_funds = source.fire_funds;
-        this.fire_funds_term = source.fire_funds_term;
+        this.tax_rate = source.tax_rate || 7;
+        this.traffic_funds = source.traffic_funds || 100;
+        this.traffic_funds_term = source.traffic_funds_term || 100;
+        this.police_funds = source.police_funds || 100;
+        this.police_funds_term = source.police_funds_term || 100;
+        this.fire_funds = source.fire_funds || 100;
+        this.fire_funds_term = source.fire_funds_term || 100;
 
-        this.tax_collected = source.tax_collected;
-        this.special_income = source.special_income;
-        this.traffic_cost = source.traffic_cost;
-        this.police_cost = source.police_cost;
-        this.fire_cost = source.fire_cost;
+        this.tax_collected = source.tax_collected || 0;
+        this.special_income = source.special_income || 0;
+        this.traffic_cost = source.traffic_cost || 0;
+        this.police_cost = source.police_cost || 0;
+        this.fire_cost = source.fire_cost || 0;
 
-        this.afforestion = source.afforestion;
+        this.afforestion = source.afforestion || 0;
         this.gift_buildings = [];
         for (let i = 0; i < source.gift_buildings.length; i++) {
             this.gift_buildings.push(BUILD_ICON_INFO_GIFT[source.gift_buildings[i]]);
         }
         this.event_reserved = source.event_reserved;
-        this.election = source.election;
+        this.election = source.election || null;
 
         this.tile_data = to_u16array(source.tile_data, this.map_size_edge, this.map_size_edge * this.map_size_edge);
         this.tile_sub  = to_u8array(source.tile_sub, this.map_size_edge, this.map_size_edge * this.map_size_edge);
@@ -150,7 +150,7 @@ function City(source) {
         this.hist_pollution = to_u8array(source.hist_pollution, 0, 12 * GRAPH_YEARS);
         this.hist_value     = to_u8array(source.hist_value, 0, 12 * GRAPH_YEARS);
 
-        this.disaster_occurs = source.disaster_occurs;
+        this.disaster_occurs = source.disaster_occurs || false;
     }
     this.base_score = -1;
 
@@ -1941,6 +1941,8 @@ function City(source) {
         }
     }
     function event_condifiton(self, cond, st) {
+        let random = true;
+
         for (let j = 0; j < cond.length - 1; j += 2) {
             let c = cond[j];
             let d = cond[j + 1];
@@ -1958,9 +1960,10 @@ function City(source) {
                 }
                 break;
             case 'random':
-                if (Math.random() * 100 < d) {
-                    test = true;
+                if (Math.random() * 100 > d) {
+                    random = false;
                 }
+                test = true;
                 break;
             case 'road':
             case 'rail':
@@ -1985,10 +1988,14 @@ function City(source) {
                 break;
             }
             if (!test) {
-                return false;
+                return 'no';
             }
         }
-        return true;
+        if (random) {
+            return 'occur';
+        } else {
+            return 'remove';
+        }
     }
     this.peek_next_event = function() {
         let st = this.get_statistics();
@@ -1999,12 +2006,19 @@ function City(source) {
                     continue;
                 }
             }
-            if (event_condifiton(this, this.event_reserved[i].cond, st)) {
+            switch (event_condifiton(this, this.event_reserved[i].cond, st)) {
+            case 'occur':
                 let e = this.event_reserved[i];
                 this.event_reserved.splice(i, 1);
                 return e;
+            case 'remove':
+                this.event_reserved.splice(i, 1);
+                break;
+            case 'no':
+                break;
             }
         }
+        return null;
     };
 
     this.rotate_cw = function() {
@@ -2152,25 +2166,25 @@ function City(source) {
             version: SAVEDATA_VERSION,
             city_name: this.city_name,
             population: this.population,
-            prev_population: this.prev_population || 0,
-            next_population: this.next_population || 2000,
-            funds: this.funds || 0,
-            hidden_assets: this.hidden_assets || 0,
-            rotate: this.rotate || 0,
+            prev_population: this.prev_population,
+            next_population: this.next_population,
+            funds: this.funds,
+            hidden_assets: this.hidden_assets,
+            rotate: this.rotate,
 
-            map_size: this.map_size || 120,
-            year: this.year || 1900,
-            month: this.month || 1,
-            ticks: this.ticks || 0,
-            disaster_ticks: this.disaster_ticks || 0,
-            bank_working: this.bank_working || false,
+            map_size: this.map_size,
+            year: this.year,
+            month: this.month,
+            ticks: this.ticks,
+            disaster_ticks: this.disaster_ticks,
+            bank_working: this.bank_working,
 
-            tornado: this.tornado || null,
-            monster: this.monster || null,
-            flood_time_left: this.flood_time_left || 0,
+            tornado: this.tornado,
+            monster: this.monster,
+            flood_time_left: this.flood_time_left,
 
-            ruleset: this.ruleset || 'micropolis',
-            difficulty: this.difficulty || 'novice',
+            ruleset: this.ruleset,
+            difficulty: this.difficulty,
 
             tax_rate: this.tax_rate,
             traffic_funds: this.traffic_funds,
@@ -2186,11 +2200,11 @@ function City(source) {
             police_cost: this.police_cost,
             fire_cost: this.fire_cost,
 
-            afforestion: this.afforestion || 0,
+            afforestion: this.afforestion,
             event_reserved: this.event_reserved || [],
-            election: this.election || null,
+            election: this.election,
 
-            disaster_occurs: this.disaster_occurs || false,
+            disaster_occurs: this.disaster_occurs,
         };
         let offset = this.map_size_edge;
         let length = (this.map_size_edge - 2) * this.map_size_edge;

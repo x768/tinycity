@@ -295,12 +295,12 @@ const resource = new (function() {
     ];
     this.language_info = {
         // A:OK   B:Correction needed
-        de:      { progress:  89, quality: 'B', authors: ['x768'] },
+        de:      { progress:  88, quality: 'B', authors: ['x768'] },
         en:      { progress: 100, quality: 'A', authors: ['x768'] },
-        es:      { progress:  89, quality: 'B', authors: ['x768'] },
+        es:      { progress:  88, quality: 'B', authors: ['x768'] },
         ja:      { progress: 100, quality: 'A', authors: ['x768'] },
-        zh:      { progress:  95, quality: 'B', authors: ['x768'] },
-        zh_hant: { progress:  95, quality: 'B', authors: ['x768'] },
+        zh:      { progress:  94, quality: 'B', authors: ['x768'] },
+        zh_hant: { progress:  94, quality: 'B', authors: ['x768'] },
     };
     let aliases = {
         zh_tw: 'zh_hant',

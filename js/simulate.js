@@ -1793,12 +1793,12 @@ function Simulate() {
         let x = Math.floor((Math.random() * 0.75 + 0.125) * map_size);
         let y = Math.floor((Math.random() * 0.75 + 0.125) * map_size);
 
-        if ((city.tile[1 + x + (1 + y) * map_size_edge] & M_LAND) === 0 && Math.random() < 0.5) {
+        if ((city.tile_data[1 + x + (1 + y) * map_size_edge] & M_LAND) === 0 && Math.random() < 0.5) {
             this.ufo_route.push({type: 'none', x:x, y:y});
             for (let i = 0; i < 6 && this.ufo_route.length < 4; i++) {
                 x = Math.floor((Math.random() * 0.75 + 0.125) * map_size);
                 y = Math.floor((Math.random() * 0.75 + 0.125) * map_size);
-                if ((city.tile[1 + x + (1 + y) * map_size_edge] & M_LAND) !== 0) {
+                if ((city.tile_data[1 + x + (1 + y) * map_size_edge] & M_LAND) !== 0) {
                     this.ufo_route.push({type: 'flood', x:x, y:y});
                 }
             }
@@ -1807,7 +1807,7 @@ function Simulate() {
         let presents = [];
         for (let i = map_size_edge; i < map_size_edge * map_size; i++) {
             let t = city.tile_data[i];
-            if ((t & F_CENTER) !== 0 && t >= M_GIFT_WT) {
+            if (t >= (M_GIFT_WT | F_CENTER)) {
                 presents.push(i);
             }
         }
@@ -1820,6 +1820,7 @@ function Simulate() {
             }
             return true;
         }
+
         let rnd = Math.random();
         let type;
         if (rnd < 0.25) {
@@ -1834,22 +1835,78 @@ function Simulate() {
         for (let i = 0; i < 4; i++) {
             x = Math.floor((Math.random() * 0.75 + 0.125) * map_size);
             y = Math.floor((Math.random() * 0.75 + 0.125) * map_size);
-            this.ufo_route.push({type: type, x:x, y:y});
+            this.ufo_route.push({type:type, x:x, y:y});
         }
         return true;
     };
-    function put_fire_1(x, y, pos) {
+    this.disaster_ufo_attack = function(x, y, type) {
+        let pos = 1 + x + (1 + y) * map_size_edge;
+        switch (type) {
+        case 'fire':
+            for (let yy = -1; yy < 2; yy++) {
+                for (let xx = -1; xx < 2; xx++) {
+                    put_fire_1(x + xx, y + yy, pos + xx + yy * map_size_edge, MF_FIRE);
+                }
+            }
+            city.disaster_occurs = true;
+            city.disaster_ticks = 0;
+            break;
+        case 'tree':
+            for (let yy = -1; yy < 2; yy++) {
+                for (let xx = -1; xx < 2; xx++) {
+                    let p = pos + xx + yy * map_size_edge;
+                    put_fire_1(x + xx, y + yy, p, 0);
+                    if ((city.tile_data[p] & M_LAND) !== 0) {
+                        city.tile_data[p] = M_TREE;
+                    }
+                }
+            }
+            break;
+        case 'flood':
+            city.tile_fire[pos] = MF_FLOOD;
+            if (this.flood_time_left === 0) {
+                this.flood_time_left = Math.floor(Math.random() * 16) + 8;
+            }
+            city.disaster_occurs = true;
+            city.disaster_ticks = 0;
+            break;
+        case 'radio':
+            break;
+        case 'stadium':
+            {
+                let space = true;
+                for (let yy = -1; yy < 3; yy++) {
+                    for (let xx = -1; xx < 3; xx++) {
+                        let p = pos + xx + yy * map_size_edge;
+                        put_fire_1(x + xx, y + yy, p, 0);
+                        if ((city.tile_data[p] & M_LAND) === 0) {
+                            space = false;
+                        }
+                    }
+                }
+                if (space) {
+                    for (let yy = -1; yy < 3; yy++) {
+                        for (let xx = -1; xx < 3; xx++) {
+                            city.tile_data[pos + xx + yy * map_size_edge] = (xx === 0 && yy === 0) ? (M_STADIUM2 | F_CENTER) : M_STADIUM2;
+                        }
+                    }
+                }
+            }
+            break;
+        }
+    };
+    function put_fire_1(x, y, pos, flag) {
         let t = city.tile_data[pos];
         if ((t & M_LAND) !== 0) {
             if ((t & 0x3F00) !== 0) {
                 let p = city.get_center(x, y);
                 let size = city.get_building_size(t);
-                put_fire(p.x + 1 + (p.y + 1) * map_size_edge, size, MF_FIRE);
+                put_fire(p.x + 1 + (p.y + 1) * map_size_edge, size, flag);
             } else {
                 if (t !== M_LAND && t !== M_RUBBLE) {
                     city.tile_data[pos] = M_RUBBLE;
                 }
-                city.tile_fire[pos] |= MF_FIRE;
+                city.tile_fire[pos] |= flag;
             }
         }
     }
@@ -1863,7 +1920,7 @@ function Simulate() {
                 let y = cy + dy * (i + 1) - dx * j;
                 if (x >= 1 && x < map_size_edge - 1 && y >= 1 && y < map_size_edge - 1) {
                     let pos = 1 + x + (1 + y) * map_size_edge;
-                    put_fire_1(x, y, pos);
+                    put_fire_1(x, y, pos, MF_FIRE);
                 }
             }
         }
@@ -1873,15 +1930,15 @@ function Simulate() {
     };
     this.disaster_vehicle_crash = function(x, y, is_ship) {
         let pos = 1 + x + (1 + y) * map_size_edge;
-        put_fire_1(x, y, pos);
+        put_fire_1(x, y, pos, MF_FIRE);
         if (x > 0 && y > 0)
-            put_fire_1(x - 1, y - 1, pos - map_size_edge - 1);
+            put_fire_1(x - 1, y - 1, pos - map_size_edge - 1, MF_FIRE);
         if (x < city.map_size - 1 && y > 0)
-            put_fire_1(x + 1, y - 1, pos - map_size_edge + 1);
+            put_fire_1(x + 1, y - 1, pos - map_size_edge + 1, MF_FIRE);
         if (x > 0 && y < city.map_size - 1)
-            put_fire_1(x - 1, y + 1, pos + map_size_edge - 1);
+            put_fire_1(x - 1, y + 1, pos + map_size_edge - 1, MF_FIRE);
         if (x < city.map_size - 1 && y < city.map_size - 1)
-            put_fire_1(x + 1, y + 1, pos + map_size_edge + 1);
+            put_fire_1(x + 1, y + 1, pos + map_size_edge + 1, MF_FIRE);
 
         if (is_ship) {
             is_ship_approaching_port = true;

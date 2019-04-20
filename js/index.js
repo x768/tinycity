@@ -61,7 +61,7 @@ function ScenarioMessage()
             ja: "世界最大のカジノ都市は、謎の飛行物体による度重なる攻撃により、壊滅的な被害を受けました。\nあなたの使命は、UFOの攻撃に耐え、街を再建することです。\n市長の任期は10年です。",
         },
         tokyo2: {
-            en: "A large creature has been landed at Kamata and city was devastated by catastrophic disaster.\nYour mission is to rebuild the city to an active metropolis within 10 years.",
+            en: "A large creature has been landed at Kamata and the city was devastated by catastrophic disaster.\nYour mission is to rebuild the city to an active metropolis within 10 years.",
             ja: "巨大な生物が蒲田に上陸し、街は壊滅的な被害を受けました。\nあなたの使命は、街を再建し、メトロポリスにすることです。\n市長の任期は10年です。",
         },
     };

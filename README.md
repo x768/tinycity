@@ -12,8 +12,6 @@ You can choose "Micropolis" ruleset which like SNES version of SimCity® and "Ti
 TinyCity works in your browser such as Firefox, Chrome or Safari.
 Or download local PC and open index.html.
 
-# TinyCityとは
-
 TinyCityは、初代シムシティを元にした街作りゲームです。
 
 スーパーファミコン版のシムシティーのルールを元にした"Micropolis"と、ルールを変更した"TinyCity"が選べます。

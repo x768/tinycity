@@ -42,7 +42,8 @@
     let earthquake_time_left = 0;
     let tornado_time_left = 0;
     let monster_time_left = 0;
-    let ufo_time_left = 0;
+    let ufo_tick_time = -1;
+    let ufo_target = null;
 
     let options = {
         auto_bulldoze: window.localStorage.getItem('no_auto_bulldoze') == null,
@@ -63,6 +64,9 @@
         set_strage('no_popup_window', !options.popup_window);
         set_strage('no_sound_effect', !options.sound_effect);
         set_strage('color_bf_mode', options.color_bf_mode);
+    }
+    function is_world_freeze() {
+        return earthquake_time_left > 0 || ufo_target != null;
     }
 
     function get_city_category(population) {
@@ -598,6 +602,9 @@
 
     main_view.addEventListener('mousedown', e => {
         if (e.button === 0) {
+            if (is_world_freeze()) {
+                return;
+            }
             switch (current_build.name) {
             case 'inspect':
                 {
@@ -658,7 +665,9 @@
     document.addEventListener('mouseup', e => {
         if (lbuttondown) {
             lbuttondown = false;
-            build_range();
+            if (!is_world_freeze()) {
+                build_range();
+            }
             view.set_end_cursor();
         }
         if (rbuttondown) {
@@ -669,7 +678,7 @@
         if (rbuttondown) {
             view.scroll(e.clientX, e.clientY);
             view.limit_scroll();
-        } else {
+        } else if (!is_world_freeze()) {
             view.update_cursor_pos(e.clientX - main_view.offsetLeft, e.clientY - main_view.offsetTop);
             if (lbuttondown && current_build.name === 'tree') {
                 build_tile();
@@ -692,6 +701,9 @@
         }
     });
     document.addEventListener('keydown', e => {
+        if (is_world_freeze()) {
+            return;
+        }
         if (!popup.is_window_open) {
             let idx = -1;
             switch (e.key) {
@@ -754,6 +766,9 @@
     });
 
     document.getElementById('menu-file').addEventListener('click', e => {
+        if (is_world_freeze()) {
+            return;
+        }
         popup.reset();
         popup.set_back_half_opacity();
         popup.show_ok_cancel('ok', 'cancel');
@@ -995,6 +1010,45 @@
         simulate.ship_route = [];
         disaster_occur_message('shipwreck');
     }
+    function ufo_move() {
+        let u = view.ufo_disaster;
+
+        if (ufo_tick_time === 0) {
+            if (simulate.ufo_route.length > 0) {
+                ufo_target = simulate.ufo_route.shift();
+                u.dir = Math.floor(Math.random() * 8);
+                u.cx = ufo_target.x * 16 + 8;
+                u.cy = ufo_target.y * 16 + 8;
+                ufo_tick_time = 40;
+                view.move_position_at(ufo_target.x, ufo_target.y);
+            } else {
+                ufo_tick_time = -1;
+                ufo_target = null;
+                u.dir = -1;
+            }
+        } else {
+            ufo_tick_time--;
+        }
+        u.ticks = ufo_tick_time;
+        if (ufo_target != null) {
+            if (ufo_tick_time >= 30) {
+                let n = (30 - ufo_tick_time) * 32;
+                u.x = u.cx + DIR8_X[u.dir] * n;
+                u.y = u.cy + DIR8_Y[u.dir] * n;
+            } else if (ufo_tick_time >= 10) {
+                u.x = u.cx - Math.sin(ufo_tick_time * 0.5) * 8;
+                u.y = u.cy - Math.cos(ufo_tick_time * 0.5) * 8;
+                if (ufo_tick_time === 20) {
+                    simulate.disaster_ufo_attack(ufo_target.x, ufo_target.y, ufo_target.type);
+                    view.update_tile_range(city, ufo_target.x - 8, ufo_target.x + 8, ufo_target.y - 8, ufo_target.y + 8);
+                }
+            } else {
+                let n = (10 - ufo_tick_time) * 32;
+                u.x = u.cx + DIR8_X[u.dir] * n;
+                u.y = u.cy + DIR8_Y[u.dir] * n;
+            }
+        }
+    }
     function disaster_occur(disaster) {
         reset_mouse_drag();
 
@@ -1055,8 +1109,11 @@
             monster_time_left = (Math.floor(Math.random() * 3) + 4) * 3 + 1;
             break;
         case 'ufo':
-            ufo_time_left = 3;
-            return;
+            if (!simulate.disaster_ufo()) {
+                return;
+            }
+            ufo_tick_time = 0;
+            break;
         }
         if (city.ruleset === 'tinycity' && current_build_index !== 0) {
             current_build_index = 0;
@@ -1076,6 +1133,9 @@
         }
     }
     document.getElementById('menu-disaster').addEventListener('click', e => {
+        if (is_world_freeze()) {
+            return;
+        }
         popup.reset();
         popup.set_back_half_opacity();
         popup.show_ok_cancel('ok', 'cancel');
@@ -2151,6 +2211,12 @@
                 disaster_occur_message('earthquake');
             }
         }
+        if (ufo_tick_time >= 0) {
+            ufo_move();
+            if (ufo_target == null) {
+                disaster_occur_message('ufo');
+            }
+        }
         if (!popup.is_window_open) {
             if (city.calculate_power_grid_required) {
                 city.update_power_grid();
@@ -2160,7 +2226,7 @@
                 city.update_power_grid_required = false;
             }
             let update = null;
-            if (earthquake_time_left === 0 && ufo_time_left === 0) {
+            if (!is_world_freeze()) {
                 switch (current_speed) {
                 case 'normal':
                     update = city.timer_tick(simulate, tornado_time_left > 0 || monster_time_left > 0);
@@ -2341,7 +2407,7 @@
             }
             view.disaster_alert(city.disaster_ticks);
         } else if (city.disaster_ticks >= 0) {
-            if (earthquake_time_left === 0 && tornado_time_left === 0 && monster_time_left === 0) {
+            if (!is_world_freeze() && tornado_time_left === 0 && monster_time_left === 0) {
                 view.disaster_alert(-1);
                 city.disaster_ticks = -1;
             } else {
