@@ -378,7 +378,7 @@ function Popup(view)
             }
         }
     };
-    this.add_svg_button = function(x, y, width, height, id) {
+    this.add_svg_button = function(x, y, width, height, id, enabled) {
         let g = new_svg_node('g');
         g.setAttribute('style', 'cursor:pointer');
 
@@ -387,30 +387,33 @@ function Popup(view)
         rect.setAttribute('y', y);
         rect.setAttribute('width', width);
         rect.setAttribute('height', height);
-        rect.setAttribute('class', 'popup-svg-button-rect');
+        rect.setAttribute('class', enabled ? 'popup-svg-button-rect' : 'popup-svg-button-rect-disabled');
         g.appendChild(rect);
 
         let text = new_svg_node('text');
         text.setAttribute('x', x + width / 2);
         text.setAttribute('y', y + height / 2 + 8);
         text.setAttribute('text-anchor', 'middle');
-        text.setAttribute('class', 'popup-svg-button-text');
+        text.setAttribute('class', enabled ? 'popup-svg-button-text' : 'popup-svg-button-text-disabled');
         text.textContent = resource.gettext(id);
         g.appendChild(text);
 
         svg.appendChild(g);
 
-        g.addEventListener('click', e => {
-            if (!suppress_event && callback_close != null) {
-                callback_close(id);
-            }
-        });
+        if (enabled) {
+            g.addEventListener('click', e => {
+                if (!suppress_event && callback_close != null) {
+                    callback_close(id);
+                }
+            });
+        }
     };
     this.clear_svg = function() {
         let ch;
         while ((ch = svg.lastChild) != null) {
             svg.removeChild(ch);
         }
+        this.svg_list_values = {};
     };
     this.set_text_content = function(str) {
         document.getElementById('popup-text').textContent = resource.gettext(str);

@@ -144,6 +144,15 @@ canvas {
 .popup-svg-button-text {
     font-size: 20px;
 }
+.popup-svg-button-rect-disabled {
+    fill: #c0c0c0;
+    stroke: #808080;
+    stroke-width: 2px;
+}
+.popup-svg-button-text-disabled {
+    font-size: 20px;
+    fill: #808080;
+}
 .graph-scale-text {
     font-size: 10px;
 }
@@ -163,9 +172,14 @@ canvas {
     grid-column: 2;
     grid-row: 1;
     vertical-align: middle;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-self: start;
 }
 .indicator-menu-item {
-    margin: 1pt 2pt;
+    margin: 0 4pt;
     padding: 2pt 8pt;
     color: #000000;
     background: #c0c0c0;

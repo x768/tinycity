@@ -42,9 +42,12 @@ function City(source) {
         this.fire_cost = 0;
 
         this.afforestion = 0;   // hidden parameter
+        this.debt_payment = [];
         this.gift_buildings = [];
         this.event_reserved = [
             {type:'gift', name:'your_house', cond:['population', 2000]},
+            //{type:'gift', name:'bank', cond:['population', 1000, 'funds_lt', 3000]},
+            {type:'gift', name:'bank', cond:['year_month', 190002]},
             {type:'gift', name:'terminal_station', cond:['rail', 300]},
             {type:'gift', name:'terminal_station', cond:['rail', 600]},
             {type:'gift', name:'park_casino', cond:['road', 200]},
@@ -132,6 +135,7 @@ function City(source) {
         this.fire_cost = source.fire_cost || 0;
 
         this.afforestion = source.afforestion || 0;
+        this.debt_payment = source.debt_payment || [];
         this.gift_buildings = [];
         for (let i = 0; i < source.gift_buildings.length; i++) {
             this.gift_buildings.push(BUILD_ICON_INFO_GIFT[source.gift_buildings[i]]);
@@ -1880,7 +1884,7 @@ function City(source) {
                     }
                     break;
                 case M_AIRPORT | F_CENTER:
-                    this.assessed_value += 3000;
+                    this.assessed_value += 10000;
                     break;
                 case M_COAL_PWR | F_CENTER:
                     this.assessed_value += 3000;
@@ -2008,9 +2012,11 @@ function City(source) {
             }
             switch (event_condifiton(this, this.event_reserved[i].cond, st)) {
             case 'occur':
-                let e = this.event_reserved[i];
-                this.event_reserved.splice(i, 1);
-                return e;
+                {
+                    let e = this.event_reserved[i];
+                    this.event_reserved.splice(i, 1);
+                    return e;
+                }
             case 'remove':
                 this.event_reserved.splice(i, 1);
                 break;
@@ -2201,7 +2207,8 @@ function City(source) {
             fire_cost: this.fire_cost,
 
             afforestion: this.afforestion,
-            event_reserved: this.event_reserved || [],
+            debt_payment: this.debt_payment,
+            event_reserved: this.event_reserved,
             election: this.election,
 
             disaster_occurs: this.disaster_occurs,

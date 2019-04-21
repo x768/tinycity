@@ -110,6 +110,13 @@
         set_menu('file');
         set_menu('options');
         set_menu('budget');
+        let menu_debt = document.getElementById('menu-debt');
+        if (city.bank_working && city.fund !== 'infinity') {
+            menu_debt.style.display = '';
+            menu_debt.textContent = resource.gettext(city.ruleset === 'tinycity' ? 'bond' : 'loan');
+        } else {
+            menu_debt.style.display = 'none';
+        }
         set_menu('disaster');
         set_menu('evaluation');
         set_menu('graph');
@@ -156,6 +163,10 @@
                 if (current_build.name === 'bulldoze') {
                     view.remove_small_house(city, view.cursor_x, view.cursor_y);
                 } else if (current_build_index >= build_icon_info.length) {
+                    if (current_build.name === 'bank') {
+                        city.bank_working = true;
+                        update_menu_text();
+                    }
                     // erase gift building
                     city.gift_buildings.splice(current_build_index - build_icon_info.length, 1);
                     current_build_index = 0;
@@ -538,9 +549,6 @@
                 case 'master':
                     city.funds = 5000;
                     break;
-                }
-                if (city.ruleset === 'micropolis') {
-                    city.event_reserved.push({type:'gift', name: 'bank', cond:['population', 1000, 'funds_lt', 3000]});
                 }
                 start_game();
                 break;
@@ -1170,16 +1178,17 @@
         reset_mouse_drag();
         popup.reset();
         popup.set_back_half_opacity();
+        let fiscal_year = city.year;
         if (draft) {
             popup.show_close_button();
-            popup.set_title_raw(resource.yearstr(city.year + 1) + ' ' + resource.gettext('budget_draft'));
-        } else {
-            popup.set_title_raw(resource.yearstr(city.year) + ' ' + resource.gettext('budget'));
+            fiscal_year++;
         }
+        popup.set_title_raw(resource.yearstr(fiscal_year) + ' ' + resource.gettext('budget_draft'));
         let budget = city.get_budget(draft);
         let traffic_allocated;
         let police_allocated;
         let fire_allocated;
+        let debt_payment = 0;
         if (city.ruleset === 'tinycity') {
             traffic_allocated = budget.traffic;
             police_allocated = budget.police;
@@ -1189,11 +1198,18 @@
             police_allocated = Math.round(budget.police * city.police_funds / 100);
             fire_allocated   = Math.round(budget.fire * city.fire_funds / 100);
         }
+        if (city.debt_payment.length >= 2 && city.debt_payment[0] === fiscal_year) {
+            debt_payment = city.debt_payment[1];
+            if (!draft) {
+                city.debt_payment.shift();
+                city.debt_payment.shift();
+            }
+        }
         function calc_total() {
             if (city.funds === 'infinity') {
                 return city.funds;
             } else {
-                return city.funds + budget.tax + budget.special_income - traffic_allocated - police_allocated - fire_allocated;
+                return city.funds + budget.tax + budget.special_income - traffic_allocated - police_allocated - fire_allocated - debt_payment;
             }
         }
         function update() {
@@ -1218,7 +1234,7 @@
             {title:'traffic_funds', val:traffic_allocated, id:'traffic_funds'},
             {title:'police_funds',  val:police_allocated, id:'police_funds'},
             {title:'fire_funds',    val:fire_allocated,   id:'fire_funds'},
-            {title:(city.ruleset === 'tinycity' ? 'bond' : 'debt'), val:0},
+            {title:(city.ruleset === 'tinycity' ? 'bond' : 'debt'), val:debt_payment},
             {separator:true},
             {title:(draft ? 'estimeted_funds' : 'next_funds'), val:calc_total(), id:'next_funds'},
         ]);
@@ -1283,7 +1299,7 @@
                 popup.close();
             });
         } else {
-            popup.add_svg_button(440, 320, 120, 36, 'ok');
+            popup.add_svg_button(440, 320, 120, 36, 'ok', true);
             popup.open_delay(() => {
             }, mode => {
                 if (mode === 'ok') {
@@ -1338,6 +1354,138 @@
     }
     document.getElementById('menu-budget').addEventListener('click', e => {
         show_budget(true);
+    });
+    document.getElementById('menu-debt').addEventListener('click', e => {
+        popup.reset();
+        popup.set_back_half_opacity();
+        popup.show_close_button();
+        popup.set_title(city.ruleset === 'tinycity' ? 'bond' : 'loan');
+        popup.set_layout('svg', null);
+
+        let year_complete = 'none';
+        let balance = 0;
+        let interest5 = 100;
+        let interest10 = 100;
+
+        function calc_payment() {
+            year_complete = 'none';
+            balance = 0;
+            if (city.debt_payment.length >= 2) {
+                year_complete = city.debt_payment[city.debt_payment.length - 2];
+                for (let i = 1; i < city.debt_payment.length; i += 2) {
+                    balance += city.debt_payment[i];
+                }
+            }
+        }
+        function show_bond() {
+            calc_payment();
+            if (city.assessed_value >= 10000) {
+                let rate = balance / city.assessed_value;
+                interest5 = Math.floor(5 + rate * 100);
+                interest10 = Math.floor(12 + rate * 250);
+            } else {
+                interest5 = 100;
+                interest10 = 100;
+            }
+
+            popup.add_svg_button(72, 8, 368, 36, 'bond_5year', interest5 <= 50);
+            popup.add_svg_button(72, 50, 368, 36, 'bond_10year', interest10 <= 50);
+            if (interest5 > 50) {
+                interest5 = 0;
+            }
+            if (interest10 > 50) {
+                interest10 = 0;
+            }
+            popup.set_svg_list(32, 450, 570, [
+                {title: 'interest', val:interest5, unit:'%'},
+            ]);
+            popup.set_svg_list(76, 450, 570, [
+                {title: 'interest', val:interest10, unit:'%'},
+            ]);
+            popup.set_svg_list(120, 80, 440, [
+                {title:'payment_complete', val:year_complete},
+                {title:'payment_balance', val:balance},
+            ]);
+
+            let list = [];
+            let j = 0;
+            for (let i = 0; i < 6 && i * 2 < city.debt_payment.length; i++) {
+                list.push({val:resource.yearstr(city.debt_payment[i * 2]), id:'year' + i, format:'raw'});
+            }
+            popup.set_svg_list(196, 72, 280, list);
+
+            list = [];
+            j = 0;
+            for (let i = 0; i < 6 && i * 2 < city.debt_payment.length; i++) {
+                list.push({val:'$' + city.debt_payment[i * 2 + 1], id:'amount' + i, format:'raw'});
+            }
+            popup.set_svg_list(196, 72, 440, list);
+        }
+        function show_loan_debt() {
+            calc_payment();
+            popup.add_svg_button(80, 8, 360, 36, 'loan_10000', city.debt_payment.length === 0);
+            popup.set_svg_list(72, 80, 380, [
+                {title:'msg_loan'},
+            ]);
+            popup.set_svg_list(120, 80, 440, [
+                {title:'payment_complete', val:year_complete},
+                {title:'payment_balance', val:balance},
+            ]);
+        }
+        function update_fund() {
+        }
+        function insert_debt(year, amount) {
+            let i;
+            for (i = city.debt_payment.length; i >= 2; i -= 2) {
+                let y = city.debt_payment[i - 2];
+                if (y === year) {
+                    city.debt_payment[i - 1] += amount;
+                    return;
+                }
+                if (y < year) {
+                    break;
+                }
+            }
+            city.debt_payment.splice(i, 0, year, amount);
+        }
+
+        if (city.ruleset === 'tinycity') {
+            show_bond();
+        } else {
+            show_loan_debt();
+        }
+
+        popup.open(null, mode => {
+            switch (mode) {
+            case 'loan_10000':
+                for (let i = 0; i < 21; i++) {
+                    city.debt_payment.push(city.year + i + 1);
+                    city.debt_payment.push(500);
+                }
+                city.funds += 10000;
+                popup.clear_svg();
+                show_loan_debt();
+                update_indicator();
+                break;
+            case 'bond_5year':
+                insert_debt(city.year + 5, 20 * (100 + interest5));
+                city.funds += 2000;
+                popup.clear_svg();
+                show_bond();
+                update_indicator();
+                break;
+            case 'bond_10year':
+                insert_debt(city.year + 10, 30 * (100 + interest10));
+                city.funds += 3000;
+                popup.clear_svg();
+                show_bond();
+                update_indicator();
+                break;
+            case 'close':
+                popup.close();
+                break;
+            }
+        });
     });
     document.getElementById('menu-map').addEventListener('click', e => {
         popup.reset();
@@ -2181,7 +2329,11 @@
                 popup.show_close_button();
                 popup.set_layout('canvas-text', null);
                 popup.set_title(name);
-                popup.set_text_content('gift_' + name);
+                if (name === 'bank') {
+                    popup.set_text_content('gift_' + name + (city.ruleset === 'tinycity' ? '_t' : '_m'));
+                } else {
+                    popup.set_text_content('gift_' + name);
+                }
                 view.draw_wallpaper_room(popup.get_canvas(), name, null);
                 view.draw_popup_window_picture(popup.get_canvas(), 'gift');
                 popup.open_delay(null, mode => {
