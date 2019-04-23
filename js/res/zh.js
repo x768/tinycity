@@ -234,7 +234,7 @@ resource.append('zh', {
     msg_growth_capital:   "你的城市已成为「首都」。\n你准备建机场或港口了吗?",
     msg_growth_metropolis:"你的城市已成为「大都市」。\n是时候展示你的力量了。",
     msg_growth_megalopolis:"你的城市已达到最高類別「大都市带」。\nCan you rezone areas and increace population to 700,000? Good luck!",
-    msg_bankrupt:       null,
+    msg_bankrupt:         "你的城市破产了。\n你被市长解雇了。",
 
     cond_population:    "人口不少于{pops}",
     cond_support_rate:  "支持率不低于{rate}%",

@@ -234,7 +234,7 @@ resource.append('zh_hant', {
     msg_growth_capital:   "你的城市已成爲「首都」。\n你準備建機場或港口了嗎?",
     msg_growth_metropolis:"你的城市已成爲「大都市」。\n是時候展示你的力量了。",
     msg_growth_megalopolis:"你的城市已達到最高類別「大都市帶」。\nCan you rezone areas and increace population to 700,000? Good luck!",
-    msg_bankrupt:         null,
+    msg_bankrupt:         "你的城市破產了。\n你被市長解雇了。",
 
     cond_population:    "人口不少於{pops}",
     cond_support_rate:  "支持率不低於{rate}%",

@@ -1601,7 +1601,7 @@ function View(quality)
         let tile_x = 32 * sq;
         let tile_y = 16 * sq;
         let blink = (ticks % 10) < 5;
-        let car_anim = Math.floor(ticks / 5);
+        let animation = Math.floor(ticks / 5);
 
         if (this.monster.dir >= 0 && this.monster.water) {
             draw_monster(this.monster, sq);
@@ -1620,7 +1620,7 @@ function View(quality)
                 }
                 let c = c_tiles[x + y * map_size];
                 if (c > 0) {
-                    this.draw_maptip(main_view_ctx, c + car_anim, cx, cy);
+                    this.draw_maptip(main_view_ctx, c + animation, cx, cy);
                 }
             }
         }
@@ -1636,7 +1636,7 @@ function View(quality)
                 }
                 let c = c_tiles[x + y * map_size];
                 if (c > 0) {
-                    this.draw_maptip(main_view_ctx, c + car_anim, cx, cy);
+                    this.draw_maptip(main_view_ctx, c + animation, cx, cy);
                 }
             }
         }
@@ -1681,8 +1681,13 @@ function View(quality)
                 let cy = (x + y) * tile_y + current_scroll_y;
                 let t = u_tiles[x + y * map_size];
                 if (t !== INDEX_NONE) {
-                    if (t === INDEX_FIRE) {
-                        t += (car_anim + i + j * 2) & 3;
+                    switch (t) {
+                    case INDEX_FIRE:
+                        t += (animation + i + j * 2) & 3;
+                        break;
+                    case INDEX_WINDMILL | INDEX_TILE3:
+                        t += animation;
+                        break;
                     }
                     this.draw_maptip(main_view_ctx, t, cx, cy);
                 }
@@ -1696,8 +1701,13 @@ function View(quality)
                 let cy = (x + y) * tile_y + current_scroll_y;
                 let t = u_tiles[x + y * map_size];
                 if (t !== INDEX_NONE) {
-                    if (t === INDEX_FIRE) {
-                        t += (car_anim + i + j * 2) & 3;
+                    switch (t) {
+                    case INDEX_FIRE:
+                        t += (animation + i + j * 2) & 3;
+                        break;
+                    case INDEX_WINDMILL | INDEX_TILE3:
+                        t += animation;
+                        break;
                     }
                     this.draw_maptip(main_view_ctx, t, cx, cy);
                 }

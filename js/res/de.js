@@ -235,7 +235,7 @@ resource.append('de', {
     msg_growth_capital: null,
     msg_growth_metropolis:null,
     msg_growth_megalopolis:null,
-    msg_bankrupt:       null,
+    msg_bankrupt:       "Ihre Stadt ist bankrott.\nSie wurden vom Bürgermeister gefeuert.",
 
     cond_population:    null,
     cond_support_rate:  null,

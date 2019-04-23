@@ -46,8 +46,7 @@ function City(source) {
         this.gift_buildings = [];
         this.event_reserved = [
             {type:'gift', name:'your_house', cond:['population', 2000]},
-            //{type:'gift', name:'bank', cond:['population', 1000, 'funds_lt', 3000]},
-            {type:'gift', name:'bank', cond:['year_month', 190002]},
+            {type:'gift', name:'bank', cond:['population', 1000, 'funds_lt', 3000]},
             {type:'gift', name:'terminal_station', cond:['rail', 300]},
             {type:'gift', name:'terminal_station', cond:['rail', 600]},
             {type:'gift', name:'park_casino', cond:['road', 200]},
@@ -66,6 +65,8 @@ function City(source) {
             {type:'gift', name:'library', cond:['school', 3]},
             {type:'gift', name:'library', cond:['school', 6]},
             {type:'gift', name:'library', cond:['school', 9]},
+            {type:'gift', name:'windmill', cond:['developed', 200]},
+            {type:'gift', name:'windmill', cond:['developed', 400]},
             {type:'gift', name:'monster_statue', cond:['population', 500000]},
             {type:'gift', name:'monolith', cond:['population', 700000]},
             {type:'gift', name:'land_fill', cond:['land_clear', 150]},

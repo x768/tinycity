@@ -235,7 +235,7 @@ resource.append('ja', {
     msg_growth_capital: "あなたの都市は「首都」になりました。\n空港や港の建設の準備はできていますか?",
     msg_growth_metropolis:"あなたの都市は「メトロポリス」へと発展しました。\nここからがあなたの腕の見せ所です。",
     msg_growth_megalopolis:"あなたの都市は、最高レベルの「メガロポリス」へと発展しました。\n街の再開発で70万人を目指してみてはいかがでしょうか?",
-    msg_bankrupt:       "この街は財政破綻したため、あなたは市長の職を解任されました。",
+    msg_bankrupt:       "この街は財政破綻したため、あなたは市長を解任されました。",
 
     cond_population:    "人口 {pops}人以上",
     cond_support_rate:  "支持率 {rate}%以上",

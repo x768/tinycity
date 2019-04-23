@@ -1371,6 +1371,7 @@ function Simulate() {
                 case M_TERM_STN | F_CENTER:
                 case M_BANK | F_CENTER:
                 case M_LIBRARY | F_CENTER:
+                case M_WINDMILL | F_CENTER:
                     if (city.tile_power[pos] === 2) {
                         diffusion_sub(city.tile_land_value, x, y, 64, 3);
                     }

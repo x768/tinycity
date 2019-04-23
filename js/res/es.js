@@ -235,7 +235,7 @@ resource.append('es', {
     msg_growth_capital: null,
     msg_growth_metropolis:null,
     msg_growth_megalopolis:null,
-    msg_bankrupt:       null,
+    msg_bankrupt:       "Tu ciudad ha quebrado.\nFuiste despedido del alcalde.",
 
     cond_population:    null,
     cond_support_rate:  null,

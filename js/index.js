@@ -34,7 +34,7 @@ function ScenarioMessage()
     const res = {
         cisco: {
             en: "Damage from the earthquake was minor compared to that of the ensuing fires, which kills 1500 peoples.\nControlling the fires shuld be your initial concern.\nThen clear the rubble and start rebuilding.\nYou have 5 years.",
-            ja: "この街を襲った地震は大規模な火災を引き起こし、これにより1500人もの命が奪われました。\nあなたの使命は、火災を鎮め、瓦礫を撤去し、街を再建することです。\n市長の任期は5年です。",
+            ja: "この街を襲った地震は大規模な火災を引き起こしました。火災は何日も続き、1500人もの命が奪われました。\nあなたの使命は、火災を鎮め、瓦礫を撤去し、街を再建することです。\n市長の任期は5年です。",
         },
         bern: {
             en: "The roads here are becoming more congested every day. They demand that you do something about it.\nSome have suggested a railway as the answer, but this would require major rezoning in the downtown area.\nYou have 10 years.",
