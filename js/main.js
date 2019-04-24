@@ -19,6 +19,7 @@
     const DIR8_Y = [
         1, 1, 0, -1, -1, -1, 0, 1,
     ];
+    const BAKNRUPT_LIMIT = -10000;
 
     const view = new View(window.devicePixelRatio);
     const popup = new Popup(view);
@@ -1174,21 +1175,30 @@
             }
         });
     });
+    function show_bankrupt() {
+        popup.show_close_button();
+        popup.set_layout('canvas-text', null);
+        popup.set_title('bankrupt');
+        popup.set_text_content('msg_bankrupt');
+        view.draw_wallpaper_room(popup.get_canvas(), null, null);
+        view.draw_popup_window_picture('bankrupt');
+
+        popup.open_delay(null, mode => {
+            popup.close();
+            show_title_screen();
+            view.clear_view();
+        });
+    }
     function show_budget(draft) {
         reset_mouse_drag();
         popup.reset();
         popup.set_back_half_opacity();
-        let fiscal_year = city.year;
-        if (draft) {
-            popup.show_close_button();
-            fiscal_year++;
-        }
-        popup.set_title_raw(resource.yearstr(fiscal_year) + ' ' + resource.gettext('budget_draft'));
         let budget = city.get_budget(draft);
         let traffic_allocated;
         let police_allocated;
         let fire_allocated;
         let debt_payment = 0;
+        let fiscal_year = city.year;
         if (city.ruleset === 'tinycity') {
             traffic_allocated = budget.traffic;
             police_allocated = budget.police;
@@ -1198,6 +1208,10 @@
             police_allocated = Math.round(budget.police * city.police_funds / 100);
             fire_allocated   = Math.round(budget.fire * city.fire_funds / 100);
         }
+        if (draft) {
+            popup.show_close_button();
+            fiscal_year++;
+        }
         if (city.debt_payment.length >= 2 && city.debt_payment[0] === fiscal_year) {
             debt_payment = city.debt_payment[1];
             if (!draft) {
@@ -1205,6 +1219,21 @@
                 city.debt_payment.shift();
             }
         }
+        if (!draft && city.funds !== 'infinity') {
+            if (city.ruleset === 'tinycity') {
+                if (calc_total() < BAKNRUPT_LIMIT) {
+                    show_bankrupt();
+                    return;
+                }
+            } else {
+                if (city.funds + budget.tax + budget.special_income - debt_payment < 0) {
+                    show_bankrupt();
+                    return;
+                }
+            }
+        }
+        popup.set_title_raw(resource.yearstr(fiscal_year) + ' ' + resource.gettext('budget_draft'));
+
         function calc_total() {
             if (city.funds === 'infinity') {
                 return city.funds;
@@ -1217,10 +1246,16 @@
                 traffic_allocated = Math.round(budget.traffic * city.traffic_funds / 100);
                 police_allocated = Math.round(budget.police * city.police_funds / 100);
                 fire_allocated   = Math.round(budget.fire * city.fire_funds / 100);
-                popup.svg_list_values.traffic_funds.textContent = String(traffic_allocated);
-                popup.svg_list_values.police_funds.textContent  = String(police_allocated);
-                popup.svg_list_values.fire_funds.textContent    = String(fire_allocated);
-                popup.svg_list_values.next_funds.textContent    = String(calc_total());
+            }
+            popup.svg_list_values.traffic_funds.textContent = String(traffic_allocated);
+            popup.svg_list_values.police_funds.textContent  = String(police_allocated);
+            popup.svg_list_values.fire_funds.textContent    = String(fire_allocated);
+            let current_funds = calc_total();
+            popup.svg_list_values.next_funds.textContent    = String(calc_total());
+            if (current_funds >= 0) {
+                popup.svg_list_values.next_funds.setAttribute('style', 'fill:#000000');
+            } else {
+                popup.svg_list_values.next_funds.setAttribute('style', 'fill:#ff0000');
             }
         }
 
@@ -1231,12 +1266,12 @@
             {title:'tax', val:budget.tax},
             {title:'special_income', val:budget.special_income},
             {separator:true},
-            {title:'traffic_funds', val:traffic_allocated, id:'traffic_funds'},
-            {title:'police_funds',  val:police_allocated, id:'police_funds'},
-            {title:'fire_funds',    val:fire_allocated,   id:'fire_funds'},
+            {title:'traffic_funds', val:0, id:'traffic_funds'},
+            {title:'police_funds',  val:0, id:'police_funds'},
+            {title:'fire_funds',    val:0,   id:'fire_funds'},
             {title:(city.ruleset === 'tinycity' ? 'bond' : 'debt'), val:debt_payment},
             {separator:true},
-            {title:(draft ? 'estimeted_funds' : 'next_funds'), val:calc_total(), id:'next_funds'},
+            {title:(draft ? 'estimeted_funds' : 'next_funds'), val:0, id:'next_funds'},
         ]);
         popup.set_svg_list(80, 100, 520, [
             {val:city.tax_rate, unit:'%', format:'input', id:'tax_rate_input', on_down:e => {
@@ -1292,6 +1327,7 @@
                 }
             }},
         ]);
+        update();
 
         if (draft) {
             popup.open(() => {
@@ -1305,10 +1341,15 @@
                 if (mode === 'ok') {
                     let funds = calc_total();
                     if (funds !== 'infinity') {
-                        if (funds < 0) {
+                        if (city.ruleset !== 'tinycity' && funds < 0) {
                             return;
                         }
                         city.funds = funds;
+                    }
+                    if (city.ruleset === 'micropolis') {
+                        city.traffic_funds_term = city.traffic_funds;
+                        city.police_funds_term  = city.police_funds;
+                        city.fire_funds_term    = city.fire_funds;
                     }
                     city.hidden_assets += Math.round(budget.tax / 100) + Math.round(budget.special_income / 10);
                     popup.close();

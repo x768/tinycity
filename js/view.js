@@ -2329,7 +2329,9 @@ function View(quality)
         ctx.stroke();
 
         if (gift2 == null) {
-            draw_building_tile(ctx, gift1, 40 + 128, 210 + 64, 1);
+            if (gift1 != null) {
+                draw_building_tile(ctx, gift1, 40 + 128, 210 + 64, 1);
+            }
         } else {
             draw_building_tile(ctx, gift1, 40 + 62, 210 + 64, 0.625);
             draw_building_tile(ctx, gift2, 40 + 192, 210 + 64, 0.625);

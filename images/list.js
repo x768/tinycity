@@ -4,4 +4,5 @@ const POPUP_PICTURE = {
 //    disaster: '2.png',
 //    election_win: '1.png',
 //    election_lose: '2.png',
+//    bankrupt: '2.png',
 };
