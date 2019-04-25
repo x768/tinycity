@@ -1467,86 +1467,100 @@ function Simulate() {
             }
         }
     };
-    this.update_month_budget = function() {
+    this.get_month_budget = function(draft) {
+        let n_tax = 0;
+        let special_income = 0;
         let n_traffic = 0;
         let n_police = 0;
         let n_fire = 0;
-        let n_tax = 0;
-        let special_income = 0;
 
-        for (let y = 0; y < map_size; y++) {
-            for (let x = 0; x < map_size; x++) {
-                let pos = x + 1 + (y + 1) * map_size_edge;
-                switch (city.tile_data[pos]) {
-                case M_ROAD:
-                case M_ROADWIRE:
-                    n_traffic += 0.75;
-                    break;
-                case M_ROADRAIL:
-                    n_traffic += 2;
-                    break;
-                case M_ROAD_WT:
-                case M_ROAD_WT | F_CENTER:
-                    n_traffic += 1.5;
-                    break;
-                case M_RAIL:
-                    n_traffic += 1.25;
-                    break;
-                case M_RAIL_WT:
-                case M_RAIL_WT | F_CENTER:
-                    n_traffic += 2.5;
-                    break;
-                case M_POLICE_D | F_CENTER:
-                case M_POLICE_HQ | F_CENTER:
-                    n_police++;
-                    break;
-                case M_FIRE_D | F_CENTER:
-                case M_FIRE_HQ | F_CENTER:
-                    n_fire++;
-                    break;
-                case M_R_ZONE | F_CENTER:
-                case M_C_ZONE | F_CENTER:
-                case M_I_ZONE | F_CENTER:
-                    {
-                        let pos2 = (x >> 1) + (y >> 1) * map_size2;
-                        n_tax += city.tile_sub[pos] * city.tile_land_value[pos2];
+        if (draft) {
+            for (let y = 0; y < map_size; y++) {
+                for (let x = 0; x < map_size; x++) {
+                    let pos = x + 1 + (y + 1) * map_size_edge;
+                    switch (city.tile_data[pos]) {
+                    case M_ROAD:
+                    case M_ROADWIRE:
+                        n_traffic += 0.75;
+                        break;
+                    case M_ROADRAIL:
+                        n_traffic += 2;
+                        break;
+                    case M_ROAD_WT:
+                    case M_ROAD_WT | F_CENTER:
+                        n_traffic += 1.5;
+                        break;
+                    case M_RAIL:
+                        n_traffic += 1.25;
+                        break;
+                    case M_RAIL_WT:
+                    case M_RAIL_WT | F_CENTER:
+                        n_traffic += 2.5;
+                        break;
+                    case M_POLICE_D | F_CENTER:
+                    case M_POLICE_HQ | F_CENTER:
+                        n_police++;
+                        break;
+                    case M_FIRE_D | F_CENTER:
+                    case M_FIRE_HQ | F_CENTER:
+                        n_fire++;
+                        break;
+                    case M_R_ZONE | F_CENTER:
+                    case M_C_ZONE | F_CENTER:
+                    case M_I_ZONE | F_CENTER:
+                        {
+                            let pos2 = (x >> 1) + (y >> 1) * map_size2;
+                            n_tax += city.tile_sub[pos] * city.tile_land_value[pos2];
+                        }
+                        break;
+                    case M_TERM_STN | F_CENTER:
+                        special_income += 300;
+                        break;
+                    case M_CASINO | F_CENTER:
+                        special_income += 400;
+                        break;
+                    case M_ZOO | F_CENTER:
+                        special_income += 200;
+                        break;
                     }
-                    break;
-                case M_TERM_STN | F_CENTER:
-                    special_income += 300;
-                    break;
-                case M_CASINO | F_CENTER:
-                    special_income += 400;
-                    break;
-                case M_ZOO | F_CENTER:
-                    special_income += 200;
-                    break;
+                }
+            }
+
+            if (city.difficulty === 'expert' || city.difficulty === 'master') {
+                n_traffic *= 1.5;
+                if (city.ruleset === 'tinycity') {
+                    n_police *= 1.5;
+                    n_fire *= 1.5;
                 }
             }
         }
-        city.tax_collected += Math.round(n_tax * city.tax_rate / 512);
+        return {
+            tax: n_tax / 512,
+            special_income: special_income,
+            traffic: n_traffic,
+            police: n_police,
+            fire: n_fire,
+        };
+    };
+    this.update_month_budget = function() {
+        let budget = this.get_month_budget(true);
 
-        if (city.difficulty === 'expert' || city.difficulty === 'master') {
-            n_traffic *= 1.5;
-            if (city.ruleset === 'tinycity') {
-                n_police *= 1.5;
-                n_fire *= 1.5;
-            }
-        }
+        city.tax_collected += Math.round(budget.tax * city.tax_rate);
+        city.special_income = budget.special_income;
+
         if (city.ruleset === 'tinycity') {
-            city.traffic_cost += Math.round(n_traffic * city.traffic_funds_term / 1200);
-            city.police_cost += Math.round(n_police * city.police_funds_term / 10);
-            city.fire_cost += Math.round(n_fire * city.fire_funds_term / 10);
+            city.traffic_cost += Math.round(budget.traffic * city.traffic_funds_term / 1200);
+            city.police_cost += Math.round(budget.police * city.police_funds_term / 10);
+            city.fire_cost += Math.round(budget.fire * city.fire_funds_term / 10);
 
             city.traffic_funds_term = city.traffic_funds;
             city.police_funds_term  = city.police_funds;
             city.fire_funds_term    = city.fire_funds;
         } else {
-            city.traffic_cost = Math.round(n_traffic);
-            city.police_cost = Math.round(n_police * 100);
-            city.fire_cost = Math.round(n_fire * 100);
+            city.traffic_cost = Math.round(budget.traffic);
+            city.police_cost = Math.round(budget.police * 100);
+            city.fire_cost = Math.round(budget.fire * 100);
         }
-        city.special_income = special_income;
     };
     this.reset_budget = function() {
         city.tax_collected = 0;

@@ -1726,29 +1726,6 @@ function City(source) {
 
         return st;
     };
-    this.get_budget = function(draft) {
-        let budget = {};
-        if (draft) {
-            budget.tax = Math.round(this.tax_collected * 12 / this.month);
-            budget.special_income = this.special_income;
-            if (this.ruleset === 'tinycity') {
-                budget.traffic = Math.round(this.traffic_cost * 12 / this.month);
-                budget.police = Math.round(this.police_cost * 12 / this.month);
-                budget.fire = Math.round(this.fire_cost * 12 / this.month);
-            } else {
-                budget.traffic = this.traffic_cost;
-                budget.police = this.police_cost;
-                budget.fire = this.fire_cost;
-            }
-        } else {
-            budget.special_income = this.special_income;
-            budget.tax     = this.tax_collected;
-            budget.traffic = this.traffic_cost;
-            budget.police  = this.police_cost;
-            budget.fire    = this.fire_cost;
-        }
-        return budget;
-    };
     this.update_problems = function() {
         if (this.population >= 1000) {
             let traffic_score = 0;
