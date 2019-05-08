@@ -1289,6 +1289,12 @@
                 case 'CSN':
                     build_at(i, M_CASINO, -1, 1);
                     break;
+                case 'ZOO':
+                    build_at(i, M_ZOO, -1, 1);
+                    break;
+                case 'WML':
+                    build_at(i, M_WINDMILL, -1, 1);
+                    break;
                 default:
                     break;
                 }

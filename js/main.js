@@ -1567,6 +1567,7 @@
                     {text: 'c_zone', color: '#6060FF', text_color: '#000000'},
                     {text: 'i_zone', color: '#FFFF00', text_color: '#000000'},
                 ]);
+                popup.show_vehicle_position(city, view);
                 break;
             case 'power_grid':
                 popup.draw_map_base(city, false);
@@ -1639,6 +1640,7 @@
                     }
                     popup.set_map_legand(legand);
                 }
+                popup.show_disaster_position(city, view);
                 break;
             //case 'debug':
             //    popup.draw_map_base(city, false);

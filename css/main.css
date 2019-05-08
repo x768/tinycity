@@ -153,6 +153,9 @@ canvas {
     font-size: 20px;
     fill: #808080;
 }
+#popup-svg-wrapper {
+    z-index: 999;
+}
 .graph-scale-text {
     font-size: 10px;
 }

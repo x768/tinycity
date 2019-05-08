@@ -71,11 +71,11 @@
 <li>渋滞、犯罪、公害の計算方法が異なります。</li>
 <li>警察、消防の計算方法が異なります。</li>
 <li>税収、交通維持費の計算方法が異なります。</li>
-<li>洪水による建築物の壊れ方が異なります。</li>
-<li>飛行機は頻繁に落ちません。</li>
+<li>建物が壊れるときは、常に全壊になります。</li>
+<li>災害による建築物の壊れ方が異なります。</li>
+<li>飛行機とヘリコプターはぶつかりません。</li>
 <li>Rの初期の小さい家を削っても、平地になりません。</li>
 <li>橋を途中で曲げたり、途中で止めたりできません。</li>
-<li>災害による建物の壊れ方は、常に全壊になります。</li>
 <li>空港と港は、電力と道路の接続がないと機能しません。</li>
 <li>道路の予算を削減しても、道路が瓦礫になることはありません。</li>
 <li>プレゼントがありますが、もらえる条件や効果が若干違います。</li>
@@ -94,7 +94,7 @@
 <li>道路、線路、電線は燃えません。</li>
 <li>難易度を上げたときに警察・消防の費用も上がります。</li>
 <li>年度末に予算の割当を減らしても、すでに発生した費用を減らすことはできません。</li>
-<li class="not-implemented">銀行がない代わりに、債券を発行できます。</li>
+<li>銀行がない代わりに、債券を発行できます。</li>
 </ul>
 </div>
 
@@ -127,7 +127,14 @@
 <p>瓦礫、樹木を自動的に整地します。3x3以上の建築物は電線も自動的に整地します。</p>
 
 <h2>Popup window</h2>
-<p>街のレベルアップ、プレゼント、災害発生時にポップアップウインドウを出します。OFFにすると、遊園地・カジノの選択では自動的に遊園地が選択されます。</p>
+<p>ONにすると、以下の場合にポップアップウインドウを出します。</p>
+<ul>
+<li>年度末予算決定</li>
+<li>街のレベルアップ</li>
+<li>プレゼント</li>
+<li>災害発生時</li>
+</ul>
+<p>OFFにすると、画面下部にメッセージを出します。その場合、遊園地・カジノの選択では自動的に遊園地が選択されます。</p>
 
 <h2 class="not-implemented">Sound effect</h2>
 <p class="not-implemented">効果音のON/OFFを設定します。</p>
@@ -244,7 +251,7 @@
 <p>See you soon. Good bye.</p>
 
 <h1>Disaster</h1>
-<p class="tinycity">During disaster occurs, You cannot bulldoze any buildings. 災害発生中は火災、洪水、MOB等以外の時間の流れが止まります。</p>
+<p class="tinycity">During disaster occurs, You cannot bulldoze any buildings and Time flow stops except fires, floods and tornado, monster.</p>
 <table>
 <tr><th>Name</th><th>Condition</th><th>Discription</th></tr>
 <tr><td>Fire</td><td>Novice or above<br>Buildings which size is 3x3 or larger</td><td>隣接する建築物、樹木に引火します。<span class="tinycity"><br>Roads, Railroads and Wires are non flammable.</span></td></tr>
@@ -255,7 +262,7 @@
 <tr><td>Plane crush</td><td>Master<br>Airport (Working)</td><td>墜落地点周囲で火災が発生します。</td></tr>
 <tr class="micropolis"><td>Meltdown</td><td>Master<br>Nuclear Power Plant</td><td>周囲30マス程度が放射能で汚染されます。Half-life of radioisotope is about 10 years.</td></tr>
 <tr><td>Monster</td><td>Master</td><td>通過した箇所の建築物が火災または破壊されます。</td></tr>
-<tr class="not-implemented"><td>UFO</td><td>(Only Scenario mode)</td><td>離れた数カ所で、火災、植林、洪水、野球場、放射能汚染の<br>いずれかの現象が起こります。</td></tr>
+<tr><td>UFO</td><td>(Only Scenario mode)</td><td>離れた数カ所で、火災、植林、洪水、野球場、放射能汚染の<br>いずれかの現象が起こります。</td></tr>
 </table>
 
 <h1>Budget</h1>
@@ -278,14 +285,20 @@
 <p>消防への割り当てを設定します。予算を減らすと消防の効果が減ります。表示されている金額は年末の予想です。</p>
 <p class="tinycity">The assigned rate will be reflected in the next month.</p>
 <p class="micropolis">The assigned rate will be reflected in the next year.</p>
-<h2 class="tinycity not-implemented">Bond payment</h2>
-<p class="tinycity not-implemented">発行した債券の支払額です。支払いが滞るとゲームオーバーです。</p>
-<h2 class="micropolis not-implemented">Debt payment</h2>
-<p class="micropolis not-implemented">銀行への債務の支払額です。支払いが滞るとゲームオーバーです。</p>
-<h2 class="tinycity not-implemented">Issue bond</h2>
-<p class="tinycity not-implemented">$1000単位で発行することができます。利息は発行時の人口によって変わります。10年後に利息も含めて返済しなければなりません。</p>
-<h2 class="micropolis not-implemented">Loan</h2>
-<p class="micropolis not-implemented">銀行から$10000借りることができます。年$500ずつ21回払いです。</p>
+<h2 class="tinycity">Bond</h2>
+<p class="tinycity">発行した債券の支払額です。支払いが滞るとゲームオーバーです。</p>
+<h2 class="micropolis">Debt</h2>
+<p class="micropolis">銀行への債務の支払額です。支払いが滞るとゲームオーバーです。</p>
+
+<h1 class="tinycity">Bond</h1>
+<p class="tinycity">都市が大きいほど低金利で発行できます。発行額が大きいほど利息が上がります。</p>
+<h2 class="tinycity">Issue a $2000 bond (5 years)</h2>
+<p class="tinycity">5年後の年末に利息も含めて一括で返済します。</p>
+<h2 class="tinycity">Issue a $3000 bond (10 years)</h2>
+<p class="tinycity">10年後の年末に利息も含めて一括で返済します。5年債券より利息は高めです。</p>
+
+<h1 class="micropolis">Loan</h1>
+<p class="micropolis">銀行から$10000借りることができます。年$500ずつ21回払いです。</p>
 
 <h1>Map</h1>
 <table>

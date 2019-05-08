@@ -1002,6 +1002,53 @@ function Popup(view)
         }
         this.set_map_legand(list);
     };
+    function show_map_marker(map_size, o, symbol, color) {
+        let f = 160 / (map_size * 16);
+        let x = 160 + (o.x - o.y) * f;
+        let y = (o.x + o.y) * f;
+
+        let b = new_svg_node('rect');
+        b.setAttribute('x', x - 6);
+        b.setAttribute('y', y - 6);
+        b.setAttribute('width', 12);
+        b.setAttribute('height', 12);
+        b.setAttribute('style', 'stroke:#000000;stroke-width:1px;fill:' + color);
+        svg.appendChild(b);
+
+        let t = new_svg_node('text');
+        t.setAttribute('x', x);
+        t.setAttribute('y', y + 4);
+        t.setAttribute('text-anchor', 'middle');
+        t.setAttribute('style', 'fill:#000000;font-size:10px');
+        t.textContent = symbol;
+        svg.appendChild(t);
+    }
+    this.show_vehicle_position = function(city, view) {
+        if (view.airplane.dir >= 0) {
+            show_map_marker(city.map_size, view.airplane, 'A', '#ffffff');
+        }
+        if (view.helicopter.dir >= 0) {
+            show_map_marker(city.map_size, view.helicopter, 'H', '#ff8080');
+        }
+        if (view.container_ship.dir >= 0) {
+            show_map_marker(city.map_size, view.container_ship, 'S', '#8080ff');
+        }
+        if (view.train[0].d1 >= 0) {
+            let t = view.train[0];
+            show_map_marker(city.map_size, {x: t.x * 16, y: t.y *16}, 'T', '#ffff80');
+        }
+    }
+    this.show_disaster_position = function(city, view) {
+        if (view.tornado.dir >= 0) {
+            show_map_marker(city.map_size, view.tornado, 'T', '#8080ff');
+        }
+        if (view.monster.dir >= 0) {
+            show_map_marker(city.map_size, view.monster, 'M', '#80ff80');
+        }
+        if (view.ufo_disaster.dir >= 0) {
+            show_map_marker(city.map_size, view.ufo_disaster, 'U', '#ff8080');
+        }
+    };
 
     document.getElementById('popup-cancel').addEventListener('click', e => {
         if (callback_close != null) {
