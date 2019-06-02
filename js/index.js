@@ -54,7 +54,7 @@ function ScenarioMessage()
         },
         rio: {
             en: "In the middle 21st century, the greenhouse effect raises sea levels worldwide. Coastal areas were devastated by flood.\nYou have 10 years to turn this swamp back into a city again.",
-            ja: "地球温暖化により海面が上昇し、21世紀中頃には世界的に海面が上昇しました。そのため、海に面した地域で洪水が発生しました。\nあなたの使命は、水浸しになった街を再建することです。\n市長の任期は10年です。",
+            ja: "21世紀中頃には、地球温暖化により世界的に海面が上昇しました。そのため、海に面した地域で洪水が発生しました。\nあなたの使命は、水浸しになった街を再建することです。\n市長の任期は10年です。",
         },
         lasvegas: {
             en: "The world's largest gambling city was attacked by strange flying objects and the city suffered devastated damage.\nYou have 10 years to withstand attack and rebuild the city.",

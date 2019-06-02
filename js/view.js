@@ -61,28 +61,32 @@ function View(quality)
     const INDEX_RAIL_BRIDGE_U = 7;
     const INDEX_R_ZONE_D = 9;
     const INDEX_R_ZONE = 10;    // 16
-    const INDEX_C_ZONE_D = 26;
-    const INDEX_C_ZONE = 27;    // 20
-    const INDEX_I_ZONE_D = 47;
-    const INDEX_I_ZONE = 48;    // 8
-    const INDEX_HOSPITAL = 56;
-    const INDEX_SCHOOL = 57;
-    const INDEX_STATION_RAIL = 58;
-    const INDEX_STATION = 60;
-    const INDEX_POLICE_DEPT = 62;
-    const INDEX_FIRE_DEPT = 63;
-    const INDEX_YOUR_HOUSE = 64;
-    const INDEX_TML_STATION = 69;
-    const INDEX_POLICE_HQ = 71;
-    const INDEX_FIRE_HQ = 72;
-    const INDEX_AMUSEMENT = 73;
-    const INDEX_CASINO = 74;
-    const INDEX_BANK = 75;
-    const INDEX_M_STATUE = 76;
-    const INDEX_ZOO = 77;
-    const INDEX_MONOLITH = 78;
-    const INDEX_LIBRARY = 79;
-    const INDEX_WINDMILL = 80;
+    const INDEX_R_TOP = 26;     // 4
+    const INDEX_C_ZONE_D = 30;
+    const INDEX_C_ZONE = 31;    // 20
+    const INDEX_C_TOP = 51;     // 4
+    const INDEX_I_ZONE_D = 55;
+    const INDEX_I_ZONE = 56;    // 8
+    const INDEX_HOSPITAL = 64;
+    const INDEX_SCHOOL = 65;
+    const INDEX_STATION_RAIL = 66;
+    const INDEX_STATION = 68;
+    const INDEX_POLICE_DEPT = 70;
+    const INDEX_FIRE_DEPT = 71;
+    const INDEX_YOUR_HOUSE = 72;
+    const INDEX_TML_STATION = 77;
+    const INDEX_POLICE_HQ = 79;
+    const INDEX_FIRE_HQ = 80;
+    const INDEX_AMUSEMENT = 81;
+    const INDEX_CASINO = 82;
+    const INDEX_BANK = 83;
+    const INDEX_M_STATUE = 84;
+    const INDEX_ZOO = 85;
+    const INDEX_MONOLITH = 86;
+    const INDEX_LIBRARY = 87;
+    const INDEX_WINDMILL = 88;
+    const INDEX_TOWER = 92;
+    const INDEX_GARDEN = 93;
 
     const INDEX_PAVED = 1;
     const INDEX_STADIUM = 2;
@@ -417,7 +421,7 @@ function View(quality)
     const mip1 = new MipMap(64, 32 * 3, 128);
     const mip3 = new MipMap(64 * 3, 32 * 5, 128);
     const mip4 = new MipMap(64 * 4, 32 * 7, 17);
-    const mip6 = new MipMap(64 * 6, 32 * 8, 1);
+    const mip6 = new MipMap(64 * 2, 32 * 8, 1);
     const mipt = new MipMap(64 * 3, 32 * 5, 64);
 
     function draw_square_q(ctx, color, x1, y1, x2, y2, q_scale, scroll_x, scroll_y) {
@@ -604,6 +608,10 @@ function View(quality)
         mip3.set_qtile(INDEX_R_ZONE +13, maptip.r_34, null);
         mip3.set_qtile(INDEX_R_ZONE +14, maptip.r_44, null);
         mip3.set_qtile(INDEX_R_ZONE +15, maptip.r_54, null);
+        mip3.set_qtile(INDEX_R_TOP  + 0, maptip.r_top_n, null);
+        mip3.set_qtile(INDEX_R_TOP  + 1, maptip.r_top_e, null);
+        mip3.set_qtile(INDEX_R_TOP  + 2, maptip.r_top_s, null);
+        mip3.set_qtile(INDEX_R_TOP  + 3, maptip.r_top_w, null);
         mip3.set_qtile(INDEX_C_ZONE_D, maptip.c_frame, maptip.land3_edge);
         mip3.set_qtile(INDEX_C_ZONE + 0, maptip.c_11, null);
         mip3.set_qtile(INDEX_C_ZONE + 1, maptip.c_21, null);
@@ -625,6 +633,10 @@ function View(quality)
         mip3.set_qtile(INDEX_C_ZONE +17, maptip.c_34, null);
         mip3.set_qtile(INDEX_C_ZONE +18, maptip.c_44, null);
         mip3.set_qtile(INDEX_C_ZONE +19, maptip.c_54, null);
+        mip3.set_qtile(INDEX_C_TOP  + 0, maptip.c_top_n, null);
+        mip3.set_qtile(INDEX_C_TOP  + 1, maptip.c_top_e, null);
+        mip3.set_qtile(INDEX_C_TOP  + 2, maptip.c_top_s, null);
+        mip3.set_qtile(INDEX_C_TOP  + 3, maptip.c_top_w, null);
         mip3.set_qtile(INDEX_I_ZONE_D, maptip.i_frame, maptip.land3_edge);
         mip3.set_qtile(INDEX_I_ZONE + 0, maptip.i_11, null);
         mip3.set_qtile(INDEX_I_ZONE + 1, maptip.i_21, null);
@@ -662,6 +674,8 @@ function View(quality)
         mip3.set_qtile(INDEX_WINDMILL + 1, maptip.windmill_1, null);
         mip3.set_qtile(INDEX_WINDMILL + 2, maptip.windmill_2, null);
         mip3.set_qtile(INDEX_WINDMILL + 3, maptip.windmill_3, null);
+        mip3.set_qtile(INDEX_TOWER, maptip.tower, null);
+        mip3.set_qtile(INDEX_GARDEN, maptip.garden, null);
 
 
         mip4.set_offset_y(7, 1, 7);
@@ -919,6 +933,14 @@ function View(quality)
         case 'windmill':
             draw_maptip_q(ctx, maptip.land3, x, y, sq);
             draw_maptip_q(ctx, maptip.windmill_0, x, y, sq);
+            break;
+        case 'garden':
+            draw_maptip_q(ctx, maptip.land3, x, y, sq);
+            draw_maptip_q(ctx, maptip.garden, x, y, sq);
+            break;
+        case 'tower':
+            draw_maptip_q(ctx, maptip.land3, x, y, sq);
+            draw_maptip_q(ctx, maptip.tower, x, y, sq);
             break;
         case 'monolith':
             draw_maptip_q(ctx, maptip.land3, x, y, sq);
@@ -1368,6 +1390,14 @@ function View(quality)
                 case M_WINDMILL | F_CENTER:
                     name_d = INDEX_TILE3;
                     name_u = INDEX_WINDMILL | INDEX_TILE3;
+                    break;
+                case M_TOWER | F_CENTER:
+                    name_d = INDEX_TILE3;
+                    name_u = INDEX_TOWER | INDEX_TILE3;
+                    break;
+                case M_GARDEN | F_CENTER:
+                    name_d = INDEX_TILE3;
+                    name_u = INDEX_GARDEN | INDEX_TILE3;
                     break;
                 case M_MONOLITH | F_CENTER:
                     name_d = INDEX_TILE3;

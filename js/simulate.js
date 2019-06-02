@@ -1361,9 +1361,9 @@ function Simulate() {
                 switch (city.tile_data[pos]) {
                 case M_YR_HOUSE | F_CENTER:
                 case M_AMUSEMENT | F_CENTER:
-                case M_CASINO | F_CENTER:
-                case M_M_STATUE | F_CENTER:
                 case M_ZOO | F_CENTER:
+                case M_TOWER | F_CENTER:
+                case M_M_STATUE | F_CENTER:
                     if (city.tile_power[pos] === 2) {
                         diffusion_sub(city.tile_land_value, x, y, 80, 4);
                     }
@@ -1371,7 +1371,9 @@ function Simulate() {
                 case M_TERM_STN | F_CENTER:
                 case M_BANK | F_CENTER:
                 case M_LIBRARY | F_CENTER:
+                case M_CASINO | F_CENTER:
                 case M_WINDMILL | F_CENTER:
+                case M_GARDEN | F_CENTER:
                     if (city.tile_power[pos] === 2) {
                         diffusion_sub(city.tile_land_value, x, y, 64, 3);
                     }
@@ -1452,7 +1454,7 @@ function Simulate() {
                     let pos = 1 + (yy + 1) * map_size_edge;
                     for (let xx = x1; xx < x2; xx++) {
                         let t = city.tile_data[pos + xx];
-                        if (t === M_TREE) {
+                        if (t === M_TREE || t === M_GARDEN || t === (M_GARDEN | F_CENTER)) {
                             tree++;
                         } else if ((t & M_LAND) === 0) {
                             tile_land_v[p] |= V_WATER;

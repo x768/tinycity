@@ -1295,6 +1295,9 @@
                 case 'WML':
                     build_at(i, M_WINDMILL, -1, 1);
                     break;
+                case 'TWR':
+                    build_at(i, M_TOWER, -1, 1);
+                    break;
                 default:
                     break;
                 }

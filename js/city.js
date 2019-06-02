@@ -67,6 +67,10 @@ function City(source) {
             {type:'gift', name:'library', cond:['school', 9]},
             {type:'gift', name:'windmill', cond:['developed', 200]},
             {type:'gift', name:'windmill', cond:['developed', 400]},
+            {type:'gift', name:'garden', cond:['afforestion', 200]},
+            {type:'gift', name:'garden', cond:['afforestion', 400]},
+            {type:'gift', name:'garden', cond:['afforestion', 600]},
+            {type:'gift', name:'tower', cond:['population', 100000]},
             {type:'gift', name:'monster_statue', cond:['population', 500000]},
             {type:'gift', name:'monolith', cond:['population', 700000]},
             {type:'gift', name:'land_fill', cond:['land_clear', 150]},
@@ -797,6 +801,12 @@ function City(source) {
                 break;
             case M_LIBRARY:
                 info.name = 'library';
+                break;
+            case M_GARDEN:
+                info.name = 'garden';
+                break;
+            case M_TOWER:
+                info.name = 'tower';
                 break;
             case M_M_STATUE:
                 info.name = 'monster_statue';
