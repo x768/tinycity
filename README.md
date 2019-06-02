@@ -31,9 +31,9 @@ https://github.com/SimHacker/micropolis
 
 # Gallery
 
-![TinyCity Tokyo1](gallery/tokyo1.png)
+![TinyCity Las Vegas](gallery/las-vegas.png)
 
-![TinyCity Tokyo2](gallery/tokyo2.png)
+![TinyCity Bern](gallery/bern.png)
 
-![TinyCity Tokyo3](gallery/tokyo3.png)
+![TinyCity Detroid](gallery/detroid.png)
 
