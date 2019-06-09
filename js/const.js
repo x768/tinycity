@@ -47,6 +47,7 @@ const M_ZOO      = 0x2A00 | M_WIRE;
 const M_LIBRARY  = 0x2B00 | M_WIRE;
 const M_WINDMILL = 0x2C00 | M_WIRE;
 const M_TOWER    = 0x2D00 | M_WIRE;
+const M_FOUNTAIN = 0x2E00 | M_WIRE;
 
 const MF_FIRE      = 1;
 const MF_FIRE_TMP  = 2;
@@ -115,6 +116,7 @@ const BUILD_ICON_INFO_GIFT = {
     garden:           { size: 3, cost: 100, name: 'garden', tile:M_GARDEN },
     monolith:         { size: 3, cost: 100, name: 'monolith', tile:M_MONOLITH },
     tower:            { size: 3, cost: 100, name: 'tower', tile:M_TOWER },
+    fountain:         { size: 3, cost: 100, name: 'fountain', tile:M_FOUNTAIN },
     land_fill:        { size: 3, cost: 100, name: 'land_fill' },
 };
 

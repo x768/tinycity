@@ -620,6 +620,7 @@ function City(source) {
             size: 1,
         };
         let list = [];
+        let tile_sub;
 
         let pos2 = (pt.x >> 1) + (pt.y >> 1) * this.map_size2;
 
@@ -679,6 +680,8 @@ function City(source) {
                             let t = this.tile_sub[pos2 + xx];
                             if (t === 1) {
                                 population += 20;
+                            } else if (t >= 6) {
+                                population += 960;
                             } else {
                                 population += t * 160;
                             }
@@ -690,12 +693,20 @@ function City(source) {
             case M_C_ZONE:
                 info.name = 'c_zone';
                 info.size = 3;
-                list.push({title: 'population', val:this.tile_sub[pos] * 160});
+                tile_sub = this.tile_sub[pos];
+                if (tile_sub > 6) {
+                    tile_sub = 6;
+                }
+                list.push({title: 'population', val:tile_sub * 160});
                 break;
             case M_I_ZONE:
                 info.name = 'i_zone';
                 info.size = 3;
-                list.push({title: 'population', val:this.tile_sub[pos] * 160});
+                tile_sub = this.tile_sub[pos];
+                if (tile_sub > 6) {
+                    tile_sub = 6;
+                }
+                list.push({title: 'population', val:tile_sub * 160});
                 break;
             case M_HOSPITAL:
                 info.name = 'hospital';
@@ -807,6 +818,9 @@ function City(source) {
                 break;
             case M_TOWER:
                 info.name = 'tower';
+                break;
+            case M_FOUNTAIN:
+                info.name = 'fountain';
                 break;
             case M_M_STATUE:
                 info.name = 'monster_statue';
@@ -1575,10 +1589,19 @@ function City(source) {
                 case F_CENTER | M_GAS_PWR:
                 case F_CENTER | M_NUKE_PWR:
                 case F_CENTER | M_AIRPORT:
+                    // 4x4 or 6x6 buildings
                     sub[pos - 1] = sub[pos];
                     sub[pos] = 0;
                     data[pos - 1] |= F_CENTER;
                     data[pos] &= ~F_CENTER;
+                    break;
+                case F_CENTER | M_R_ZONE:
+                case F_CENTER | M_C_ZONE:
+                    if (sub[pos] >= 6) {
+                        let tmp = sub[pos] + 1;
+                        if (tmp > 9) tmp = 6;
+                        sub[pos] = tmp;
+                    }
                     break;
                 }
             }
@@ -1597,10 +1620,19 @@ function City(source) {
                 case F_CENTER | M_GAS_PWR:
                 case F_CENTER | M_NUKE_PWR:
                 case F_CENTER | M_AIRPORT:
+                    // 4x4 or 6x6 buildings
                     sub[pos - size] = sub[pos];
                     sub[pos] = 0;
                     data[pos - size] |= F_CENTER;
                     data[pos] &= ~F_CENTER;
+                    break;
+                case F_CENTER | M_R_ZONE:
+                case F_CENTER | M_C_ZONE:
+                    if (sub[pos] >= 6) {
+                        let tmp = sub[pos] - 1;
+                        if (tmp < 6) tmp = 9;
+                        sub[pos] = tmp;
+                    }
                     break;
                 }
             }
@@ -1637,6 +1669,7 @@ function City(source) {
             let pos = 1 + (y + 1) * this.map_size_edge;
             for (let x = 0; x < this.map_size; x++) {
                 let t = this.tile_data[pos + x];
+                let tile_sub;
                 switch (t) {
                 case M_LAND:
                     st.clear++;
@@ -1646,14 +1679,22 @@ function City(source) {
                     break;
                 case F_CENTER | M_R_ZONE:
                     st.r_zone++;
-                    if (this.tile_sub[pos + x] > 0) {
+                    tile_sub = this.tile_sub[pos + x];
+                    if (tile_sub > 0) {
                         st.developed++;
+                        if (tile_sub === 6 || tile_sub === 9) {
+                            st.top++;
+                        }
                     }
                     break;
                 case F_CENTER | M_C_ZONE:
                     st.c_zone++;
-                    if (this.tile_sub[pos + x] > 0) {
+                    tile_sub = this.tile_sub[pos + x];
+                    if (tile_sub > 0) {
                         st.developed++;
+                        if (tile_sub === 6 || tile_sub === 9) {
+                            st.top++;
+                        }
                     }
                     break;
                 case F_CENTER | M_I_ZONE:

@@ -87,6 +87,7 @@ function View(quality)
     const INDEX_WINDMILL = 88;
     const INDEX_TOWER = 92;
     const INDEX_GARDEN = 93;
+    const INDEX_FOUNTAIN = 94;
 
     const INDEX_PAVED = 1;
     const INDEX_STADIUM = 2;
@@ -421,7 +422,7 @@ function View(quality)
     const mip1 = new MipMap(64, 32 * 3, 128);
     const mip3 = new MipMap(64 * 3, 32 * 5, 128);
     const mip4 = new MipMap(64 * 4, 32 * 7, 17);
-    const mip6 = new MipMap(64 * 2, 32 * 8, 1);
+    const mip6 = new MipMap(64 * 6, 32 * 8, 1);
     const mipt = new MipMap(64 * 3, 32 * 5, 64);
 
     function draw_square_q(ctx, color, x1, y1, x2, y2, q_scale, scroll_x, scroll_y) {
@@ -676,6 +677,8 @@ function View(quality)
         mip3.set_qtile(INDEX_WINDMILL + 3, maptip.windmill_3, null);
         mip3.set_qtile(INDEX_TOWER, maptip.tower, null);
         mip3.set_qtile(INDEX_GARDEN, maptip.garden, null);
+        mip3.set_qtile(INDEX_FOUNTAIN + 0, maptip.fountain_0, null);
+        mip3.set_qtile(INDEX_FOUNTAIN + 1, maptip.fountain_1, null);
 
 
         mip4.set_offset_y(7, 1, 7);
@@ -942,6 +945,10 @@ function View(quality)
             draw_maptip_q(ctx, maptip.land3, x, y, sq);
             draw_maptip_q(ctx, maptip.tower, x, y, sq);
             break;
+        case 'fountain':
+            draw_maptip_q(ctx, maptip.land3, x, y, sq);
+            draw_maptip_q(ctx, maptip.fountain_0, x, y, sq);
+            break;
         case 'monolith':
             draw_maptip_q(ctx, maptip.land3, x, y, sq);
             draw_maptip_q(ctx, maptip.monolith, x, y, sq);
@@ -988,6 +995,7 @@ function View(quality)
                 let name_u = INDEX_NONE;
                 let t = city.tile_data[i + x];
                 let t2 = city.tile_data[i + x - city.map_size_edge];
+                let tile_sub;
 
                 switch (t) {
                 case M_R_ZONE:
@@ -997,16 +1005,22 @@ function View(quality)
                     u_tiles[pos] = name_u;
                     break;
                 case M_R_ZONE | F_CENTER:
-                    if (city.tile_sub[i + x] >= 2) {
-                        name_u = (INDEX_R_ZONE + get_land_value_index(city, x, y, 4) + city.tile_sub[i + x] - 2) | INDEX_TILE3;
+                    tile_sub = city.tile_sub[i + x];
+                    if (tile_sub >= 6) {
+                        name_u = (INDEX_R_TOP + tile_sub - 6) | INDEX_TILE3;
+                    } else if (tile_sub >= 2) {
+                        name_u = (INDEX_R_ZONE + get_land_value_index(city, x, y, 4) + tile_sub - 2) | INDEX_TILE3;
                     } else {
                         name_u = INDEX_R_ZONE_MARK;
                     }
                     u_tiles[pos] = name_u;
                     break;
                 case M_C_ZONE | F_CENTER:
-                    if (city.tile_sub[i + x] >= 1) {
-                        name_u = (INDEX_C_ZONE + get_land_value_index(city, x, y, 5) + city.tile_sub[i + x] - 1) | INDEX_TILE3;
+                    tile_sub = city.tile_sub[i + x];
+                    if (tile_sub >= 6) {
+                        name_u = (INDEX_C_TOP + tile_sub - 6) | INDEX_TILE3;
+                    } else if (tile_sub >= 1) {
+                        name_u = (INDEX_C_ZONE + get_land_value_index(city, x, y, 5) + tile_sub - 1) | INDEX_TILE3;
                     } else {
                         name_u = INDEX_C_ZONE_MARK;
                     }
@@ -1399,6 +1413,10 @@ function View(quality)
                     name_d = INDEX_TILE3;
                     name_u = INDEX_GARDEN | INDEX_TILE3;
                     break;
+                case M_FOUNTAIN | F_CENTER:
+                    name_d = INDEX_TILE3;
+                    name_u = INDEX_FOUNTAIN | INDEX_TILE3;
+                    break;
                 case M_MONOLITH | F_CENTER:
                     name_d = INDEX_TILE3;
                     name_u = INDEX_MONOLITH | INDEX_TILE3;
@@ -1717,6 +1735,9 @@ function View(quality)
                         break;
                     case INDEX_WINDMILL | INDEX_TILE3:
                         t += animation;
+                        break;
+                    case INDEX_FOUNTAIN | INDEX_TILE3:
+                        t += animation & 1;
                         break;
                     }
                     this.draw_maptip(main_view_ctx, t, cx, cy);

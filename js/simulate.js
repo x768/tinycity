@@ -666,10 +666,20 @@ function Simulate() {
         }
         return false;
     }
-    function inc_r_zone(pos) {
+    function inc_r_zone(pos, x, y) {
         if (city.tile_sub[pos] > 0) {
             if (city.tile_sub[pos] < 5) {
                 city.tile_sub[pos]++;
+            } else if (city.tile_sub[pos] === 5 && city.tile_land_value[(x >> 1) + (y >> 1) * map_size2] >= LAND_VALUE_HIGH) {
+                let pos2 = pos + 3;
+                // Merge neighbor Rs
+                if (city.tile_data[pos2] === (M_R_ZONE | F_CENTER) && city.tile_sub[pos2] === 5 && city.tile_land_value[((x + 3) >> 1) + (y >> 1) * map_size2] >= LAND_VALUE_HIGH) {
+                    city.tile_sub[pos] = 9;
+                    city.tile_sub[pos2] = 7;
+                } else if ((pos2 = pos + map_size_edge * 3) < city.tile_sub.length && city.tile_data[pos2] === (M_R_ZONE | F_CENTER) && city.tile_sub[pos2] === 5 && city.tile_land_value[(x >> 1) + ((y + 3) >> 1) * map_size2] >= LAND_VALUE_HIGH) {
+                    city.tile_sub[pos] = 6;
+                    city.tile_sub[pos2] = 8;
+                }
             }
         } else {
             let empty = true;
@@ -680,7 +690,7 @@ function Simulate() {
                 }
             }
             // R zone -> school or hospital
-            if (empty && Math.random() < 0.0625) {
+            if (empty && Math.random() < 0.03125) {
                 let t = (Math.random() < 0.5 ? M_HOSPITAL : M_SCHOOL);
                 city.tile_data[pos] = t | F_CENTER;
                 for (let i = 0; i < 8; i++) {
@@ -704,7 +714,8 @@ function Simulate() {
         }
     }
     function dec_r_zone(pos) {
-        if (city.tile_sub[pos] === 0) {
+        let tile_sub = city.tile_sub[pos];
+        if (tile_sub === 0) {
             let dir = Math.floor(Math.random() * 8);
             for (let i = (dir + 1) & 7; i != dir; i = (i + 1) & 7) {
                 let p = pos + house_pos[i];
@@ -713,11 +724,77 @@ function Simulate() {
                     return;
                 }
             }
-        } else if (city.tile_sub[pos] === 2) {
+        } else if (tile_sub === 2) {
             for (let i = 0; i < 8; i++) {
                 city.tile_sub[pos + house_pos[i]] = 1;
             }
             city.tile_sub[pos] = 0;
+        } else if (tile_sub >= 6) {
+            city.tile_sub[pos] = 5;
+            let pos2 = pos;
+            switch (tile_sub - 6) {
+            case 0:
+                pos2 -= map_size_edge * 3;
+                break;
+            case 1:
+                pos2++;
+                break;
+            case 2:
+                pos2 += map_size_edge * 3;
+                break;
+            case 3:
+                pos2--;
+                break;
+            }
+            if (pos2 >= 0 && pos >= map_size_edge * 3) {
+                let pos2 = pos - map_size_edge * 3;
+                if (city.tile_data[pos2] == (M_R_ZONE | F_CENTER) && city.tile_sub[pos2] >= 6) {
+                    city.tile_sub[pos2] = 5;
+                }
+            }
+        } else {
+            city.tile_sub[pos]--;
+        }
+    }
+    function inc_c_zone(pos, x, y) {
+        if (city.tile_sub[pos] < 5) {
+            city.tile_sub[pos]++;
+        } else if (city.tile_sub[pos] === 5 && city.tile_land_value[(x >> 1) + (y >> 1) * map_size2] >= LAND_VALUE_HIGH) {
+            let pos2 = pos + 3;
+            // Merge neighbor Cs
+            if (city.tile_data[pos2] === (M_C_ZONE | F_CENTER) && city.tile_sub[pos2] === 5 && city.tile_land_value[((x + 3) >> 1) + (y >> 1) * map_size2] >= LAND_VALUE_HIGH) {
+                city.tile_sub[pos] = 9;
+                city.tile_sub[pos2] = 7;
+            } else if ((pos2 = pos + map_size_edge * 3) < city.tile_sub.length && city.tile_data[pos2] === (M_C_ZONE | F_CENTER) && city.tile_sub[pos2] === 5 && city.tile_land_value[(x >> 1) + ((y + 3) >> 1) * map_size2] >= LAND_VALUE_HIGH) {
+                city.tile_sub[pos] = 6;
+                city.tile_sub[pos2] = 8;
+            }
+        }
+    }
+    function dec_c_zone(pos) {
+        let tile_sub = city.tile_sub[pos];
+        if (tile_sub >= 6) {
+            city.tile_sub[pos] = 5;
+            let pos2 = pos;
+            switch (tile_sub - 6) {
+            case 0:
+                pos2 -= map_size_edge * 3;
+                break;
+            case 1:
+                pos2++;
+                break;
+            case 2:
+                pos2 += map_size_edge * 3;
+                break;
+            case 3:
+                pos2--;
+                break;
+            }
+            if (pos2 >= 0 && pos >= map_size_edge * 3) {
+                if (city.tile_data[pos2] == (M_C_ZONE | F_CENTER) && city.tile_sub[pos2] >= 6) {
+                    city.tile_sub[pos2] = 5;
+                }
+            }
         } else {
             city.tile_sub[pos]--;
         }
@@ -762,6 +839,30 @@ function Simulate() {
             return 0;
         }
     }
+    function collapse_top(pos, type) {
+        let pos2 = pos;
+        switch (city.tile_sub[pos] - 6) {
+        case 0:
+            pos2 += map_size_edge * 3;
+            break;
+        case 1:
+            pos2 -= 3;
+            break;
+        case 2:
+            pos2 -= map_size_edge * 3;
+            break;
+        case 3:
+            pos2 += 3;
+            break;
+        }
+        if (pos2 >= 0 && pos >= map_size_edge * 3) {
+            if (city.tile_data[pos2] !== type || city.tile_sub[pos2] < 6) {
+                city.tile_sub[pos] = 5;
+                return true;
+            }
+        }
+        return false;
+    }
     this.rci_zones = function() {
         let cnt = 0;
         let rci_cnt = 0;
@@ -777,29 +878,38 @@ function Simulate() {
         for (let y = 0; y < map_size; y++) {
             for (let x = 0; x < map_size; x++) {
                 let pos = x + 1 + (y + 1) * map_size_edge;
+                let tile_sub;
                 switch (city.tile_data[pos]) {
                 case M_R_ZONE | F_CENTER:
                     cnt++;
                     if (cnt >= 4) {
                         cnt = 0;
                     }
+                    tile_sub = city.tile_sub[pos];
+                    if (tile_sub >= 6) {
+                        if (collapse_top(pos, M_R_ZONE | F_CENTER)) {
+                            tile_sub = 5;
+                        } else {
+                            tile_sub = 6;
+                        }
+                    }
                     // small houses grows fast
-                    if (cnt === ticks4 || city.tile_sub[pos] === 0) {
-                        let inc = increase_rc_p(x, y, city.r_demand - city.tile_sub[pos] * 0.0625);
+                    if (cnt === ticks4 || tile_sub === 0) {
+                        let inc = increase_rc_p(x, y, city.r_demand - tile_sub * 0.0625);
                         if (inc > 0 && city.tile_power[pos] === 2 && city.tile_fire[pos] === 0 && is_traffic_connected(tile_c_zone, 'c_zone', pos, 3)) {
-                            inc_r_zone(pos);
+                            inc_r_zone(pos, x, y);
                         } else if (inc < 0) {
                             dec_r_zone(pos);
                         }
                     }
-                    if (city.tile_sub[pos] === 0) {
+                    if (tile_sub === 0) {
                         for (let i = 0; i < 8; i++) {
                             if (city.tile_sub[pos + house_pos[i]] !== 0) {
                                 city.r_zone_pops += 20;
                             }
                         }
                     } else {
-                        city.r_zone_pops += city.tile_sub[pos] * 160;
+                        city.r_zone_pops += tile_sub * 160;
                     }
                     city.r_zone_count++;
                     this.barycenter_x += x;
@@ -815,19 +925,23 @@ function Simulate() {
                     if (cnt >= 4) {
                         cnt = 0;
                     }
-                    if (cnt === ticks4) {
-                        let inc = increase_rc_p(x, y, city.c_demand - city.tile_sub[pos] * 0.0625);
-                        if (inc > 0 && city.tile_power[pos] === 2 && city.tile_fire[pos] === 0 && is_traffic_connected(tile_r_zone, 'r_zone', pos, 3)) {
-                            if (city.tile_sub[pos] < 5) {
-                                city.tile_sub[pos]++;
-                            }
-                        } else if (inc < 0) {
-                            if (city.tile_sub[pos] > 0) {
-                                city.tile_sub[pos]--;
-                            }
+                    tile_sub = city.tile_sub[pos];
+                    if (tile_sub >= 6) {
+                        if (collapse_top(pos, M_C_ZONE | F_CENTER)) {
+                            tile_sub = 5;
+                        } else {
+                            tile_sub = 6;
                         }
                     }
-                    city.c_zone_pops += city.tile_sub[pos] * 160;
+                    if (cnt === ticks4) {
+                        let inc = increase_rc_p(x, y, city.c_demand - tile_sub * 0.0625);
+                        if (inc > 0 && city.tile_power[pos] === 2 && city.tile_fire[pos] === 0 && is_traffic_connected(tile_r_zone, 'r_zone', pos, 3)) {
+                            inc_c_zone(pos, x, y);
+                        } else if (inc < 0) {
+                            dec_c_zone(pos);
+                        }
+                    }
+                    city.c_zone_pops += tile_sub * 160;
                     city.c_zone_count++;
                     this.barycenter_x += x;
                     this.barycenter_y += y;
@@ -1015,6 +1129,9 @@ function Simulate() {
                 case M_C_ZONE | F_CENTER:
                     {
                         let lv = city.tile_sub[pos];
+                        if (lv > 6) {
+                            lv = 6;
+                        }
                         diffusion_sub(city.tile_population, x, y, lv * 16, 4);
                     }
                     break;
@@ -1373,6 +1490,7 @@ function Simulate() {
                 case M_LIBRARY | F_CENTER:
                 case M_CASINO | F_CENTER:
                 case M_WINDMILL | F_CENTER:
+                case M_FOUNTAIN | F_CENTER:
                 case M_GARDEN | F_CENTER:
                     if (city.tile_power[pos] === 2) {
                         diffusion_sub(city.tile_land_value, x, y, 64, 3);

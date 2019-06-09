@@ -1749,7 +1749,7 @@
             {title:'i_zones', val:st.i_zone},
             {title:'total', val:zone_total},
             {title:'developed', val:st.developed},
-            {title:'top_develop', val:/*st.top*/ 'N/A', format:'raw'},
+            {title:'top_develop', val:st.top, format:'raw'},
         ]);
         popup.set_svg_list(32, 32, 240, [
             {val:(zone_total > 0 ? 1000 * st.r_zone / zone_total : 0), unit:'%', format:1},
