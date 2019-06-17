@@ -1759,15 +1759,53 @@ function Simulate() {
         city.hist_pollution[GRAPH_LAST] = Math.round(Math.sqrt(pollution_total));
         city.hist_value[GRAPH_LAST] = value_average;
     };
-    this.is_disaster_occur = function() {
+    this.naturally_disaster_occur = function() {
+        let rnd = 0;
         switch (city.difficulty) {
         case 'novice':
         case 'expert':
+            rnd = Math.random() * 96;
             break;
         case 'master':
+            rnd = Math.random() * 24;
+            console.log(rnd);
             break;
         default:
-            break;
+            return;
+        }
+        // fire:25%
+        if (rnd < 0.25) {
+            return "fire";
+        }
+        // flood:12.5%
+        if (rnd < 0.375) {
+            return "flood";
+        }
+        // tornado:12.5%
+        if (rnd < 0.5) {
+            return "tornado";
+        }
+        // earthquake:6%
+        if (rnd < 0.5625) {
+            return "earthquake";
+        }
+        if (city.difficulty === 'master') {
+            // airplane_crash:6%
+            if (rnd < 0.625) {
+                return "airplane_crash";
+            }
+            // shipwreck:6%
+            if (rnd < 0.6875) {
+                return "shipwreck";
+            }
+            // monster:6%
+            if (rnd < 0.75) {
+                return (city.problems.pollution >= 20) ? "monster" : null;
+            }
+            // meltdown:0.8%
+            if (rnd < 0.7578125) {
+                return "meltdown";
+            }
         }
         return null;
     };

@@ -2581,7 +2581,7 @@
                 }
             }
             if (update === 'disaster') {
-                let disaster = simulate.is_disaster_occur();
+                let disaster = simulate.naturally_disaster_occur();
                 if (disaster != null) {
                     disaster_occur(disaster);
                 }

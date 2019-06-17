@@ -1037,7 +1037,7 @@ function Popup(view)
             let t = view.train[0];
             show_map_marker(city.map_size, {x: t.x * 16, y: t.y *16}, 'T', '#ffff80');
         }
-    }
+    };
     this.show_disaster_position = function(city, view) {
         if (view.tornado.dir >= 0) {
             show_map_marker(city.map_size, view.tornado, 'T', '#8080ff');
