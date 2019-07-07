@@ -11,6 +11,7 @@ resource.append('zh', {
     coal_power_plant: "煤炭发电厂",
     crossing:         "平交道",
     c_zone:           "商业区",
+    expo:             "世界博览会",
     fire_dept:        "消防局",
     fire_hq:          "消防总部",
     fountain:         "喷泉",
@@ -252,7 +253,9 @@ resource.append('zh', {
 
     gift_bank_m:            null,
     gift_bank_t:            null,
+    gift_expo:              null,
     gift_fire_hq:           null,
+    gift_fountain:          null,
     gift_garden:            null,
     gift_land_fill:         null,
     gift_library:           null,
@@ -271,8 +274,5 @@ resource.append('zh', {
     },
     fn_yearstr: function(year) {
         return year + "年";
-    },
-    fn_rankstr: function(rank) {
-        return rank + "位";
     },
 });

@@ -11,6 +11,7 @@ resource.append('es', {
     coal_power_plant: "Carbón termoeléctrica",
     crossing:         "Cruce de Ferrocarril",
     c_zone:           "Zona comercial",
+    expo:             "Exposición Universal",
     fire_dept:        "Cuerpo de Bomberos",
     fire_hq:          "Sede del Cuerpo de Bomberos",
     fountain:         "Fuente",
@@ -253,7 +254,9 @@ resource.append('es', {
 
     gift_bank_m:            null,
     gift_bank_t:            null,
+    gift_expo:              null,
     gift_fire_hq:           null,
+    gift_fountain:          null,
     gift_garden:            null,
     gift_land_fill:         null,
     gift_library:           null,

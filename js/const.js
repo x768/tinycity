@@ -48,6 +48,7 @@ const M_LIBRARY  = 0x2B00 | M_WIRE;
 const M_WINDMILL = 0x2C00 | M_WIRE;
 const M_TOWER    = 0x2D00 | M_WIRE;
 const M_FOUNTAIN = 0x2E00 | M_WIRE;
+const M_EXPO     = 0x2F00 | M_WIRE;
 
 const MF_FIRE      = 1;
 const MF_FIRE_TMP  = 2;
@@ -109,14 +110,15 @@ const BUILD_ICON_INFO_GIFT = {
     amusement_park:   { size: 3, cost: 100, name: 'amusement_park', tile:M_AMUSEMENT },
     casino:           { size: 3, cost: 100, name: 'casino', tile:M_CASINO },
     bank:             { size: 3, cost: 100, name: 'bank', tile:M_BANK },
-    monster_statue:   { size: 3, cost: 100, name: 'monster_statue', tile:M_M_STATUE },
     zoo:              { size: 3, cost: 100, name: 'zoo', tile:M_ZOO },
     library:          { size: 3, cost: 100, name: 'library', tile:M_LIBRARY },
     windmill:         { size: 3, cost: 100, name: 'windmill', tile:M_WINDMILL },
     garden:           { size: 3, cost: 100, name: 'garden', tile:M_GARDEN },
-    monolith:         { size: 3, cost: 100, name: 'monolith', tile:M_MONOLITH },
     tower:            { size: 3, cost: 100, name: 'tower', tile:M_TOWER },
     fountain:         { size: 3, cost: 100, name: 'fountain', tile:M_FOUNTAIN },
+    expo:             { size: 3, cost: 100, name: 'expo', tile:M_EXPO },
+    monster_statue:   { size: 3, cost: 100, name: 'monster_statue', tile:M_M_STATUE },
+    monolith:         { size: 3, cost: 100, name: 'monolith', tile:M_MONOLITH },
     land_fill:        { size: 3, cost: 100, name: 'land_fill' },
 };
 

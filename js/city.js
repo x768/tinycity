@@ -70,6 +70,7 @@ function City(source) {
             {type:'gift', name:'garden', cond:['afforestion', 200]},
             {type:'gift', name:'garden', cond:['afforestion', 400]},
             {type:'gift', name:'garden', cond:['afforestion', 600]},
+            {type:'gift', name:'fountain', cond:['year_month', (this.year + 50) * 100 + 2]},
             {type:'gift', name:'tower', cond:['population', 100000]},
             {type:'gift', name:'monster_statue', cond:['population', 500000]},
             {type:'gift', name:'monolith', cond:['population', 700000]},
@@ -821,6 +822,9 @@ function City(source) {
                 break;
             case M_FOUNTAIN:
                 info.name = 'fountain';
+                break;
+            case M_EXPO:
+                info.name = 'expo';
                 break;
             case M_M_STATUE:
                 info.name = 'monster_statue';

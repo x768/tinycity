@@ -11,6 +11,7 @@ resource.append('zh_hant', {
     coal_power_plant: "煤炭發電廠",
     crossing:         "平交道",
     c_zone:           "商業區",
+    expo:             "世界博覽會",
     fire_dept:        "消防局",
     fire_hq:          "消防總部",
     fountain:         "噴泉",
@@ -252,7 +253,9 @@ resource.append('zh_hant', {
 
     gift_bank_m:            null,
     gift_bank_t:            null,
+    gift_expo:              null,
     gift_fire_hq:           null,
+    gift_fountain:          null,
     gift_garden:            null,
     gift_land_fill:         null,
     gift_library:           null,
@@ -271,8 +274,5 @@ resource.append('zh_hant', {
     },
     fn_yearstr: function(year) {
         return year + "年";
-    },
-    fn_rankstr: function(rank) {
-        return rank + "位";
     },
 });

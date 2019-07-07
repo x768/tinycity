@@ -11,6 +11,7 @@ resource.append('??', {
     coal_power_plant: null,
     crossing:         null,
     c_zone:           null,
+    expo:             null,
     fire_dept:        null,
     fire_hq:          null,
     fountain:         null,
@@ -254,7 +255,9 @@ resource.append('??', {
 
     gift_bank_m:            null,
     gift_bank_t:            null,
+    gift_expo:              null,
     gift_fire_hq:           null,
+    gift_fountain:          null,
     gift_garden:            null,
     gift_land_fill:         null,
     gift_library:           null,

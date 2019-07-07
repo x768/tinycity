@@ -88,6 +88,7 @@ function View(quality)
     const INDEX_TOWER = 92;
     const INDEX_GARDEN = 93;
     const INDEX_FOUNTAIN = 94;
+    const INDEX_EXPO = 95;
 
     const INDEX_PAVED = 1;
     const INDEX_STADIUM = 2;
@@ -679,6 +680,7 @@ function View(quality)
         mip3.set_qtile(INDEX_GARDEN, maptip.garden, null);
         mip3.set_qtile(INDEX_FOUNTAIN + 0, maptip.fountain_0, null);
         mip3.set_qtile(INDEX_FOUNTAIN + 1, maptip.fountain_1, null);
+        mip3.set_qtile(INDEX_EXPO, maptip.expo, null);
 
 
         mip4.set_offset_y(7, 1, 7);
@@ -948,6 +950,10 @@ function View(quality)
         case 'fountain':
             draw_maptip_q(ctx, maptip.land3, x, y, sq);
             draw_maptip_q(ctx, maptip.fountain_0, x, y, sq);
+            break;
+        case 'expo':
+            draw_maptip_q(ctx, maptip.land3, x, y, sq);
+            draw_maptip_q(ctx, maptip.expo, x, y, sq);
             break;
         case 'monolith':
             draw_maptip_q(ctx, maptip.land3, x, y, sq);
@@ -1417,6 +1423,10 @@ function View(quality)
                     name_d = INDEX_TILE3;
                     name_u = INDEX_FOUNTAIN | INDEX_TILE3;
                     break;
+                case M_EXPO | F_CENTER:
+                    name_d = INDEX_TILE3;
+                    name_u = INDEX_EXPO | INDEX_TILE3;
+                    break;
                 case M_MONOLITH | F_CENTER:
                     name_d = INDEX_TILE3;
                     name_u = INDEX_MONOLITH | INDEX_TILE3;
@@ -1737,7 +1747,7 @@ function View(quality)
                         t += animation;
                         break;
                     case INDEX_FOUNTAIN | INDEX_TILE3:
-                        t += animation & 1;
+                        t += ticks & 1;
                         break;
                     }
                     this.draw_maptip(main_view_ctx, t, cx, cy);

@@ -13,6 +13,7 @@ const resource = new (function() {
             coal_power_plant: "Coal Power Plant",
             crossing:         "Level crossing",
             c_zone:           "Commercial zone",
+            expo:             "Universal Exposition",
             fire_dept:        "Fire Department",
             fire_hq:          "Fire Dep. Headquarters",
             fountain:         "Fountain",
@@ -259,7 +260,9 @@ const resource = new (function() {
 
             gift_bank_m:           "Why don't you build a Bank?\nIf you need funding, you can get a loan $10000.",
             gift_bank_t:           "Why don't you build a Bank?\nIf you need funding, you can issue a bond.",
+            gift_expo:             null,
             gift_fire_hq:          "Why don't you build a Police department headquaters?\nThis facility will give your city a wider area of fire protection.",
+            gift_fountain:         "Congratulations on the 50th anniversary!!\nThis fountain donated by citizens.Let's build it.",
             gift_garden:           "Why don't you build a Garden?\nThat will improve surrounding areas' environment.",
             gift_land_fill:        "Are you running out of land to develop?\nWith the land fill, you can reclaim more land.",
             gift_library:          "Why don't you build a library for the increasing number of shool kids?",

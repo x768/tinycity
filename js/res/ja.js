@@ -11,6 +11,7 @@ resource.append('ja', {
     coal_power_plant: "石炭発電所",
     crossing:         "踏切",
     c_zone:           "商業地",
+    expo:             "万国博覧会",
     fire_dept:        "消防署",
     fire_hq:          "消防本部",
     fountain:         "噴水",
@@ -251,9 +252,11 @@ resource.append('ja', {
     disaster_tornado:       "竜巻が発生しました!",
     disaster_ufo:           "謎の飛行物体による攻撃を受けました!",
 
-    gift_fire_hq:          "多発する火災に対処するため、消防本部を設置しましょう。\n通常の消防署より広い範囲をカバーできます。",
     gift_bank_m:           "この街に銀行を建設しましょう。\n資金が必要になった場合、$10000の融資を受けることができます。",
     gift_bank_t:           "この街に銀行を建設しましょう。\n資金が必要になった場合、債券を発行することができます。",
+    gift_expo:             null,
+    gift_fire_hq:          "多発する火災に対処するため、消防本部を設置しましょう。\n通常の消防署より広い範囲をカバーできます。",
+    gift_fountain:         "市制50周年おめでとうございます。\nこの噴水は市民から寄付されたものです。早速建設しましょう。",
     gift_garden:           "この街に庭園を建設しましょう。\n庭園は周辺の環境を良くすることができます。",
     gift_land_fill:        "開発できる土地が少なくなってきました。水域を埋め立てて土地を広げましょう。",
     gift_library:          "年々増加する学校の生徒のために、図書館を建設しましょう。",
@@ -272,8 +275,5 @@ resource.append('ja', {
     },
     fn_yearstr: function(year) {
         return year + "年";
-    },
-    fn_rankstr: function(rank) {
-        return rank + "位";
     },
 });

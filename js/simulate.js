@@ -1481,6 +1481,7 @@ function Simulate() {
                 case M_ZOO | F_CENTER:
                 case M_TOWER | F_CENTER:
                 case M_M_STATUE | F_CENTER:
+                case M_EXPO | F_CENTER:
                     if (city.tile_power[pos] === 2) {
                         diffusion_sub(city.tile_land_value, x, y, 80, 4);
                     }
@@ -1633,14 +1634,15 @@ function Simulate() {
                             n_tax += city.tile_sub[pos] * city.tile_land_value[pos2];
                         }
                         break;
+                    case M_ZOO | F_CENTER:
+                    case M_EXPO | F_CENTER:
+                        special_income += 200;
+                        break;
                     case M_TERM_STN | F_CENTER:
                         special_income += 300;
                         break;
                     case M_CASINO | F_CENTER:
-                        special_income += 400;
-                        break;
-                    case M_ZOO | F_CENTER:
-                        special_income += 200;
+                        special_income += 500;
                         break;
                     }
                 }

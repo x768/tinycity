@@ -11,6 +11,7 @@ resource.append('de', {
     coal_power_plant: "Kohlekraftwerk",
     crossing:         "Bahnübergang",
     c_zone:           "Gewerbegebiet",
+    expo:             "Weltausstellung",
     fire_dept:        "Feuerwehr",
     fire_hq:          "Feuerwehrhauptquartier",
     fountain:         "Brunnen",
@@ -253,7 +254,9 @@ resource.append('de', {
 
     gift_bank_m:            null,
     gift_bank_t:            null,
+    gift_expo:              null,
     gift_fire_hq:           null,
+    gift_fountain:          null,
     gift_garden:            null,
     gift_land_fill:         null,
     gift_library:           null,
