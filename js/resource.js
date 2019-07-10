@@ -262,7 +262,7 @@ const resource = new (function() {
             gift_bank_t:           "Why don't you build a Bank?\nIf you need funding, you can issue a bond.",
             gift_expo:             null,
             gift_fire_hq:          "Why don't you build a Police department headquaters?\nThis facility will give your city a wider area of fire protection.",
-            gift_fountain:         "Congratulations on the 50th anniversary!!\nThis fountain donated by citizens.Let's build it.",
+            gift_fountain:         "Congratulations on the 50th anniversary!!\nThis fountain is donated by citizens. Let's build it.",
             gift_garden:           "Why don't you build a Garden?\nThat will improve surrounding areas' environment.",
             gift_land_fill:        "Are you running out of land to develop?\nWith the land fill, you can reclaim more land.",
             gift_library:          "Why don't you build a library for the increasing number of shool kids?",
@@ -289,7 +289,7 @@ const resource = new (function() {
                 [[ 10,-15], [-10,-15], [-10, 15], [ 10, 15]],
             ],
             vec_i_mark: [
-                {stroke: '#808000', lineWidth: 4},
+                {stroke: '#c08000', lineWidth: 4},
                 [[  0,-15], [  0, 15]],
             ],
 

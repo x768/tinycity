@@ -1769,8 +1769,32 @@ function View(quality)
                     case INDEX_WINDMILL | INDEX_TILE3:
                         t += animation;
                         break;
+                    case INDEX_FOUNTAIN | INDEX_TILE3:
+                        t += ticks & 1;
+                        break;
                     }
                     this.draw_maptip(main_view_ctx, t, cx, cy);
+                }
+            }
+        }
+        if (this.color_scheme) {
+            for (let y = 0; y < map_size; y++) {
+                let pos = y * map_size;
+                for (let x = 0; x < map_size; x++) {
+                    let t = u_tiles[pos + x];
+                    let idx = -1;
+                    if (t >= (INDEX_R_ZONE | INDEX_TILE3) && t < ((INDEX_R_TOP + 4) | INDEX_TILE3)) {
+                        idx = INDEX_R_ZONE_MARK;
+                    } else if (t >= (INDEX_C_ZONE | INDEX_TILE3) && t < ((INDEX_C_TOP + 4) | INDEX_TILE3)) {
+                        idx = INDEX_C_ZONE_MARK;
+                    } else if (t >= (INDEX_I_ZONE | INDEX_TILE3) && t < ((INDEX_I_ZONE + 8) | INDEX_TILE3)) {
+                        idx = INDEX_I_ZONE_MARK;
+                    }
+                    if (idx >= 0) {
+                        let cx = (x - y) * tile_x + current_scroll_x;
+                        let cy = (x + y) * tile_y + current_scroll_y;
+                        this.draw_maptip(main_view_ctx, idx, cx, cy);
+                    }
                 }
             }
         }

@@ -702,7 +702,7 @@ function Popup(view)
                         color = 0x6060FF;
                         break;
                     case M_I_ZONE:
-                        color = 0xFFFF00;
+                        color = 0xFFA000;
                         break;
                     default:
                         if ((t & 0x3F00) !== 0) {
@@ -766,7 +766,7 @@ function Popup(view)
                                 color = 0x6060FF;
                                 break;
                             case M_I_ZONE:
-                                color = 0xFFFF00;
+                                color = 0xFFA000;
                                 break;
                             }
                         }

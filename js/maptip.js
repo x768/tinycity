@@ -1545,7 +1545,7 @@ const maptip = {
     ],
 
     i_frame: [
-        {fill: '#c0c080', stroke: '#808000', lineWidth: 4},
+        {fill: '#c0c080', stroke: '#c08000', lineWidth: 4},
         [[-23,-23, 0], [ 23,-23, 0], [ 23, 23, 0], [-23, 23, 0], 'z'],
     ],
     i_11: [

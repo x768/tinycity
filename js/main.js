@@ -1565,7 +1565,7 @@
                 popup.set_map_legand([
                     {text: 'r_zone', color: '#00E000', text_color: '#000000'},
                     {text: 'c_zone', color: '#6060FF', text_color: '#000000'},
-                    {text: 'i_zone', color: '#FFFF00', text_color: '#000000'},
+                    {text: 'i_zone', color: '#FFA000', text_color: '#000000'},
                 ]);
                 popup.show_vehicle_position(city, view);
                 break;
