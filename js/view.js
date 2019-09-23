@@ -88,7 +88,7 @@ function View(quality)
     const INDEX_TOWER = 92;
     const INDEX_GARDEN = 93;
     const INDEX_FOUNTAIN = 94;
-    const INDEX_EXPO = 95;
+    const INDEX_EXPO = 96;
 
     const INDEX_PAVED = 1;
     const INDEX_STADIUM = 2;

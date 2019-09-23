@@ -71,6 +71,7 @@ function City(source) {
             {type:'gift', name:'garden', cond:['afforestion', 400]},
             {type:'gift', name:'garden', cond:['afforestion', 600]},
             {type:'gift', name:'fountain', cond:['year_month', (this.year + 50) * 100 + 2]},
+            {type:'gift', name:'expo', cond:['population', 10000, 'port_goods_st', 1, 'airport', 1]},
             {type:'gift', name:'tower', cond:['population', 100000]},
             {type:'gift', name:'monster_statue', cond:['population', 500000]},
             {type:'gift', name:'monolith', cond:['population', 700000]},
@@ -1663,6 +1664,8 @@ function City(source) {
             station: 0,
             stadium1: 0,
             stadium2: 0,
+            port_goods_st: 0,
+            airport: 0,
             power_plant: 0,
             power_capa: 0,
             power_req: 0,
@@ -1750,6 +1753,13 @@ function City(source) {
                     break;
                 case F_CENTER | M_STADIUM2:
                     st.stadium2++;
+                    break;
+                case F_CENTER | M_PORT:
+                case F_CENTER | M_GOODS_ST:
+                    st.port_goods_st++;
+                    break;
+                case F_CENTER | M_AIRPORT:
+                    st.airport++;
                     break;
                 default:
                     if ((t & 0x3F00) === 0) {

@@ -254,6 +254,11 @@ function Simulate() {
                         self.station_active_pos = pos;
                     }
                     break;
+                case M_RAIL:
+                    if (self.station_active_pos === -1 && city.ruleset === 'micropolis') {
+                        self.station_active_pos = pos;
+                    }
+                    break;
                 }
                 if (tile != null) {
                     update_zone_effect_sub(stack, tile, pos, spread);

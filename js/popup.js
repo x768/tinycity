@@ -668,6 +668,7 @@ function Popup(view)
                 switch (t) {
                 case M_WATER:
                 case M_WIRE_WT:
+                case M_WIRE_WT | F_CENTER:
                     color = 0x4060FF;
                     break;
                 case M_LAND:
@@ -991,13 +992,13 @@ function Popup(view)
             list = [
                 {text: 'low', color: (this.color_scheme ? '#404040' : '#008000'), text_color: '#FFFFFF' },
                 'heatmap',
-                {text: 'high', color: (this.color_scheme ? '#FFFFFF' : '#FF0000'), text_color: '#000000' },
+                {text: 'high', color: (this.color_scheme ? '#FFFFFF' : '#FF0000'), text_color: '#FFFFFF' },
             ];
         } else {
             list = [
                 {text_raw: '-', color: (this.color_scheme ? '#404040' : '#008000'), text_color: '#FFFFFF' },
                 'heatmap',
-                {text_raw: '+', color: (this.color_scheme ? '#FFFFFF' : '#FF0000'), text_color: '#000000' },
+                {text_raw: '+', color: (this.color_scheme ? '#FFFFFF' : '#FF0000'), text_color: '#FFFFFF' },
             ];
         }
         this.set_map_legand(list);
