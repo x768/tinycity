@@ -260,7 +260,7 @@ const resource = new (function() {
 
             gift_bank_m:           "Why don't you build a Bank?\nIf you need funding, you can get a loan $10000.",
             gift_bank_t:           "Why don't you build a Bank?\nIf you need funding, you can issue a bond.",
-            gift_expo:             null,
+            gift_expo:             "Why don't you hold an exposition to develop industory.\nLet's build a Exposition venue.",
             gift_fire_hq:          "Why don't you build a Police department headquaters?\nThis facility will give your city a wider area of fire protection.",
             gift_fountain:         "Congratulations on the 50th anniversary!!\nThis fountain is donated by citizens. Let's build it.",
             gift_garden:           "Why don't you build a Garden?\nThat will improve surrounding areas' environment.",
