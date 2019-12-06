@@ -179,6 +179,9 @@
         }
     }
     function build_range() {
+        if (view.cursor_x < 0) {
+            return;
+        }
         let cost = city.calc_build_cost_range(view.cursor_x_begin, view.cursor_y_begin, view.cursor_x, view.cursor_y, current_build);
         if (cost >= 0 && (city.funds === 'infinity' || city.funds >= cost)) {
             if (city.funds !== 'infinity') {
