@@ -827,6 +827,8 @@ function Popup(view)
                 let t = city.tile_data[line + x];
                 switch (t & F_BLDGS) {
                 case M_STATION:
+                case M_GOODS_ST:
+                case M_TERM_STN:
                     put_pixel(imData.data, x, y, w, 0xA0A000);
                     break;
                 case M_GOODS_ST:
