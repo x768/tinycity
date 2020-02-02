@@ -756,22 +756,22 @@ function City(source) {
             case M_STADIUM2:
                 info.name = 'stadium';
                 info.size = 4;
-                list.push({title:'audiences', val:this.tile_sub[pos] * 1000, unit:'/mon'});
+                list.push({title:'audiences', val:this.tile_sub[pos] * 100, unit:'/day'});
                 break;
             case M_GOODS_ST:
                 info.name = 'goods_st';
                 info.size = 4;
-                list.push({title:'freight_volume', val:this.tile_sub[pos] * 1000, unit:'t/mon'});
+                list.push({title:'freight_volume', val:this.tile_sub[pos] * 100, unit:'t/day'});
                 break;
             case M_PORT:
                 info.name = 'sea_port';
                 info.size = 4;
-                list.push({title:'freight_volume', val:this.tile_sub[pos] * 1000, unit:'t/mon'});
+                list.push({title:'freight_volume', val:this.tile_sub[pos] * 100, unit:'t/day'});
                 break;
             case M_AIRPORT:
                 info.name = 'airport';
                 info.size = 6;
-                list.push({title:'passengers', val:this.tile_sub[pos] * 1000, unit:'/mon'});
+                list.push({title:'passengers', val:this.tile_sub[pos] * 100, unit:'/day'});
                 break;
             case M_COAL_PWR:
                 info.name = 'coal_power_plant';
