@@ -1576,7 +1576,7 @@
                 popup.draw_map_base(city, false);
                 popup.draw_map_power(city);
                 popup.set_map_legand([
-                    {text: 'power_plants', color: (popup.color_scheme ? '#FFFFFF' : '#FF0000'), text_color: '#FFFFFF' },
+                    {text: 'power_plants', color: (popup.color_scheme ? '#FFFFFF' : '#FF0000'), text_color: (popup.color_scheme ? '#000000' : '#FFFFFF') },
                     {text: 'power_supplied', color: (popup.color_scheme ? '#D0D0D0' : '#FF8000'), text_color: '#000000'},
                     {text: 'power_outage', color: (popup.color_scheme ? '#404040' : '#008000'), text_color: '#FFFFFF'},
                 ]);

@@ -994,13 +994,13 @@ function Popup(view)
             list = [
                 {text: 'low', color: (this.color_scheme ? '#404040' : '#008000'), text_color: '#FFFFFF' },
                 'heatmap',
-                {text: 'high', color: (this.color_scheme ? '#FFFFFF' : '#FF0000'), text_color: '#FFFFFF' },
+                {text: 'high', color: (this.color_scheme ? '#FFFFFF' : '#FF0000'), text_color: (this.color_scheme ? '#000000' : '#FFFFFF') },
             ];
         } else {
             list = [
                 {text_raw: '-', color: (this.color_scheme ? '#404040' : '#008000'), text_color: '#FFFFFF' },
                 'heatmap',
-                {text_raw: '+', color: (this.color_scheme ? '#FFFFFF' : '#FF0000'), text_color: '#FFFFFF' },
+                {text_raw: '+', color: (this.color_scheme ? '#FFFFFF' : '#FF0000'), text_color: (this.color_scheme ? '#000000' : '#FFFFFF') },
             ];
         }
         this.set_map_legand(list);
